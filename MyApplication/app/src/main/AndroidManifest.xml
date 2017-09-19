@@ -24,7 +24,8 @@
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login" />
-        <activity android:name=".PublicMain"></activity>
+        <activity android:name=".PublicMain" />
+        <activity android:name=".AlumnoMain"></activity>
     </application>
 
 </manifest>
