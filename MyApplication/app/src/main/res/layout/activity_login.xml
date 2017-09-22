@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.admin.myapplication.LoginActivity">
+    tools:context="universis.universys.LoginActivity">
 
     <!-- Login progress -->
     <ProgressBar
@@ -23,12 +23,6 @@
         android:id="@+id/login_form"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Recuperar contraseña" />
 
         <LinearLayout
             android:id="@+id/email_login_form"
@@ -84,6 +78,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:onClick="accesoPublico"
                 android:text="Acceso Publico"
                 android:textStyle="bold" />
         </LinearLayout>
