@@ -41,7 +41,7 @@ import static android.Manifest.permission.READ_CONTACTS;
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
     public void accesoPublico(View view) {
-        Intent i = new Intent(this, PublicMain.class );
+        Intent i = new Intent(getBaseContext(), PublicMain.class );
         startActivity(i);
     }
     /**
@@ -54,7 +54,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * TODO: remove after connecting to a real authentication system.
      */
     private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world","alumno@alumno:alumno","profesor@profesor:profesor"
+            "alumno@alumno:alumno:a","profesor@profesor:profesor:p"
     };
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
@@ -338,7 +338,23 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
-                finish();
+
+                for (String credential : DUMMY_CREDENTIALS) {
+                    String[] pieces = credential.split(":");
+                    if (pieces[0].equals(mEmail)&& pieces[1].equals(mPassword)) {
+                        if(pieces[2].equals("a")){
+                            //vista alumno
+                            Intent i = new Intent(getBaseContext(), AlumnoMain.class );
+                            startActivity(i);
+                        }
+                        else{
+                            //vista profesor
+                            Intent i = new Intent(getBaseContext(), ProfesorMain.class );
+                            startActivity(i);
+                        }
+                    }
+                }
+
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
