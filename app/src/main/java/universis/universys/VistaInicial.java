@@ -25,6 +25,10 @@ import android.widget.LinearLayout;
 public class VistaInicial extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    public void logIn(View view) {
+        Intent i = new Intent(this, LoginActivity.class );
+        startActivity(i);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

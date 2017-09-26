@@ -40,10 +40,7 @@ import static android.Manifest.permission.READ_CONTACTS;
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
-    public void accesoPublico(View view) {
-        Intent i = new Intent(getBaseContext(), PublicMain.class );
-        startActivity(i);
-    }
+
     /**
      * Id to identity READ_CONTACTS permission request.
      */

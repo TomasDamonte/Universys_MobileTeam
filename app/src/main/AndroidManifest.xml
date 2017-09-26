@@ -19,10 +19,6 @@
             android:name=".LoginActivity"
             android:label="Universys">
         </activity>
-        <activity
-            android:name=".PublicMain"
-            android:label="@string/title_activity_public_main"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".AlumnoMain" />
         <activity android:name=".ProfesorMain" />
         <activity
