@@ -15,4 +15,10 @@
     </string>
     <string name="title_activity_login">Universys</string>
     <string name="title_activity_public_main">PublicMain</string>
+    <string name="title_activity_vista_inicial">VistaInicial</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
 </resources>
