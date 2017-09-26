@@ -1,8 +1,10 @@
 package universis.universys;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.text.Layout;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,6 +14,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.webkit.WebView;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 public class VistaInicial extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -58,10 +67,10 @@ public class VistaInicial extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-    /*    if (id == R.id.action_settings) {
+    /*  if (id == R.id.action_settings) {
             return true;
         }
-*/
+    */
         return super.onOptionsItemSelected(item);
     }
 
@@ -69,16 +78,33 @@ public class VistaInicial extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+        LinearLayout layoutContacto = (LinearLayout) findViewById(R.id.layoutContacto);
+        LinearLayout layoutPlanesEstudio = (LinearLayout) findViewById(R.id.layoutPlanesEstudio);
+        WebView webCalendario = (WebView) findViewById(R.id.webCalendario);
+        WebView webHistoria = (WebView) findViewById(R.id.webHistoria);
         int id = item.getItemId();
-
         if (id == R.id.nav_contacto) {
-            // Handle the camera action
+            layoutContacto.setVisibility(View.VISIBLE);
+            layoutPlanesEstudio.setVisibility(View.INVISIBLE);
+            webCalendario.setVisibility(View.INVISIBLE);
+            webHistoria.setVisibility(View.INVISIBLE);
         } else if (id == R.id.nav_calendario) {
-
+            webCalendario.loadUrl("http://www.ub.edu.ar/academico.php?opcion=calendarios");
+            layoutContacto.setVisibility(View.INVISIBLE);
+            layoutPlanesEstudio.setVisibility(View.INVISIBLE);
+            webCalendario.setVisibility(View.VISIBLE);
+            webHistoria.setVisibility(View.INVISIBLE);
         } else if (id == R.id.nav_planEstudio) {
-
+            layoutContacto.setVisibility(View.INVISIBLE);
+            layoutPlanesEstudio.setVisibility(View.VISIBLE);
+            webCalendario.setVisibility(View.INVISIBLE);
+            webHistoria.setVisibility(View.INVISIBLE);
         } else if (id == R.id.nav_historia) {
-
+            webHistoria.loadUrl("http://www.ub.edu.ar/institucional.php");
+            layoutContacto.setVisibility(View.INVISIBLE);
+            layoutPlanesEstudio.setVisibility(View.INVISIBLE);
+            webCalendario.setVisibility(View.INVISIBLE);
+            webHistoria.setVisibility(View.VISIBLE);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

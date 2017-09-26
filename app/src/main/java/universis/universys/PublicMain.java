@@ -38,7 +38,7 @@ public class PublicMain extends AppCompatActivity {
             switch (position) {
                 case 0:
                     Tab1Contacto tab1 = new Tab1Contacto();
-                    return tab1;
+                 //   return tab1;
                 case 1:
                     Tab2PlanesEstudio tab2 = new Tab2PlanesEstudio();
                     return tab2;
