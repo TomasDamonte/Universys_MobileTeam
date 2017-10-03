@@ -670,10 +670,11 @@ public class CHTTPRequest extends AsyncTask<String, String, String>
         m_response = responseString;
         try {
             m_jsonResponse = new JSONObject(responseString);
-         /*   m_jsonResponse = new JSONObject();
+ /*           m_jsonResponse = new JSONObject();
             m_jsonResponse.put("direccionServidor","http://universys.com");
             m_jsonResponse.put("apiVer","1.0");
-            m_jsonResponse.put("errorId","799");
+            m_jsonResponse.put("errorId","200");
+            m_jsonResponse.put("tipo","profesor");
 */
         } catch (JSONException e) {
             e.printStackTrace();

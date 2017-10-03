@@ -89,27 +89,27 @@ public class VistaInicial extends AppCompatActivity
         WebView webHistoria = (WebView) findViewById(R.id.webHistoria);
         int id = item.getItemId();
         if (id == R.id.nav_contacto) {
-            layoutContacto.setVisibility(View.VISIBLE);
             layoutPlanesEstudio.setVisibility(View.INVISIBLE);
             webCalendario.setVisibility(View.INVISIBLE);
             webHistoria.setVisibility(View.INVISIBLE);
+            layoutContacto.setVisibility(View.VISIBLE);
         } else if (id == R.id.nav_calendario) {
-            webCalendario.loadUrl("http://www.ub.edu.ar/academico.php?opcion=calendarios");
             layoutContacto.setVisibility(View.INVISIBLE);
             layoutPlanesEstudio.setVisibility(View.INVISIBLE);
-            webCalendario.setVisibility(View.VISIBLE);
             webHistoria.setVisibility(View.INVISIBLE);
+            webCalendario.setVisibility(View.VISIBLE);
+            webCalendario.loadUrl("http://www.ub.edu.ar/academico.php?opcion=vencen");
         } else if (id == R.id.nav_planEstudio) {
             layoutContacto.setVisibility(View.INVISIBLE);
-            layoutPlanesEstudio.setVisibility(View.VISIBLE);
             webCalendario.setVisibility(View.INVISIBLE);
             webHistoria.setVisibility(View.INVISIBLE);
+            layoutPlanesEstudio.setVisibility(View.VISIBLE);
         } else if (id == R.id.nav_historia) {
-            webHistoria.loadUrl("http://www.ub.edu.ar/institucional.php");
             layoutContacto.setVisibility(View.INVISIBLE);
             layoutPlanesEstudio.setVisibility(View.INVISIBLE);
             webCalendario.setVisibility(View.INVISIBLE);
             webHistoria.setVisibility(View.VISIBLE);
+            webHistoria.loadUrl("http://www.ub.edu.ar/institucional.php");
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
