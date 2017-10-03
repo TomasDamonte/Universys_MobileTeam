@@ -8,6 +8,7 @@ public class AlumnoMain extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CacheHelper.context = this;
         setContentView(R.layout.activity_alumno_main);
     }
 }
