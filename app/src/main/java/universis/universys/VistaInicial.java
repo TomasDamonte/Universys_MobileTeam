@@ -45,6 +45,10 @@ public class VistaInicial extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        WebView webHistoria = (WebView) findViewById(R.id.webHistoria);
+        webHistoria.setVisibility(View.VISIBLE);
+        webHistoria.loadUrl("http://www.ub.edu.ar/institucional.php");
     }
 
     @Override
