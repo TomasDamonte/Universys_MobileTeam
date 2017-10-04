@@ -1,6 +1,7 @@
 package universis.universys;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -575,6 +576,8 @@ public class CHTTPRequest extends AsyncTask<String, String, String>
         HttpClient httpclient = new DefaultHttpClient();
         HttpResponse response;
         String responseString = null;
+        //Para q salga el simbolito de 'cargando' =P
+
         try
         {
             // Initialize a variable as null to later hold the real request object.
@@ -594,7 +597,6 @@ public class CHTTPRequest extends AsyncTask<String, String, String>
                 {
                     preq.setParams(getParams());
                 }
-
                 req = preq;
             }
             else if(HttpGet.METHOD_NAME.equalsIgnoreCase(getMethod()))
@@ -632,6 +634,11 @@ public class CHTTPRequest extends AsyncTask<String, String, String>
             // Execute the http request and wait for a response. This method is synchronized, but
             // this method runs in another thread, as of AsyncTask implementation.
             response = httpclient.execute(req);
+          /*  try {
+                Thread.sleep(1500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }*/
             // Response arrived, Check what is the status.
             StatusLine statusLine = response.getStatusLine();
             // If everything is OK, convert the response into a String.
@@ -644,7 +651,15 @@ public class CHTTPRequest extends AsyncTask<String, String, String>
                 responseString = new String(out.toByteArray(), "ISO-8859-1");
                  */
                 responseString = EntityUtils.toString(response.getEntity());
-                CacheHelper.setStringProperty(this.getTaskId(),responseString);
+
+                //Hardcodeo de respuesta jej >.>
+                try {
+                    responseString = new JSONObject().put("errorId", "200").put("tipo","profesor").toString();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                CacheHelper.setStringProperty(m_taskId,responseString);
             }
             // If something happened, throw an exception with the error.
             else
@@ -661,36 +676,23 @@ public class CHTTPRequest extends AsyncTask<String, String, String>
         }
         catch (IOException e)
         {
-            responseString = CacheHelper.getStringProperty(this.getTaskId());
+            responseString = CacheHelper.getStringProperty(m_taskId);
             e.printStackTrace();
             //TODO Handle problems..
         }
 
-        // Store the response for later access.
+        // Store the response for later access
         m_response = responseString;
-        try {
-            m_jsonResponse = new JSONObject(responseString);
- /*           m_jsonResponse = new JSONObject();
-            m_jsonResponse.put("direccionServidor","http://universys.com");
-            m_jsonResponse.put("apiVer","1.0");
-            m_jsonResponse.put("errorId","200");
-            m_jsonResponse.put("tipo","profesor");
-*/
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        try {
-            m_jsonArrayResponse = new JSONArray(responseString);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
         return responseString;
     }
 
-    public JSONObject getJsonResponse() {return m_jsonResponse;}
+    public JSONObject getJsonResponse() throws JSONException {
+        return new JSONObject(m_response);
+    }
 
-    public JSONArray getJsonArrayResponse() {return m_jsonArrayResponse;}
+    public JSONArray getJsonArrayResponse() throws JSONException {
+        return new JSONArray(m_response);
+    }
 
     private ArrayList<IRequestListener> m_listeners = new ArrayList<>();
     protected int m_taskId;
@@ -701,6 +703,5 @@ public class CHTTPRequest extends AsyncTask<String, String, String>
     private Map<String, String> m_headers = null;
     private String m_baseUrl;
     private String m_path;
-    private JSONObject m_jsonResponse;
-    private JSONArray m_jsonArrayResponse;
+
 }

@@ -4,12 +4,23 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+
 public class CacheHelper {
     public static Context context;
 
     public static String getStringProperty(Integer key) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("preferences", Activity.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = context.getSharedPreferences("cache",Activity.MODE_PRIVATE);
         String res = null;
+        if(!sharedPreferences.contains(key.toString())) {
+            try {
+                return new JSONObject().put("errorId", "4516").toString();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
         if (sharedPreferences != null) {
             res = sharedPreferences.getString(key.toString(), null);
         }
@@ -17,7 +28,7 @@ public class CacheHelper {
     }
 
     public static void setStringProperty(Integer key, String value) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("preferences", Activity.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = context.getSharedPreferences("cache", Activity.MODE_PRIVATE);
         if (sharedPreferences != null) {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString(key.toString(), value);

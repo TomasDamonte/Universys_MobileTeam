@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,7 +32,7 @@ public class LoginActivity extends AppCompatActivity{
      */
     private UserLoginTask mAuthTask = null;
 
-    // UI references.
+
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
@@ -119,7 +120,7 @@ public class LoginActivity extends AppCompatActivity{
             // perform the user login attempt.
             showProgress(true);
             mAuthTask = new UserLoginTask(email, password);
-        //    mAuthTask.execute((Void) null);
+
         }
     }
 
@@ -166,7 +167,6 @@ public class LoginActivity extends AppCompatActivity{
 
         private final String mEmail;
         private final String mPassword;
-        private boolean auth = false;
 
         UserLoginTask(String email, String password) {
             mEmail = email;
@@ -177,35 +177,30 @@ public class LoginActivity extends AppCompatActivity{
             datos.put("idSesion",idSesion);
             datos.put("mail",mEmail);
             datos.put("password",mPassword);
-            String url = "http://universys.site/login";
-            CHTTPRequest.postRequest(151,url,new JSONObject(datos)).execute().addListener(this);
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            String url = "http://jsonplaceholder.typicode.com/posts";
+           CHTTPRequest.postRequest(7,url,new JSONObject(datos)).execute().addListener(this);
+           // CHTTPRequest.getRequest(11,url+"/1").execute().addListener(this);
         }
 
         @Override
         public boolean onResponse(CHTTPRequest request, String response) {
-            String errorId = "";
-            String tipo = "";
+            String errorId = null;
+            String tipo = null;
             try {
                 errorId = request.getJsonResponse().getString("errorId");
                 tipo = request.getJsonResponse().getString("tipo");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            if(errorId.equals("200")) auth = true;
             mAuthTask = null;
             showProgress(false);
-            if (auth) {
+            if (errorId.equals("200")) {
                 if(tipo.equals("profesor")){
-                    Intent i = new Intent(getBaseContext(), ProfesorMain.class );
+                    Intent i = new Intent(getApplicationContext(), ProfesorMain.class );
                     startActivity(i);
                 }
                 else {
-                    Intent i = new Intent(getBaseContext(), AlumnoMain.class );
+                    Intent i = new Intent(getApplicationContext(), AlumnoMain.class );
                     startActivity(i);
                 }
             } else {
@@ -217,7 +212,8 @@ public class LoginActivity extends AppCompatActivity{
                     mPasswordView.setError("Contraseña incorrecta");
                     mPasswordView.requestFocus();
                 }
-                if(errorId.equals("799")) Toast.makeText(getBaseContext(),"Error: Sesion duplicada",Toast.LENGTH_LONG).show();
+                if(errorId.equals("799")) Toast.makeText(getApplicationContext(),"Error: Sesion duplicada",Toast.LENGTH_LONG).show();
+                if(errorId.equals("4516")) Toast.makeText(getApplicationContext(),"Sin internet y sin datos guardados",Toast.LENGTH_LONG).show();
             }
             return false;
         }

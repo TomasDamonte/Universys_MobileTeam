@@ -98,7 +98,7 @@ public class VistaInicial extends AppCompatActivity
             layoutPlanesEstudio.setVisibility(View.INVISIBLE);
             webHistoria.setVisibility(View.INVISIBLE);
             webCalendario.setVisibility(View.VISIBLE);
-            webCalendario.loadUrl("http://www.ub.edu.ar/academico.php?opcion=vencen");
+            webCalendario.loadUrl("http://www.ub.edu.ar/academico.php?opcion=calendarios");
         } else if (id == R.id.nav_planEstudio) {
             layoutContacto.setVisibility(View.INVISIBLE);
             webCalendario.setVisibility(View.INVISIBLE);
