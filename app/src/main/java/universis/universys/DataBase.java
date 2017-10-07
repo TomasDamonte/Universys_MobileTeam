@@ -11,8 +11,6 @@ import java.util.ArrayList;
 
 public class DataBase {
 
-
-
     public static JSONObject respuestaDB (JSONObject jsonTemp) throws JSONException {
         ArrayList<JSONObject> db = new ArrayList<>();
         JSONObject jsonDB = new JSONObject().put("email", "pepito@mail").put("password", "pepitokpo91").put("tipo", "alumno");
@@ -23,7 +21,6 @@ public class DataBase {
         JSONObject jsonResp = new JSONObject();
 
         for (JSONObject item : db) {
-
             if (jsonTemp.get("email").equals(item.get("email"))) {
                 if (jsonTemp.get("password").equals(item.get("password"))) {
                     jsonResp.put("errorId", "200").put("tipo", item.get("tipo"));
@@ -33,7 +30,6 @@ public class DataBase {
                 }
             } else {
                 jsonResp.put("errorId", "680");
-
             }
         }
         return jsonResp;

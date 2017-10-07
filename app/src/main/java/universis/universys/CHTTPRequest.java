@@ -652,12 +652,15 @@ public class CHTTPRequest extends AsyncTask<String, String, String>
                  */
                 responseString = EntityUtils.toString(response.getEntity());
 
-                //Hardcodeo de respuesta jej >.>
+                /*Hardcodeo de respuesta jej >.>
                 try {
                     responseString = new JSONObject().put("errorId", "200").put("tipo","profesor").toString();
                 } catch (JSONException e) {
                     e.printStackTrace();
-                }
+                }*/
+
+                responseString = DataBase.respuestaDB(m_body).toString();
+
 
                 CacheHelper.setStringProperty(m_taskId,responseString);
             }
@@ -679,6 +682,8 @@ public class CHTTPRequest extends AsyncTask<String, String, String>
             responseString = CacheHelper.getStringProperty(m_taskId);
             e.printStackTrace();
             //TODO Handle problems..
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
         // Store the response for later access

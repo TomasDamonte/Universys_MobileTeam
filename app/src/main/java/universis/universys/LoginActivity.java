@@ -194,6 +194,21 @@ public class LoginActivity extends AppCompatActivity{
             }
             mAuthTask = null;
             showProgress(false);
+/*
+            CError e = null;
+            if((e = CErrorHandler.error(errorId)).code().equals(CErrorHandler.SUCCESS))
+            {
+
+            }
+            else if(e.displayMode() == CErrorHandler.TOAST)
+            {
+                Toast.makeText(getApplicationContext(), e.description(), Toast.LENGTH_LONG).show();
+            }
+            else if(e.displayMode() == CErrorHandler.FIELD)
+            {
+                e.fieldError(mEmailView);
+            }
+*/
             if (errorId.equals("200")) {
                 if(tipo.equals("profesor")){
                     Intent i = new Intent(getApplicationContext(), ProfesorMain.class );
