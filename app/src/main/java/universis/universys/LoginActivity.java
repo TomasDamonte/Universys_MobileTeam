@@ -179,19 +179,20 @@ public class LoginActivity extends AppCompatActivity{
             datos.put("password",mPassword);
             String url = "http://jsonplaceholder.typicode.com/posts";
            CHTTPRequest.postRequest(7,url,new JSONObject(datos)).execute().addListener(this);
-           // CHTTPRequest.getRequest(11,url+"/1").execute().addListener(this);
         }
 
         @Override
         public boolean onResponse(CHTTPRequest request, String response) {
             String errorId = null;
             String tipo = null;
+
             try {
                 errorId = request.getJsonResponse().getString("errorId");
                 tipo = request.getJsonResponse().getString("tipo");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
             mAuthTask = null;
             showProgress(false);
 /*
