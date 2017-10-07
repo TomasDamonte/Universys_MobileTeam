@@ -195,22 +195,8 @@ public class LoginActivity extends AppCompatActivity{
 
             mAuthTask = null;
             showProgress(false);
-/*
-            CError e = null;
-            if((e = CErrorHandler.error(errorId)).code().equals(CErrorHandler.SUCCESS))
-            {
 
-            }
-            else if(e.displayMode() == CErrorHandler.TOAST)
-            {
-                Toast.makeText(getApplicationContext(), e.description(), Toast.LENGTH_LONG).show();
-            }
-            else if(e.displayMode() == CErrorHandler.FIELD)
-            {
-                e.fieldError(mEmailView);
-            }
-*/
-            if (errorId.equals("200")) {
+            if (errorId.equals(Error.SUCCESS)) {
                 if(tipo.equals("profesor")){
                     Intent i = new Intent(getApplicationContext(), ProfesorMain.class );
                     startActivity(i);
@@ -220,16 +206,18 @@ public class LoginActivity extends AppCompatActivity{
                     startActivity(i);
                 }
             } else {
-                if(errorId.equals("680")){
-                    mEmailView.setError("Email incorrecto");
+                if(errorId.equals(Error.EMAIL_ERROR)){
+                    mEmailView.setError(Error.EMAIL_ERROR_TEXT);
                     mEmailView.requestFocus();
                 }
-                if(errorId.equals("777")) {
-                    mPasswordView.setError("Contraseña incorrecta");
+                if(errorId.equals(Error.PASSWORD_ERROR)) {
+                    mPasswordView.setError(Error.PASSWORD_ERROR_TEXT);
                     mPasswordView.requestFocus();
                 }
-                if(errorId.equals("799")) Toast.makeText(getApplicationContext(),"Error: Sesion duplicada",Toast.LENGTH_LONG).show();
-                if(errorId.equals("4516")) Toast.makeText(getApplicationContext(),"Sin internet y sin datos guardados",Toast.LENGTH_LONG).show();
+                if(errorId.equals(Error.SECION_DUPLICADA))
+                    Toast.makeText(getApplicationContext(),Error.SECION_DUPLICADA_TEXT,Toast.LENGTH_LONG).show();
+                if(errorId.equals(Error.CACHE_ERROR))
+                    Toast.makeText(getApplicationContext(),Error.CACHE_ERROR_TEXT,Toast.LENGTH_LONG).show();
             }
             return false;
         }

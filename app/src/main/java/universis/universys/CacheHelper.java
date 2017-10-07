@@ -11,9 +11,6 @@ import org.json.JSONObject;
 public class CacheHelper {
 
     private static final String CACHE_CONFIGURATION_NAME = "cache";
-    private static final String CACHE_ERROR_NAME = "errorId";
-    private static final String CACHE_ERROR_NUMBER = "4516";
-
     public static Context context;
 
     public static String getStringProperty(Integer key) {
@@ -21,7 +18,7 @@ public class CacheHelper {
         String res = null;
         if(!sharedPreferences.contains(key.toString())) {
             try {
-                return new JSONObject().put(CACHE_ERROR_NAME, CACHE_ERROR_NUMBER).toString();
+                return new JSONObject().put(Error.CACHE_ERROR_NAME, Error.CACHE_ERROR).toString();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
