@@ -13,9 +13,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".LoginActivity"
-            android:label="Universys">
-        </activity>
-        <activity android:name=".AlumnoMain" />
+            android:label="Universys" />
         <activity android:name=".ProfesorMain" />
         <activity
             android:name=".VistaInicial"
@@ -27,6 +25,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".AlumnoMain"
+            android:label="@string/title_activity_alumno_main"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
