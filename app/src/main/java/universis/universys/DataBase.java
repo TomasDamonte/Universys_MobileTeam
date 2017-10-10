@@ -12,8 +12,8 @@ public class DataBase {
 
     public static JSONObject respuestaDB (JSONObject jsonTemp) throws JSONException {
         ArrayList<JSONObject> db = new ArrayList<>();
-        db.add(new JSONObject().put("mail", "alumno@alumno").put("password", "alumno").put("tipo", "alumno"));
-        db.add(new JSONObject().put("mail", "profesor@profesor").put("password", "profesor").put("tipo", "profesor"));
+        db.add(new JSONObject().put("mail", "alumno@alumno").put("password", "alumno").put("tipo", "alumno").put("nombre","carlos javier").put("apellido","perez gonzalez"));
+        db.add(new JSONObject().put("mail", "profesor@profesor").put("password", "profesor").put("tipo", "profesor").put("nombre","cacho").put("apellido","riquelme"));
 
         JSONObject jsonResp = new JSONObject();
         int auxMail = -1;

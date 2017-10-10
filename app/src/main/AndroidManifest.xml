@@ -27,7 +27,7 @@
         </activity>
         <activity
             android:name=".AlumnoMain"
-            android:label="@string/title_activity_alumno_main"
+            android:label="Universys"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
