@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -25,6 +26,7 @@ public class AlumnoMain extends AppCompatActivity
     EditText editTextEmail;
     EditText editTextFNac;
     EditText editTextTelefono;
+    CalendarView calendarioAlumno;
 
 
     public void modificarDatosAlumno(View v) {
@@ -71,6 +73,7 @@ public class AlumnoMain extends AppCompatActivity
         editTextEmail = (EditText) findViewById(R.id.editTextEmail);
         editTextFNac = (EditText) findViewById(R.id.editTextFNac);
         editTextTelefono = (EditText) findViewById(R.id.editTextTelefono);
+        calendarioAlumno = (CalendarView) findViewById(R.id.calendarioAlumno);
     }
 
     @Override
@@ -114,6 +117,7 @@ public class AlumnoMain extends AppCompatActivity
         LinearLayout layoutCalendario = (LinearLayout) findViewById(R.id.layoutCalendario);
 
         if (id == R.id.nav_calendario) {
+            CHTTPRequest.postRequest(RequestTaskIds.CALENDARIO_ALUMNO,URLs.CALENDARIO_ALUMNO,new JSONBuilder().consDatosAlumno()).execute().addListener(this);
             layoutDatosPersonales.setVisibility(View.INVISIBLE);
             layoutCalendario.setVisibility(View.VISIBLE);
         } else if (id == R.id.nav_datosPersonales){
@@ -129,6 +133,9 @@ public class AlumnoMain extends AppCompatActivity
 
     @Override
     public boolean onResponse(CHTTPRequest request, String response) {
+        if(request.getTaskId() == RequestTaskIds.CALENDARIO_ALUMNO) {
+            
+        }
         if(request.getTaskId() == RequestTaskIds.DATOSALUMNO) {
             try {
                 editTextNombre.setText(request.getJsonResponse().getString("nombre"));
