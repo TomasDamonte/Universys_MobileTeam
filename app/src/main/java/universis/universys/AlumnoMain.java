@@ -28,23 +28,23 @@ public class AlumnoMain extends AppCompatActivity
 
 
     public void modificarDatosAlumno(View v) {
-        editTextNombre.setEnabled(true);
-        editTextApellido.setEnabled(true);
-        editTextDomicilio.setEnabled(true);
-        editTextEmail.setEnabled(true);
-        editTextFNac.setEnabled(true);
-        editTextTelefono.setEnabled(true);
-        findViewById(R.id.buttonEnviarDatosAlumno).setEnabled(true);
+        editTextNombre.setFocusableInTouchMode(true);
+        editTextApellido.setFocusableInTouchMode(true);
+        editTextDomicilio.setFocusableInTouchMode(true);
+        editTextEmail.setFocusableInTouchMode(true);
+        editTextFNac.setFocusableInTouchMode(true);
+        editTextTelefono.setFocusableInTouchMode(true);
+       // findViewById(R.id.buttonEnviarDatosAlumno).setEnabled(true);
     }
 
     public void enviarDatosAlumno(View v) {
-        editTextNombre.setEnabled(false);
-        editTextApellido.setEnabled(false);
-        editTextDomicilio.setEnabled(false);
-        editTextEmail.setEnabled(false);
-        editTextFNac.setEnabled(false);
-        editTextTelefono.setEnabled(false);
-        findViewById(R.id.buttonEnviarDatosAlumno).setEnabled(false);
+        editTextNombre.setFocusable(false);
+        editTextApellido.setFocusable(false);
+        editTextDomicilio.setFocusable(false);;
+        editTextEmail.setFocusable(false);
+        editTextFNac.setFocusable(false);
+        editTextTelefono.setFocusable(false);
+       // findViewById(R.id.buttonEnviarDatosAlumno).setEnabled(false);
     }
 
     @Override
