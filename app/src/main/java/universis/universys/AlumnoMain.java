@@ -1,7 +1,6 @@
 package universis.universys;
 
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -11,36 +10,47 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.GridLayout;
+import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
+import android.widget.TextView;
+
+import org.json.JSONException;
 
 public class AlumnoMain extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, IRequestListener {
+
+    EditText editTextNombre;
+    EditText editTextApellido;
+    EditText editTextDomicilio;
+    EditText editTextEmail;
+    EditText editTextFNac;
+    EditText editTextTelefono;
+
 
     public void modificarDatosAlumno(View v) {
-        findViewById(R.id.editTextNombre).setEnabled(true);
-        findViewById(R.id.editTextApellido).setEnabled(true);
-        findViewById(R.id.editTextDomicilio).setEnabled(true);
-        findViewById(R.id.editTextEmail).setEnabled(true);
-        findViewById(R.id.editTextFNac).setEnabled(true);
-        findViewById(R.id.editTextTelefono).setEnabled(true);
+        editTextNombre.setEnabled(true);
+        editTextApellido.setEnabled(true);
+        editTextDomicilio.setEnabled(true);
+        editTextEmail.setEnabled(true);
+        editTextFNac.setEnabled(true);
+        editTextTelefono.setEnabled(true);
         findViewById(R.id.buttonEnviarDatosAlumno).setEnabled(true);
     }
 
     public void enviarDatosAlumno(View v) {
-        findViewById(R.id.editTextNombre).setEnabled(false);
-        findViewById(R.id.editTextApellido).setEnabled(false);
-        findViewById(R.id.editTextDomicilio).setEnabled(false);
-        findViewById(R.id.editTextEmail).setEnabled(false);
-        findViewById(R.id.editTextFNac).setEnabled(false);
-        findViewById(R.id.editTextTelefono).setEnabled(false);
+        editTextNombre.setEnabled(false);
+        editTextApellido.setEnabled(false);
+        editTextDomicilio.setEnabled(false);
+        editTextEmail.setEnabled(false);
+        editTextFNac.setEnabled(false);
+        editTextTelefono.setEnabled(false);
         findViewById(R.id.buttonEnviarDatosAlumno).setEnabled(false);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CacheHelper.context = this;
         setContentView(R.layout.activity_alumno_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -54,6 +64,13 @@ public class AlumnoMain extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        editTextNombre = (EditText) findViewById(R.id.editTextNombre);
+        editTextApellido = (EditText) findViewById(R.id.editTextApellido);
+        editTextDomicilio = (EditText) findViewById(R.id.editTextDomicilio);
+        editTextEmail = (EditText) findViewById(R.id.editTextEmail);
+        editTextFNac = (EditText) findViewById(R.id.editTextFNac);
+        editTextTelefono = (EditText) findViewById(R.id.editTextTelefono);
     }
 
     @Override
@@ -96,11 +113,11 @@ public class AlumnoMain extends AppCompatActivity
         LinearLayout layoutDatosPersonales = (LinearLayout) findViewById(R.id.layoutDatosPersonales);
         LinearLayout layoutCalendario = (LinearLayout) findViewById(R.id.layoutCalendario);
 
-
         if (id == R.id.nav_calendario) {
             layoutDatosPersonales.setVisibility(View.INVISIBLE);
             layoutCalendario.setVisibility(View.VISIBLE);
         } else if (id == R.id.nav_datosPersonales){
+            CHTTPRequest.postRequest(RequestTaskIds.DATOSALUMNO,URLs.DATOSALUMNO,new JSONBuilder().consDatosAlumno()).execute().addListener(this);
             layoutCalendario.setVisibility(View.INVISIBLE);
             layoutDatosPersonales.setVisibility(View.VISIBLE);
         }
@@ -108,5 +125,23 @@ public class AlumnoMain extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public boolean onResponse(CHTTPRequest request, String response) {
+        if(request.getTaskId() == RequestTaskIds.DATOSALUMNO) {
+            try {
+                editTextNombre.setText(request.getJsonResponse().getString("nombre"));
+                editTextApellido.setText(request.getJsonResponse().getString("apellido"));
+                editTextEmail.setText(request.getJsonResponse().getString("mail"));
+                editTextFNac.setText(request.getJsonResponse().getString("fNac"));
+                editTextDomicilio.setText(request.getJsonResponse().getString("domicilio"));
+                editTextTelefono.setText(request.getJsonResponse().getString("telefono"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return false;
     }
 }

@@ -31,13 +31,13 @@ public class LoginActivity extends AppCompatActivity{
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserLoginTask mAuthTask = null;
-
-
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
     public static String idSesion;
+    public static String EMAIL;
+    public static String PASSWORD;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,31 +163,21 @@ public class LoginActivity extends AppCompatActivity{
         }
     }
 
-    public class UserLoginTask implements IRequestListener{
-
-        private final String mEmail;
-        private final String mPassword;
+    public class UserLoginTask implements IRequestListener {
 
         UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
-
-            HashMap<String,String> datos = new HashMap<>();
-            datos.put("apiVer","1.0");
-            datos.put("idSesion",idSesion);
-            datos.put("mail",mEmail);
-            datos.put("password",mPassword);
-            String url = "http://jsonplaceholder.typicode.com/posts";
-           CHTTPRequest.postRequest(7,url,new JSONObject(datos)).execute().addListener(this);
+            LoginActivity.EMAIL = email;
+            LoginActivity.PASSWORD = password;
+           CHTTPRequest.postRequest(RequestTaskIds.LOGIN,URLs.LOGIN,new JSONBuilder().logIn()).execute().addListener(this);
         }
 
         @Override
         public boolean onResponse(CHTTPRequest request, String response) {
             String errorId = null;
             String tipo = null;
-
             try {
                 errorId = request.getJsonResponse().getString("errorId");
+                LoginActivity.idSesion = request.getJsonResponse().getString("idSesion");
                 tipo = request.getJsonResponse().getString("tipo");
             } catch (JSONException e) {
                 e.printStackTrace();
