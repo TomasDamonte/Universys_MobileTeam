@@ -24,7 +24,7 @@ public class VistaInicial extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CacheHelper.context = this;
+        CacheHelper.CONTEXT = this;
         setContentView(R.layout.activity_vista_inicial);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

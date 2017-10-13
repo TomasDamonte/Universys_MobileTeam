@@ -14,7 +14,6 @@
         <activity
             android:name=".LoginActivity"
             android:label="Universys" />
-        <activity android:name=".ProfesorMain" />
         <activity
             android:name=".VistaInicial"
             android:label="Universys"
@@ -27,6 +26,10 @@
         </activity>
         <activity
             android:name=".AlumnoMain"
+            android:label="Universys"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ProfesorMain"
             android:label="Universys"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>

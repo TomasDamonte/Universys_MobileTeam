@@ -11,10 +11,10 @@ import org.json.JSONObject;
 public class CacheHelper {
 
     private static final String CACHE_CONFIGURATION_NAME = "cache";
-    public static Context context;
+    public static Context CONTEXT;
 
     public static String getStringProperty(Integer key) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(CACHE_CONFIGURATION_NAME,Activity.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = CONTEXT.getSharedPreferences(CACHE_CONFIGURATION_NAME,Activity.MODE_PRIVATE);
         String res = null;
         if(!sharedPreferences.contains(key.toString())) {
             try {
@@ -30,7 +30,7 @@ public class CacheHelper {
     }
 
     public static void setStringProperty(Integer key, String value) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(CACHE_CONFIGURATION_NAME, Activity.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = CONTEXT.getSharedPreferences(CACHE_CONFIGURATION_NAME, Activity.MODE_PRIVATE);
         if (sharedPreferences != null) {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString(key.toString(), value);

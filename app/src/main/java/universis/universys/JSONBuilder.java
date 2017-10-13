@@ -13,7 +13,7 @@ public class JSONBuilder {
     public JSONBuilder() {
         datos = new HashMap<>();
         datos.put("apiVer",APIVER);
-        datos.put("idSesion",LoginActivity.idSesion);
+        datos.put("idSesion",LoginActivity.ID_SESION);
     }
 
     public JSONObject logIn() {
@@ -22,7 +22,7 @@ public class JSONBuilder {
         return new JSONObject(datos);
     }
 
-    public JSONObject consDatosAlumno() {
+    public JSONObject consultaDatosPersonales() {
         datos.put("mail",LoginActivity.EMAIL);
         datos.put("password",LoginActivity.PASSWORD);
         return new JSONObject(datos);

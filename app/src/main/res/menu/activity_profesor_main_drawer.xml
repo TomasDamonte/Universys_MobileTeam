@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_solIns"
+            android:icon="@android:drawable/ic_menu_my_calendar"
+            android:title="Solicitudes de inscripcion" />
+        <item
+            android:id="@+id/nav_datosPersonales"
+            android:icon="@android:drawable/stat_notify_chat"
+            android:title="Datos Personales" />
+        <item
+            android:id="@+id/nav_asistencias"
+            android:icon="@android:drawable/ic_menu_edit"
+            android:title="Asistencias" />
+        <item
+            android:id="@+id/nav_cargarNotas"
+            android:icon="@android:drawable/ic_input_get"
+            android:title="Cargar notas" />
+        <item
+            android:id="@+id/nav_verNotas"
+            android:icon="@android:drawable/ic_input_get"
+            android:title="Ver notas" />
+    </group>
+
+</menu>

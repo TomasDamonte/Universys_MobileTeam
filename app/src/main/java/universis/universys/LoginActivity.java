@@ -35,14 +35,14 @@ public class LoginActivity extends AppCompatActivity{
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-    public static String idSesion;
+    public static String ID_SESION;
     public static String EMAIL;
     public static String PASSWORD;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CacheHelper.context = this;
+        CacheHelper.CONTEXT = this;
         setContentView(R.layout.activity_login);
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
@@ -177,7 +177,7 @@ public class LoginActivity extends AppCompatActivity{
             String tipo = null;
             try {
                 errorId = request.getJsonResponse().getString("errorId");
-                LoginActivity.idSesion = request.getJsonResponse().getString("idSesion");
+                LoginActivity.ID_SESION = request.getJsonResponse().getString("idSesion");
                 tipo = request.getJsonResponse().getString("tipo");
             } catch (JSONException e) {
                 e.printStackTrace();

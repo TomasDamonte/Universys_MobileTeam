@@ -14,6 +14,7 @@ import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 
@@ -52,11 +53,10 @@ public class AlumnoMain extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CacheHelper.context = this;
+        CacheHelper.CONTEXT = this;
         setContentView(R.layout.activity_alumno_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -117,11 +117,11 @@ public class AlumnoMain extends AppCompatActivity
         LinearLayout layoutCalendario = (LinearLayout) findViewById(R.id.layoutCalendario);
 
         if (id == R.id.nav_calendario) {
-            CHTTPRequest.postRequest(RequestTaskIds.CALENDARIO_ALUMNO,URLs.CALENDARIO_ALUMNO,new JSONBuilder().consDatosAlumno()).execute().addListener(this);
+            CHTTPRequest.postRequest(RequestTaskIds.CALENDARIO_ALUMNO,URLs.CALENDARIO_ALUMNO,new JSONBuilder().consultaDatosPersonales()).execute().addListener(this);
             layoutDatosPersonales.setVisibility(View.INVISIBLE);
             layoutCalendario.setVisibility(View.VISIBLE);
         } else if (id == R.id.nav_datosPersonales){
-            CHTTPRequest.postRequest(RequestTaskIds.DATOSALUMNO,URLs.DATOSALUMNO,new JSONBuilder().consDatosAlumno()).execute().addListener(this);
+            CHTTPRequest.postRequest(RequestTaskIds.DATOS_PERSONALES,URLs.DATOS_PERSONALES,new JSONBuilder().consultaDatosPersonales()).execute().addListener(this);
             layoutCalendario.setVisibility(View.INVISIBLE);
             layoutDatosPersonales.setVisibility(View.VISIBLE);
         }
@@ -134,9 +134,9 @@ public class AlumnoMain extends AppCompatActivity
     @Override
     public boolean onResponse(CHTTPRequest request, String response) {
         if(request.getTaskId() == RequestTaskIds.CALENDARIO_ALUMNO) {
-            
+
         }
-        if(request.getTaskId() == RequestTaskIds.DATOSALUMNO) {
+        if(request.getTaskId() == RequestTaskIds.DATOS_PERSONALES) {
             try {
                 editTextNombre.setText(request.getJsonResponse().getString("nombre"));
                 editTextApellido.setText(request.getJsonResponse().getString("apellido"));
