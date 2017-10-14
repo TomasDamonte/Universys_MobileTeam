@@ -166,67 +166,51 @@ public class AlumnoMain extends AppCompatActivity
 
         } else if (request.getTaskId() == RequestTaskIds.FICHADA_ALUMNO) {
             JSONArray fichadas = new JSONArray();
+
             try {
-                fichadas = request.getJsonArrayResponse();
                 crearTabla(fichadas);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
         }
         return false;
     }
 
     public void crearTabla(JSONArray datos) throws JSONException {
-        JSONObject asistencias = new JSONObject().put("fecha","10/10/2017").put("presente","SI");
-        for(int i=0;i<16;i++) datos.put(asistencias);
+
+        for(int i=0;i<20;i++) datos.put(new JSONObject().put("fecha","10/10/"+i).put("presente","SI"));
 
         TableLayout tabla = (TableLayout)findViewById(R.id.tablaFichadas);
-
+        tabla.removeAllViews();
         TableRow fila = new TableRow(this);
         fila.setLayoutParams(tabla.getLayoutParams());
 
         TextView fecha = new TextView(this);
-        fecha.setLayoutParams(tabla.getLayoutParams());
         TextView presente = new TextView(this);
-        presente.setLayoutParams(tabla.getLayoutParams());
+
         fecha.setText("FECHA");
         presente.setText("PRESENTE");
+        fecha.setTextColor(Color.BLACK);
+        presente.setTextColor(Color.BLACK);
+        fila.addView(fecha);
+        fila.addView(presente);
         tabla.addView(fila);
 
-        TextView[] textArray = new TextView[datos.length()];
-        TableRow[] tr_head = new TableRow[datos.length()];
-
         for(int i=0; i<datos.length();i++){
+            fila = new TableRow(this);
+            fecha = new TextView(this);
+            presente = new TextView(this);
+            fecha.setTextColor(Color.BLACK);
+            presente.setTextColor(Color.BLACK);
+            presente.setPadding(10,10,10,10);
+            fecha.setPadding(10,10,10,10);
             JSONObject dato = datos.getJSONObject(i);
-            String dia = dato.getString("fecha");
-            String asistio = dato.getString("presente");
-
-//Create the tablerows
-            tr_head[i] = new TableRow(this);
-            tr_head[i].setId(i+1);
-            tr_head[i].setBackgroundColor(Color.GRAY);
-
-
-            // Here create the TextView dynamically
-
-            textArray[i] = new TextView(this);
-            textArray[i].setId(i+111);
-            textArray[i].setText(dia);
-            textArray[i].setTextColor(Color.WHITE);
-            textArray[i].setPadding(5, 5, 5, 5);
-            tr_head[i].addView(textArray[i]);
-
-            textArray[i] = new TextView(this);
-            textArray[i].setId(i+111);
-            textArray[i].setText(asistio);
-            textArray[i].setTextColor(Color.WHITE);
-            textArray[i].setPadding(5, 5, 5, 5);
-            tr_head[i].addView(textArray[i]);
-// Add each table row to table layout
-
-            tabla.addView(tr_head[i]);
-
+            fecha.setText(dato.getString("fecha"));
+            presente.setText(dato.getString("presente"));
+            fila.addView(fecha);
+            fila.addView(presente);
+            tabla.addView(fila);
         }
-
     }
 }
