@@ -1,6 +1,8 @@
 package universis.universys;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,10 +15,16 @@ import android.view.MenuItem;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.zip.Inflater;
 
 public class AlumnoMain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, IRequestListener {
@@ -115,15 +123,23 @@ public class AlumnoMain extends AppCompatActivity
         int id = item.getItemId();
         LinearLayout layoutDatosPersonales = (LinearLayout) findViewById(R.id.layoutDatosPersonales);
         LinearLayout layoutCalendario = (LinearLayout) findViewById(R.id.layoutCalendario);
+        LinearLayout layoutFichadaAlumno = (LinearLayout) findViewById(R.id.layoutFichadaAlumno);
 
         if (id == R.id.nav_calendario) {
             CHTTPRequest.postRequest(RequestTaskIds.CALENDARIO_ALUMNO,URLs.CALENDARIO_ALUMNO,new JSONBuilder().consultaDatosPersonales()).execute().addListener(this);
             layoutDatosPersonales.setVisibility(View.INVISIBLE);
+            layoutFichadaAlumno.setVisibility(View.INVISIBLE);
             layoutCalendario.setVisibility(View.VISIBLE);
         } else if (id == R.id.nav_datosPersonales){
             CHTTPRequest.postRequest(RequestTaskIds.DATOS_PERSONALES,URLs.DATOS_PERSONALES,new JSONBuilder().consultaDatosPersonales()).execute().addListener(this);
             layoutCalendario.setVisibility(View.INVISIBLE);
+            layoutFichadaAlumno.setVisibility(View.INVISIBLE);
             layoutDatosPersonales.setVisibility(View.VISIBLE);
+        } else if (id == R.id.nav_asistencias) {
+            CHTTPRequest.postRequest(RequestTaskIds.FICHADA_ALUMNO,URLs.FICHADA_ALUMNO,new JSONBuilder().fichadaAlumno("Greiner","Programacion","seguridad informatica")).execute().addListener(this);
+            layoutCalendario.setVisibility(View.INVISIBLE);
+            layoutDatosPersonales.setVisibility(View.INVISIBLE);
+            layoutFichadaAlumno.setVisibility(View.VISIBLE);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -136,7 +152,7 @@ public class AlumnoMain extends AppCompatActivity
         if(request.getTaskId() == RequestTaskIds.CALENDARIO_ALUMNO) {
 
         }
-        if(request.getTaskId() == RequestTaskIds.DATOS_PERSONALES) {
+        else if(request.getTaskId() == RequestTaskIds.DATOS_PERSONALES) {
             try {
                 editTextNombre.setText(request.getJsonResponse().getString("nombre"));
                 editTextApellido.setText(request.getJsonResponse().getString("apellido"));
@@ -148,7 +164,69 @@ public class AlumnoMain extends AppCompatActivity
                 e.printStackTrace();
             }
 
+        } else if (request.getTaskId() == RequestTaskIds.FICHADA_ALUMNO) {
+            JSONArray fichadas = new JSONArray();
+            try {
+                fichadas = request.getJsonArrayResponse();
+                crearTabla(fichadas);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
         return false;
+    }
+
+    public void crearTabla(JSONArray datos) throws JSONException {
+        JSONObject asistencias = new JSONObject().put("fecha","10/10/2017").put("presente","SI");
+        for(int i=0;i<16;i++) datos.put(asistencias);
+
+        TableLayout tabla = (TableLayout)findViewById(R.id.tablaFichadas);
+
+        TableRow fila = new TableRow(this);
+        fila.setLayoutParams(tabla.getLayoutParams());
+
+        TextView fecha = new TextView(this);
+        fecha.setLayoutParams(tabla.getLayoutParams());
+        TextView presente = new TextView(this);
+        presente.setLayoutParams(tabla.getLayoutParams());
+        fecha.setText("FECHA");
+        presente.setText("PRESENTE");
+        tabla.addView(fila);
+
+        TextView[] textArray = new TextView[datos.length()];
+        TableRow[] tr_head = new TableRow[datos.length()];
+
+        for(int i=0; i<datos.length();i++){
+            JSONObject dato = datos.getJSONObject(i);
+            String dia = dato.getString("fecha");
+            String asistio = dato.getString("presente");
+
+//Create the tablerows
+            tr_head[i] = new TableRow(this);
+            tr_head[i].setId(i+1);
+            tr_head[i].setBackgroundColor(Color.GRAY);
+
+
+            // Here create the TextView dynamically
+
+            textArray[i] = new TextView(this);
+            textArray[i].setId(i+111);
+            textArray[i].setText(dia);
+            textArray[i].setTextColor(Color.WHITE);
+            textArray[i].setPadding(5, 5, 5, 5);
+            tr_head[i].addView(textArray[i]);
+
+            textArray[i] = new TextView(this);
+            textArray[i].setId(i+111);
+            textArray[i].setText(asistio);
+            textArray[i].setTextColor(Color.WHITE);
+            textArray[i].setPadding(5, 5, 5, 5);
+            tr_head[i].addView(textArray[i]);
+// Add each table row to table layout
+
+            tabla.addView(tr_head[i]);
+
+        }
+
     }
 }

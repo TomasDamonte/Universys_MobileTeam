@@ -232,7 +232,27 @@
                 android:id="@+id/calendarioAlumno"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="invisible"
+            android:id="@+id/layoutFichadaAlumno">
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/tablaFichadas">
+            </TableLayout>
+        </LinearLayout>
+
     </FrameLayout>
 </android.support.constraint.ConstraintLayout>

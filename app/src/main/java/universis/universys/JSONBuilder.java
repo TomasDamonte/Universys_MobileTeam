@@ -28,5 +28,12 @@ public class JSONBuilder {
         return new JSONObject(datos);
     }
 
+    public JSONObject fichadaAlumno(String catedra, String carrera, String materia) {
+        datos.put("mail",LoginActivity.EMAIL);
+        datos.put("catedra",catedra);
+        datos.put("carrera",carrera);
+        datos.put("materia",materia);
+        return new JSONObject(datos);
+    }
 
 }
