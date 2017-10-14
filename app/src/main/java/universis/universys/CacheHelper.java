@@ -18,7 +18,7 @@ public class CacheHelper {
         String res = null;
         if(!sharedPreferences.contains(key.toString())) {
             try {
-                return new JSONObject().put(Error.CACHE_ERROR_NAME, Error.CACHE_ERROR).toString();
+                return new JSONObject().put(Error.ERROR_ID, Error.CACHE_ERROR).toString();
             } catch (JSONException e) {
                 e.printStackTrace();
             }

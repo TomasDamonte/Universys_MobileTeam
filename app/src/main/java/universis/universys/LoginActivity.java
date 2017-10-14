@@ -176,7 +176,7 @@ public class LoginActivity extends AppCompatActivity{
             String errorId = null;
             String tipo = null;
             try {
-                errorId = request.getJsonResponse().getString("errorId");
+                errorId = request.getJsonResponse().getString(Error.ERROR_ID);
                 LoginActivity.ID_SESION = request.getJsonResponse().getString("idSesion");
                 tipo = request.getJsonResponse().getString("tipo");
             } catch (JSONException e) {

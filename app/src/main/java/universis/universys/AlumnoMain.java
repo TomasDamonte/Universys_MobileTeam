@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -44,8 +45,10 @@ public class AlumnoMain extends AppCompatActivity
     public void requestAsistenciasAlumno(View v) {
         TableLayout tabla = (TableLayout)findViewById(R.id.tablaFichadas);
         tabla.removeAllViews();
+        ScrollView sVTablaFichadas = (ScrollView) findViewById(R.id.sVTablaFichadas);
+        sVTablaFichadas.setVisibility(View.INVISIBLE);
         if(editTextCatedra.getText().toString().equals("") || editTextCarrera.getText().toString().equals("") || editTextMateria.getText().toString().equals("")) {
-            Toast.makeText(this,"Deben completarse los tres campos",Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"Deben completarse todos los campos",Toast.LENGTH_LONG).show();
         } else {
             CHTTPRequest.postRequest(RequestTaskIds.FICHADA_ALUMNO,URLs.FICHADA_ALUMNO,
                     new JSONBuilder().fichadaAlumno(editTextCatedra.getText().toString(),editTextCarrera.getText().toString(),editTextMateria.getText().toString())).execute().addListener(this);
@@ -184,7 +187,13 @@ public class AlumnoMain extends AppCompatActivity
 
         } else if (request.getTaskId() == RequestTaskIds.FICHADA_ALUMNO) {
             try {
-                crearTablaAsistencias(request.getJsonArrayResponse());
+                String errorId = request.getJsonArrayResponse().getJSONObject(0).getString(Error.ERROR_ID);
+                if(errorId.equals(Error.SUCCESS))
+                    crearTablaAsistencias(request.getJsonArrayResponse());
+                else if(errorId.equals(Error.CATEDRA_ERROR)) Toast.makeText(this,Error.CATEDRA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
+                else if(errorId.equals(Error.CARRERA_ERROR)) Toast.makeText(this,Error.CARRERA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
+                else if(errorId.equals(Error.MATERIA_ERROR)) Toast.makeText(this,Error.MATERIA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -193,10 +202,10 @@ public class AlumnoMain extends AppCompatActivity
     }
 
     public void crearTablaAsistencias(JSONArray datos) throws JSONException {
-
+        ScrollView sVTablaFichadas = (ScrollView) findViewById(R.id.sVTablaFichadas);
+        sVTablaFichadas.setVisibility(View.VISIBLE);
         TableLayout tabla = (TableLayout)findViewById(R.id.tablaFichadas);
         TableRow fila = new TableRow(this);
-      //  fila.setLayoutParams(tabla.getLayoutParams());
         TextView fecha = new TextView(this);
         TextView presente = new TextView(this);
 
@@ -212,7 +221,7 @@ public class AlumnoMain extends AppCompatActivity
         tabla.setPadding(5,5,5,5);
         tabla.setBackgroundColor(Color.BLACK);
 
-        for(int i=0; i<datos.length();i++){
+        for(int i=1; i<=datos.length();i++){
             fila = new TableRow(this);
             fecha = new TextView(this);
             presente = new TextView(this);
