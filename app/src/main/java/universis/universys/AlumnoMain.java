@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -35,8 +36,21 @@ public class AlumnoMain extends AppCompatActivity
     EditText editTextEmail;
     EditText editTextFNac;
     EditText editTextTelefono;
+    EditText editTextCatedra;
+    EditText editTextCarrera;
+    EditText editTextMateria;
     CalendarView calendarioAlumno;
 
+    public void requestAsistenciasAlumno(View v) {
+        TableLayout tabla = (TableLayout)findViewById(R.id.tablaFichadas);
+        tabla.removeAllViews();
+        if(editTextCatedra.getText().toString().equals("") || editTextCarrera.getText().toString().equals("") || editTextMateria.getText().toString().equals("")) {
+            Toast.makeText(this,"Deben completarse los tres campos",Toast.LENGTH_LONG).show();
+        } else {
+            CHTTPRequest.postRequest(RequestTaskIds.FICHADA_ALUMNO,URLs.FICHADA_ALUMNO,
+                    new JSONBuilder().fichadaAlumno(editTextCatedra.getText().toString(),editTextCarrera.getText().toString(),editTextMateria.getText().toString())).execute().addListener(this);
+        }
+    }
 
     public void modificarDatosAlumno(View v) {
         editTextNombre.setFocusableInTouchMode(true);
@@ -82,6 +96,9 @@ public class AlumnoMain extends AppCompatActivity
         editTextFNac = (EditText) findViewById(R.id.editTextFNac);
         editTextTelefono = (EditText) findViewById(R.id.editTextTelefono);
         calendarioAlumno = (CalendarView) findViewById(R.id.calendarioAlumno);
+        editTextCatedra = (EditText) findViewById(R.id.editTextCatedra);
+        editTextCarrera = (EditText) findViewById(R.id.editTextCarrera);
+        editTextMateria = (EditText) findViewById(R.id.editTextMateria);
     }
 
     @Override
@@ -126,17 +143,18 @@ public class AlumnoMain extends AppCompatActivity
         LinearLayout layoutFichadaAlumno = (LinearLayout) findViewById(R.id.layoutFichadaAlumno);
 
         if (id == R.id.nav_calendario) {
-            CHTTPRequest.postRequest(RequestTaskIds.CALENDARIO_ALUMNO,URLs.CALENDARIO_ALUMNO,new JSONBuilder().consultaDatosPersonales()).execute().addListener(this);
+          /*  CHTTPRequest.postRequest(RequestTaskIds.CALENDARIO_ALUMNO,URLs.CALENDARIO_ALUMNO,
+                    new JSONBuilder().consultaDatosPersonales()).execute().addListener(this);*/
             layoutDatosPersonales.setVisibility(View.INVISIBLE);
             layoutFichadaAlumno.setVisibility(View.INVISIBLE);
             layoutCalendario.setVisibility(View.VISIBLE);
         } else if (id == R.id.nav_datosPersonales){
-            CHTTPRequest.postRequest(RequestTaskIds.DATOS_PERSONALES,URLs.DATOS_PERSONALES,new JSONBuilder().consultaDatosPersonales()).execute().addListener(this);
+            CHTTPRequest.postRequest(RequestTaskIds.DATOS_PERSONALES,URLs.DATOS_PERSONALES,
+                    new JSONBuilder().consultaDatosPersonales()).execute().addListener(this);
             layoutCalendario.setVisibility(View.INVISIBLE);
             layoutFichadaAlumno.setVisibility(View.INVISIBLE);
             layoutDatosPersonales.setVisibility(View.VISIBLE);
         } else if (id == R.id.nav_asistencias) {
-            CHTTPRequest.postRequest(RequestTaskIds.FICHADA_ALUMNO,URLs.FICHADA_ALUMNO,new JSONBuilder().fichadaAlumno("Greiner","Programacion","seguridad informatica")).execute().addListener(this);
             layoutCalendario.setVisibility(View.INVISIBLE);
             layoutDatosPersonales.setVisibility(View.INVISIBLE);
             layoutFichadaAlumno.setVisibility(View.VISIBLE);
@@ -165,37 +183,34 @@ public class AlumnoMain extends AppCompatActivity
             }
 
         } else if (request.getTaskId() == RequestTaskIds.FICHADA_ALUMNO) {
-            JSONArray fichadas = new JSONArray();
-
             try {
-                crearTabla(fichadas);
+                crearTablaAsistencias(request.getJsonArrayResponse());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
         }
         return false;
     }
 
-    public void crearTabla(JSONArray datos) throws JSONException {
-
-        for(int i=0;i<20;i++) datos.put(new JSONObject().put("fecha","10/10/"+i).put("presente","SI"));
+    public void crearTablaAsistencias(JSONArray datos) throws JSONException {
 
         TableLayout tabla = (TableLayout)findViewById(R.id.tablaFichadas);
-        tabla.removeAllViews();
         TableRow fila = new TableRow(this);
-        fila.setLayoutParams(tabla.getLayoutParams());
-
+      //  fila.setLayoutParams(tabla.getLayoutParams());
         TextView fecha = new TextView(this);
         TextView presente = new TextView(this);
 
         fecha.setText("FECHA");
         presente.setText("PRESENTE");
-        fecha.setTextColor(Color.BLACK);
-        presente.setTextColor(Color.BLACK);
+        fecha.setTextColor(Color.WHITE);
+        presente.setTextColor(Color.WHITE);
+        fecha.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         fila.addView(fecha);
         fila.addView(presente);
+        fila.setBackgroundColor(Color.DKGRAY);
         tabla.addView(fila);
+        tabla.setPadding(5,5,5,5);
+        tabla.setBackgroundColor(Color.BLACK);
 
         for(int i=0; i<datos.length();i++){
             fila = new TableRow(this);
@@ -208,6 +223,16 @@ public class AlumnoMain extends AppCompatActivity
             JSONObject dato = datos.getJSONObject(i);
             fecha.setText(dato.getString("fecha"));
             presente.setText(dato.getString("presente"));
+            fila.setPadding(5,5,5,5);
+            presente.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            fila.setBackgroundColor(Color.WHITE);
+            if(dato.getString("presente").equals("SI")){
+                fecha.setBackgroundColor(Color.GREEN);
+                presente.setBackgroundColor(Color.GREEN);
+            } else {
+                fecha.setBackgroundColor(Color.RED);
+                presente.setBackgroundColor(Color.RED);
+            }
             fila.addView(fecha);
             fila.addView(presente);
             tabla.addView(fila);

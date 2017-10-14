@@ -654,7 +654,7 @@ public class CHTTPRequest extends AsyncTask<String, String, String>
 
                 //Hardcodeo de respuesta jej >.>
                 try {
-                  responseString = DataBase.respuestaDB(m_body).toString();
+                  responseString = DataBase.respuestaDB(this).toString();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
