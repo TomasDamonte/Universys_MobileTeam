@@ -659,7 +659,7 @@ public class CHTTPRequest extends AsyncTask<String, String, String>
                     e.printStackTrace();
                 }
 
-                CacheHelper.setStringProperty(m_taskId,responseString);
+                CacheHelper.setStringProperty(m_body.toString(),responseString);
 
             }
             // If something happened, throw an exception with the error.
@@ -673,19 +673,18 @@ public class CHTTPRequest extends AsyncTask<String, String, String>
         catch (ClientProtocolException e)
         {
             e.printStackTrace();
-            responseString = CacheHelper.getStringProperty(m_taskId);
+            responseString = CacheHelper.getStringProperty(m_body.toString());
             //TODO Handle problems..
         }
         catch (IOException e)
         {
-            responseString = CacheHelper.getStringProperty(m_taskId);
+            responseString = CacheHelper.getStringProperty(m_body.toString());
             e.printStackTrace();
             //TODO Handle problems..
         }
 
         // Store the response for later access
         m_response = responseString;
-
         return responseString;
     }
 

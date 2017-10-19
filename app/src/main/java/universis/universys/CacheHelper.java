@@ -13,7 +13,7 @@ public class CacheHelper {
     private static final String CACHE_CONFIGURATION_NAME = "cache";
     public static Context CONTEXT;
 
-    public static String getStringProperty(Integer key) {
+    public static String getStringProperty(String key) {
         SharedPreferences sharedPreferences = CONTEXT.getSharedPreferences(CACHE_CONFIGURATION_NAME,Activity.MODE_PRIVATE);
         String res = null;
         if(!sharedPreferences.contains(key.toString())) {
@@ -29,7 +29,7 @@ public class CacheHelper {
         return res;
     }
 
-    public static void setStringProperty(Integer key, String value) {
+    public static void setStringProperty(String key, String value) {
         SharedPreferences sharedPreferences = CONTEXT.getSharedPreferences(CACHE_CONFIGURATION_NAME, Activity.MODE_PRIVATE);
         if (sharedPreferences != null) {
             SharedPreferences.Editor editor = sharedPreferences.edit();

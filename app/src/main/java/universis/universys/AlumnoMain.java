@@ -102,6 +102,9 @@ public class AlumnoMain extends AppCompatActivity
         editTextCatedra = (EditText) findViewById(R.id.editTextCatedra);
         editTextCarrera = (EditText) findViewById(R.id.editTextCarrera);
         editTextMateria = (EditText) findViewById(R.id.editTextMateria);
+
+        LinearLayout layoutCalendario = (LinearLayout) findViewById(R.id.layoutCalendario);
+        layoutCalendario.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -186,16 +189,22 @@ public class AlumnoMain extends AppCompatActivity
             }
 
         } else if (request.getTaskId() == RequestTaskIds.FICHADA_ALUMNO) {
+            String errorId = null;
             try {
-                String errorId = request.getJsonArrayResponse().getJSONObject(0).getString(Error.ERROR_ID);
+                errorId = request.getJsonArrayResponse().getJSONObject(0).getString(Error.ERROR_ID);
                 if(errorId.equals(Error.SUCCESS))
                     crearTablaAsistencias(request.getJsonArrayResponse());
                 else if(errorId.equals(Error.CATEDRA_ERROR)) Toast.makeText(this,Error.CATEDRA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
                 else if(errorId.equals(Error.CARRERA_ERROR)) Toast.makeText(this,Error.CARRERA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
                 else if(errorId.equals(Error.MATERIA_ERROR)) Toast.makeText(this,Error.MATERIA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
-
             } catch (JSONException e) {
                 e.printStackTrace();
+                try {
+                    errorId = request.getJsonResponse().getString(Error.ERROR_ID);
+                    if(errorId.equals(Error.CACHE_ERROR)) Toast.makeText(this,Error.CACHE_ERROR_TEXT,Toast.LENGTH_SHORT).show();
+                } catch (JSONException e1) {
+                    e1.printStackTrace();
+                }
             }
         }
         return false;
