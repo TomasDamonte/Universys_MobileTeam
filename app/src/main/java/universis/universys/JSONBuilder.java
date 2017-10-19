@@ -23,13 +23,10 @@ public class JSONBuilder {
     }
 
     public JSONObject consultaDatosPersonales() {
-        datos.put("mail",LoginActivity.EMAIL);
-        datos.put("password",LoginActivity.PASSWORD);
         return new JSONObject(datos);
     }
 
     public JSONObject fichadaAlumno(String catedra, String carrera, String materia) {
-        datos.put("mail",LoginActivity.EMAIL);
         datos.put("catedra",catedra);
         datos.put("carrera",carrera);
         datos.put("materia",materia);

@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
@@ -31,28 +32,42 @@ import java.util.zip.Inflater;
 public class AlumnoMain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, IRequestListener {
 
-    EditText editTextNombre;
-    EditText editTextApellido;
-    EditText editTextDomicilio;
-    EditText editTextEmail;
-    EditText editTextFNac;
-    EditText editTextTelefono;
-    EditText editTextCatedra;
-    EditText editTextCarrera;
-    EditText editTextMateria;
-    CalendarView calendarioAlumno;
+    private EditText editTextNombre;
+    private EditText editTextApellido;
+    private EditText editTextDomicilio;
+    private EditText editTextEmail;
+    private EditText editTextFNac;
+    private EditText editTextTelefono;
+    private EditText editTextCatedra;
+    private EditText editTextCarrera;
+    private EditText editTextMateria;
+    private int itemMenu;
+    private TextView textViewNota;
+    private FrameLayout frameLayoutRespuesta;
+    private CalendarView calendarioAlumno;
 
-    public void requestAsistenciasAlumno(View v) {
-        TableLayout tabla = (TableLayout)findViewById(R.id.tablaFichadas);
-        tabla.removeAllViews();
-        ScrollView sVTablaFichadas = (ScrollView) findViewById(R.id.sVTablaFichadas);
-        sVTablaFichadas.setVisibility(View.INVISIBLE);
-        if(editTextCatedra.getText().toString().equals("") || editTextCarrera.getText().toString().equals("") || editTextMateria.getText().toString().equals("")) {
-            Toast.makeText(this,"Deben completarse todos los campos",Toast.LENGTH_LONG).show();
-        } else {
-            CHTTPRequest.postRequest(RequestTaskIds.FICHADA_ALUMNO,URLs.FICHADA_ALUMNO,
-                    new JSONBuilder().fichadaAlumno(editTextCatedra.getText().toString(),editTextCarrera.getText().toString(),editTextMateria.getText().toString())).execute().addListener(this);
-        }
+    public void enviarRequest(View v) {
+
+            TableLayout tabla = (TableLayout) findViewById(R.id.tablaFichadas);
+            tabla.removeAllViews();
+            ScrollView sVTablaFichadas = (ScrollView) findViewById(R.id.sVTablaFichadas);
+            sVTablaFichadas.setVisibility(View.INVISIBLE);
+            textViewNota.setVisibility(View.INVISIBLE);
+            if (editTextCatedra.getText().toString().equals("") || editTextCarrera.getText().toString().equals("") || editTextMateria.getText().toString().equals("")) {
+                Toast.makeText(this, "Deben completarse todos los campos", Toast.LENGTH_LONG).show();
+            } else {
+                if(itemMenu == R.id.nav_asistencias) {
+                    CHTTPRequest.postRequest(RequestTaskIds.FICHADA_ALUMNO, URLs.FICHADA_ALUMNO
+                            ,new JSONBuilder().fichadaAlumno(editTextCatedra.getText().toString()
+                                    ,editTextCarrera.getText().toString(), editTextMateria.getText().toString())).execute().addListener(this);
+                } else if(itemMenu == R.id.nav_notas) {
+                    CHTTPRequest.postRequest(RequestTaskIds.NOTA_ALUMNO, URLs.NOTA_ALUMNO
+                            ,new JSONBuilder().fichadaAlumno(editTextCatedra.getText().toString()
+                                    ,editTextCarrera.getText().toString(), editTextMateria.getText().toString())).execute().addListener(this);
+
+                }
+            }
+
     }
 
     public void modificarDatosAlumno(View v) {
@@ -102,6 +117,8 @@ public class AlumnoMain extends AppCompatActivity
         editTextCatedra = (EditText) findViewById(R.id.editTextCatedra);
         editTextCarrera = (EditText) findViewById(R.id.editTextCarrera);
         editTextMateria = (EditText) findViewById(R.id.editTextMateria);
+        textViewNota = (TextView) findViewById(R.id.textViewNota);
+        frameLayoutRespuesta = (FrameLayout) findViewById(R.id.frameLayoutRespuesta);
 
         LinearLayout layoutCalendario = (LinearLayout) findViewById(R.id.layoutCalendario);
         layoutCalendario.setVisibility(View.VISIBLE);
@@ -143,24 +160,25 @@ public class AlumnoMain extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
+        itemMenu = item.getItemId();
         LinearLayout layoutDatosPersonales = (LinearLayout) findViewById(R.id.layoutDatosPersonales);
         LinearLayout layoutCalendario = (LinearLayout) findViewById(R.id.layoutCalendario);
         LinearLayout layoutFichadaAlumno = (LinearLayout) findViewById(R.id.layoutFichadaAlumno);
+        frameLayoutRespuesta.setVisibility(View.INVISIBLE);
 
-        if (id == R.id.nav_calendario) {
+        if (itemMenu == R.id.nav_calendario) {
           /*  CHTTPRequest.postRequest(RequestTaskIds.CALENDARIO_ALUMNO,URLs.CALENDARIO_ALUMNO,
                     new JSONBuilder().consultaDatosPersonales()).execute().addListener(this);*/
             layoutDatosPersonales.setVisibility(View.INVISIBLE);
             layoutFichadaAlumno.setVisibility(View.INVISIBLE);
             layoutCalendario.setVisibility(View.VISIBLE);
-        } else if (id == R.id.nav_datosPersonales){
+        } else if (itemMenu == R.id.nav_datosPersonales){
             CHTTPRequest.postRequest(RequestTaskIds.DATOS_PERSONALES,URLs.DATOS_PERSONALES,
                     new JSONBuilder().consultaDatosPersonales()).execute().addListener(this);
             layoutCalendario.setVisibility(View.INVISIBLE);
             layoutFichadaAlumno.setVisibility(View.INVISIBLE);
             layoutDatosPersonales.setVisibility(View.VISIBLE);
-        } else if (id == R.id.nav_asistencias) {
+        } else if (itemMenu == R.id.nav_asistencias || itemMenu == R.id.nav_notas) {
             layoutCalendario.setVisibility(View.INVISIBLE);
             layoutDatosPersonales.setVisibility(View.INVISIBLE);
             layoutFichadaAlumno.setVisibility(View.VISIBLE);
@@ -173,6 +191,7 @@ public class AlumnoMain extends AppCompatActivity
 
     @Override
     public boolean onResponse(CHTTPRequest request, String response) {
+        frameLayoutRespuesta.setVisibility(View.VISIBLE);
         if(request.getTaskId() == RequestTaskIds.CALENDARIO_ALUMNO) {
 
         }
@@ -206,6 +225,21 @@ public class AlumnoMain extends AppCompatActivity
                     e1.printStackTrace();
                 }
             }
+        } else if (request.getTaskId() == RequestTaskIds.NOTA_ALUMNO) {
+            String errorId = null;
+            try {
+                errorId = request.getJsonResponse().getString(Error.ERROR_ID);
+                if(errorId.equals(Error.SUCCESS)) {
+                    textViewNota.setVisibility(View.VISIBLE);
+                    textViewNota.setText("Nota: " + request.getJsonResponse().getString("nota"));
+                }
+                else if(errorId.equals(Error.CATEDRA_ERROR)) Toast.makeText(this,Error.CATEDRA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
+                else if(errorId.equals(Error.CARRERA_ERROR)) Toast.makeText(this,Error.CARRERA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
+                else if(errorId.equals(Error.MATERIA_ERROR)) Toast.makeText(this,Error.MATERIA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
+                else if(errorId.equals(Error.CACHE_ERROR)) Toast.makeText(this,Error.CACHE_ERROR_TEXT,Toast.LENGTH_SHORT).show();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
         return false;
     }
@@ -230,7 +264,7 @@ public class AlumnoMain extends AppCompatActivity
         tabla.setPadding(5,5,5,5);
         tabla.setBackgroundColor(Color.BLACK);
 
-        for(int i=1; i<=datos.length();i++){
+        for(int i=1; i<datos.length();i++){
             fila = new TableRow(this);
             fecha = new TextView(this);
             presente = new TextView(this);

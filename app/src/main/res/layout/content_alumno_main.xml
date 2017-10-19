@@ -14,6 +14,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
         <LinearLayout
             android:id="@+id/layoutDatosPersonales"
             android:layout_width="match_parent"
@@ -246,6 +247,7 @@
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/linearLayoutCatedra"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -269,6 +271,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/linearLayoutCarrera"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -292,6 +295,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/linearLayoutMateria"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -315,24 +319,39 @@
                 </LinearLayout>
 
                 <Button
-                    android:id="@+id/buttonAsistenciasAlumno"
+                    android:id="@+id/buttonEnviarRequest"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="requestAsistenciasAlumno"
+                    android:onClick="enviarRequest"
                     android:text="OK" />
 
-                <ScrollView
+                <FrameLayout
+                    android:id="@+id/frameLayoutRespuesta"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_margin="15dp"
-                    android:id="@+id/sVTablaFichadas"
-                    android:gravity="center_horizontal">
-                    <TableLayout
-                        android:id="@+id/tablaFichadas"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/textViewNota"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">       
-                    </TableLayout>
-                </ScrollView>
+                        android:layout_height="wrap_content"
+                        android:text="Nota: "
+                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                        android:visibility="invisible" />
+
+                    <ScrollView
+                        android:id="@+id/sVTablaFichadas"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="15dp"
+                        android:gravity="center_horizontal">
+
+                        <TableLayout
+                            android:id="@+id/tablaFichadas"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">       
+                        </TableLayout>
+                    </ScrollView>
+                </FrameLayout>
 
             </LinearLayout>
 
