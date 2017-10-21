@@ -246,6 +246,12 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <TextView
+                    android:id="@+id/textViewOpcion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
                 <LinearLayout
                     android:id="@+id/linearLayoutCatedra"
                     android:layout_width="wrap_content"

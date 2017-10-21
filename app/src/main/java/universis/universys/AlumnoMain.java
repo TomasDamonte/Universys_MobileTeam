@@ -42,6 +42,7 @@ public class AlumnoMain extends AppCompatActivity
     private EditText editTextCatedra;
     private EditText editTextCarrera;
     private EditText editTextMateria;
+    private TextView textViewOpcion;
     private EditText editTextHorario;
     private int itemMenu;
     private TextView textViewNota;
@@ -130,6 +131,7 @@ public class AlumnoMain extends AppCompatActivity
         textViewNota = (TextView) findViewById(R.id.textViewNota);
         frameLayoutRespuesta = (FrameLayout) findViewById(R.id.frameLayoutRespuesta);
         linearLayoutHorarios = (LinearLayout) findViewById(R.id.linearLayoutHorarios);
+        textViewOpcion = (TextView) findViewById(R.id.textViewOpcion);
 
         LinearLayout layoutCalendario = (LinearLayout) findViewById(R.id.layoutCalendario);
         layoutCalendario.setVisibility(View.VISIBLE);
@@ -190,6 +192,9 @@ public class AlumnoMain extends AppCompatActivity
             layoutFichadaAlumno.setVisibility(View.INVISIBLE);
             layoutDatosPersonales.setVisibility(View.VISIBLE);
         } else if (itemMenu == R.id.nav_asistencias || itemMenu == R.id.nav_notas || itemMenu == R.id.nav_horarios) {
+            if(itemMenu == R.id.nav_asistencias) textViewOpcion.setText("Asistencias");
+            else if(itemMenu == R.id.nav_notas) textViewOpcion.setText("Notas");
+            else textViewOpcion.setText("Horarios");
             layoutCalendario.setVisibility(View.INVISIBLE);
             layoutDatosPersonales.setVisibility(View.INVISIBLE);
             layoutFichadaAlumno.setVisibility(View.VISIBLE);
