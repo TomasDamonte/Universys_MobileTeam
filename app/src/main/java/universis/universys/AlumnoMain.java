@@ -45,28 +45,35 @@ public class AlumnoMain extends AppCompatActivity
     private TextView textViewNota;
     private FrameLayout frameLayoutRespuesta;
     private CalendarView calendarioAlumno;
+    private LinearLayout linearLayoutHorarios;
 
     public void enviarRequest(View v) {
 
-            TableLayout tabla = (TableLayout) findViewById(R.id.tablaFichadas);
-            tabla.removeAllViews();
-            ScrollView sVTablaFichadas = (ScrollView) findViewById(R.id.sVTablaFichadas);
-            sVTablaFichadas.setVisibility(View.INVISIBLE);
-            textViewNota.setVisibility(View.INVISIBLE);
-            if (editTextCatedra.getText().toString().equals("") || editTextCarrera.getText().toString().equals("") || editTextMateria.getText().toString().equals("")) {
-                Toast.makeText(this, "Deben completarse todos los campos", Toast.LENGTH_LONG).show();
-            } else {
-                if(itemMenu == R.id.nav_asistencias) {
-                    CHTTPRequest.postRequest(RequestTaskIds.FICHADA_ALUMNO, URLs.FICHADA_ALUMNO
-                            ,new JSONBuilder().fichadaAlumno(editTextCatedra.getText().toString()
-                                    ,editTextCarrera.getText().toString(), editTextMateria.getText().toString())).execute().addListener(this);
-                } else if(itemMenu == R.id.nav_notas) {
-                    CHTTPRequest.postRequest(RequestTaskIds.NOTA_ALUMNO, URLs.NOTA_ALUMNO
-                            ,new JSONBuilder().fichadaAlumno(editTextCatedra.getText().toString()
-                                    ,editTextCarrera.getText().toString(), editTextMateria.getText().toString())).execute().addListener(this);
+        TableLayout tabla = (TableLayout) findViewById(R.id.tablaFichadas);
+        tabla.removeAllViews();
+        ScrollView sVTablaFichadas = (ScrollView) findViewById(R.id.sVTablaFichadas);
+        sVTablaFichadas.setVisibility(View.INVISIBLE);
+        textViewNota.setVisibility(View.INVISIBLE);
+        linearLayoutHorarios.setVisibility(View.INVISIBLE);
 
-                }
+        if (editTextCatedra.getText().toString().equals("") || editTextCarrera.getText().toString().equals("") || editTextMateria.getText().toString().equals("")) {
+            Toast.makeText(this, "Deben completarse todos los campos", Toast.LENGTH_LONG).show();
+        } else {
+            if(itemMenu == R.id.nav_asistencias) {
+                CHTTPRequest.postRequest(RequestTaskIds.FICHADA_ALUMNO, URLs.FICHADA_ALUMNO
+                        ,new JSONBuilder().fichadaAlumno(editTextCatedra.getText().toString()
+                                ,editTextCarrera.getText().toString(), editTextMateria.getText().toString())).execute().addListener(this);
+            } else if(itemMenu == R.id.nav_notas) {
+                CHTTPRequest.postRequest(RequestTaskIds.NOTA_ALUMNO, URLs.NOTA_ALUMNO
+                        ,new JSONBuilder().fichadaAlumno(editTextCatedra.getText().toString()
+                                ,editTextCarrera.getText().toString(), editTextMateria.getText().toString())).execute().addListener(this);
+
+            } else if (itemMenu == R.id.nav_notas) {
+                CHTTPRequest.postRequest(RequestTaskIds.HORARIO_ALUMNO, URLs.HORARIO_ALUMNO
+                        ,new JSONBuilder().fichadaAlumno(editTextCatedra.getText().toString()
+                                ,editTextCarrera.getText().toString(), editTextMateria.getText().toString())).execute().addListener(this);
             }
+        }
 
     }
 
@@ -119,6 +126,7 @@ public class AlumnoMain extends AppCompatActivity
         editTextMateria = (EditText) findViewById(R.id.editTextMateria);
         textViewNota = (TextView) findViewById(R.id.textViewNota);
         frameLayoutRespuesta = (FrameLayout) findViewById(R.id.frameLayoutRespuesta);
+        linearLayoutHorarios = (LinearLayout) findViewById(R.id.linearLayoutHorarios);
 
         LinearLayout layoutCalendario = (LinearLayout) findViewById(R.id.layoutCalendario);
         layoutCalendario.setVisibility(View.VISIBLE);
@@ -178,7 +186,7 @@ public class AlumnoMain extends AppCompatActivity
             layoutCalendario.setVisibility(View.INVISIBLE);
             layoutFichadaAlumno.setVisibility(View.INVISIBLE);
             layoutDatosPersonales.setVisibility(View.VISIBLE);
-        } else if (itemMenu == R.id.nav_asistencias || itemMenu == R.id.nav_notas) {
+        } else if (itemMenu == R.id.nav_asistencias || itemMenu == R.id.nav_notas || itemMenu == R.id.nav_horarios) {
             layoutCalendario.setVisibility(View.INVISIBLE);
             layoutDatosPersonales.setVisibility(View.INVISIBLE);
             layoutFichadaAlumno.setVisibility(View.VISIBLE);
@@ -192,6 +200,12 @@ public class AlumnoMain extends AppCompatActivity
     @Override
     public boolean onResponse(CHTTPRequest request, String response) {
         frameLayoutRespuesta.setVisibility(View.VISIBLE);
+        String errorId = null;
+        try {
+            errorId = request.getJsonResponse().getString(Error.ERROR_ID);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         if(request.getTaskId() == RequestTaskIds.CALENDARIO_ALUMNO) {
 
         }
@@ -208,7 +222,6 @@ public class AlumnoMain extends AppCompatActivity
             }
 
         } else if (request.getTaskId() == RequestTaskIds.FICHADA_ALUMNO) {
-            String errorId = null;
             try {
                 errorId = request.getJsonArrayResponse().getJSONObject(0).getString(Error.ERROR_ID);
                 if(errorId.equals(Error.SUCCESS))
@@ -218,33 +231,54 @@ public class AlumnoMain extends AppCompatActivity
                 else if(errorId.equals(Error.MATERIA_ERROR)) Toast.makeText(this,Error.MATERIA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
             } catch (JSONException e) {
                 e.printStackTrace();
-                try {
-                    errorId = request.getJsonResponse().getString(Error.ERROR_ID);
-                    if(errorId.equals(Error.CACHE_ERROR)) Toast.makeText(this,Error.CACHE_ERROR_TEXT,Toast.LENGTH_SHORT).show();
-                } catch (JSONException e1) {
-                    e1.printStackTrace();
-                }
+                if(errorId.equals(Error.CACHE_ERROR)) Toast.makeText(this,Error.CACHE_ERROR_TEXT,Toast.LENGTH_SHORT).show();
             }
         } else if (request.getTaskId() == RequestTaskIds.NOTA_ALUMNO) {
-            String errorId = null;
-            try {
-                errorId = request.getJsonResponse().getString(Error.ERROR_ID);
-                if(errorId.equals(Error.SUCCESS)) {
-                    textViewNota.setVisibility(View.VISIBLE);
+
+            if(errorId.equals(Error.SUCCESS)) {
+                textViewNota.setVisibility(View.VISIBLE);
+                try {
                     textViewNota.setText("Nota: " + request.getJsonResponse().getString("nota"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                else if(errorId.equals(Error.CATEDRA_ERROR)) Toast.makeText(this,Error.CATEDRA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
-                else if(errorId.equals(Error.CARRERA_ERROR)) Toast.makeText(this,Error.CARRERA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
-                else if(errorId.equals(Error.MATERIA_ERROR)) Toast.makeText(this,Error.MATERIA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
-                else if(errorId.equals(Error.CACHE_ERROR)) Toast.makeText(this,Error.CACHE_ERROR_TEXT,Toast.LENGTH_SHORT).show();
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
+            else if(errorId.equals(Error.CATEDRA_ERROR)) Toast.makeText(this,Error.CATEDRA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
+            else if(errorId.equals(Error.CARRERA_ERROR)) Toast.makeText(this,Error.CARRERA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
+            else if(errorId.equals(Error.MATERIA_ERROR)) Toast.makeText(this,Error.MATERIA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
+            else if(errorId.equals(Error.CACHE_ERROR)) Toast.makeText(this,Error.CACHE_ERROR_TEXT,Toast.LENGTH_SHORT).show();
+
+        } else if(request.getTaskId() == RequestTaskIds.HORARIO_ALUMNO) {
+            if(errorId.equals(Error.SUCCESS)) {
+                linearLayoutHorarios.setVisibility(View.VISIBLE);
+                mostrarHorarios(request.getJsonResponse());
+            }
+            else if(errorId.equals(Error.CATEDRA_ERROR)) Toast.makeText(this,Error.CATEDRA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
+            else if(errorId.equals(Error.CARRERA_ERROR)) Toast.makeText(this,Error.CARRERA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
+            else if(errorId.equals(Error.MATERIA_ERROR)) Toast.makeText(this,Error.MATERIA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
+            else if(errorId.equals(Error.CACHE_ERROR)) Toast.makeText(this,Error.CACHE_ERROR_TEXT,Toast.LENGTH_SHORT).show();
         }
+
+
         return false;
     }
 
-    public void crearTablaAsistencias(JSONArray datos) throws JSONException {
+    private void mostrarHorarios(JSONObject datos) throws JSONException {
+        EditText editTextHorarios = (EditText) findViewById(R.id.editTextHorarios);
+        JSONArray JSONArrayHorarios = datos.getJSONArray("horarios");
+
+        for() {
+
+        }
+
+
+
+
+
+        editTextHorarios.setVisibility(View.VISIBLE);
+    }
+
+    private void crearTablaAsistencias(JSONArray datos) throws JSONException {
         ScrollView sVTablaFichadas = (ScrollView) findViewById(R.id.sVTablaFichadas);
         sVTablaFichadas.setVisibility(View.VISIBLE);
         TableLayout tabla = (TableLayout)findViewById(R.id.tablaFichadas);

@@ -84,6 +84,22 @@ public class DataBase {
             }
             return jsonResp;
         }
+
+        if(request.getTaskId() == RequestTaskIds.HORARIO_ALUMNO) {
+            String [] horarios = {"A3B;4F7","4C1;80D"};
+            JSONObject db2 = new JSONObject().put("catedra","a").put("carrera","b").put("materia","c").put("horario",horarios);
+
+            if(jsonReq.getString("catedra").equals(db2.getString("catedra")) && jsonReq.getString("carrera").equals(db2.getString("carrera")) && jsonReq.getString("materia").equals(db2.getString("materia")))
+                return db2.put(Error.ERROR_ID,Error.SUCCESS);
+            else {
+                if(!jsonReq.getString("catedra").equals(db2.getString("catedra")))
+                    return new JSONObject().put(Error.ERROR_ID,Error.CATEDRA_ERROR);
+                if(!jsonReq.getString("carrera").equals(db2.getString("carrera")))
+                    return new JSONObject().put(Error.ERROR_ID,Error.CARRERA_ERROR);
+                if(!jsonReq.getString("materia").equals(db2.getString("materia")))
+                    return new JSONObject().put(Error.ERROR_ID,Error.MATERIA_ERROR);
+            }
+        }
         return null;
     }
 }

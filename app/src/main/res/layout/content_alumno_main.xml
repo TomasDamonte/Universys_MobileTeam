@@ -330,6 +330,30 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
+                    <LinearLayout
+                        android:id="@+id/linearLayoutHorarios"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="invisible">
+
+                        <TextView
+                            android:id="@+id/textViewHorarios"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Horarios:"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+                        <EditText
+                            android:id="@+id/editTextHorarios"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:inputType="textMultiLine"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+                    </LinearLayout>
+
                     <TextView
                         android:id="@+id/textViewNota"
                         android:layout_width="match_parent"
