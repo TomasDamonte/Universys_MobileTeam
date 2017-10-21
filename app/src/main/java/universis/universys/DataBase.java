@@ -86,8 +86,8 @@ public class DataBase {
         }
 
         if(request.getTaskId() == RequestTaskIds.HORARIO_ALUMNO) {
-            String [] horarios = {"A3B;4F7","4C1;80D"};
-            JSONObject db2 = new JSONObject().put("catedra","a").put("carrera","b").put("materia","c").put("horario",horarios);
+            JSONArray horario = new JSONArray().put(0,"4C1;30D").put(1,"13B;2F7");
+            JSONObject db2 = new JSONObject().put("catedra","a").put("carrera","b").put("materia","c").put("horario",horario);
 
             if(jsonReq.getString("catedra").equals(db2.getString("catedra")) && jsonReq.getString("carrera").equals(db2.getString("carrera")) && jsonReq.getString("materia").equals(db2.getString("materia")))
                 return db2.put(Error.ERROR_ID,Error.SUCCESS);

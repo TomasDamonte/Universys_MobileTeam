@@ -2,6 +2,7 @@ package universis.universys;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -41,6 +42,7 @@ public class AlumnoMain extends AppCompatActivity
     private EditText editTextCatedra;
     private EditText editTextCarrera;
     private EditText editTextMateria;
+    private EditText editTextHorario;
     private int itemMenu;
     private TextView textViewNota;
     private FrameLayout frameLayoutRespuesta;
@@ -68,7 +70,7 @@ public class AlumnoMain extends AppCompatActivity
                         ,new JSONBuilder().fichadaAlumno(editTextCatedra.getText().toString()
                                 ,editTextCarrera.getText().toString(), editTextMateria.getText().toString())).execute().addListener(this);
 
-            } else if (itemMenu == R.id.nav_notas) {
+            } else if (itemMenu == R.id.nav_horarios) {
                 CHTTPRequest.postRequest(RequestTaskIds.HORARIO_ALUMNO, URLs.HORARIO_ALUMNO
                         ,new JSONBuilder().fichadaAlumno(editTextCatedra.getText().toString()
                                 ,editTextCarrera.getText().toString(), editTextMateria.getText().toString())).execute().addListener(this);
@@ -124,6 +126,7 @@ public class AlumnoMain extends AppCompatActivity
         editTextCatedra = (EditText) findViewById(R.id.editTextCatedra);
         editTextCarrera = (EditText) findViewById(R.id.editTextCarrera);
         editTextMateria = (EditText) findViewById(R.id.editTextMateria);
+        editTextHorario = (EditText) findViewById(R.id.editTextHorarios);
         textViewNota = (TextView) findViewById(R.id.textViewNota);
         frameLayoutRespuesta = (FrameLayout) findViewById(R.id.frameLayoutRespuesta);
         linearLayoutHorarios = (LinearLayout) findViewById(R.id.linearLayoutHorarios);
@@ -210,16 +213,19 @@ public class AlumnoMain extends AppCompatActivity
 
         }
         else if(request.getTaskId() == RequestTaskIds.DATOS_PERSONALES) {
-            try {
-                editTextNombre.setText(request.getJsonResponse().getString("nombre"));
-                editTextApellido.setText(request.getJsonResponse().getString("apellido"));
-                editTextEmail.setText(request.getJsonResponse().getString("mail"));
-                editTextFNac.setText(request.getJsonResponse().getString("fNac"));
-                editTextDomicilio.setText(request.getJsonResponse().getString("domicilio"));
-                editTextTelefono.setText(request.getJsonResponse().getString("telefono"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+
+            if(errorId.equals(Error.SUCCESS)) {
+                try {
+                    editTextNombre.setText(request.getJsonResponse().getString("nombre"));
+                    editTextApellido.setText(request.getJsonResponse().getString("apellido"));
+                    editTextEmail.setText(request.getJsonResponse().getString("mail"));
+                    editTextFNac.setText(request.getJsonResponse().getString("fNac"));
+                    editTextDomicilio.setText(request.getJsonResponse().getString("domicilio"));
+                    editTextTelefono.setText(request.getJsonResponse().getString("telefono"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else if(errorId.equals(Error.CACHE_ERROR)) Toast.makeText(this,Error.CACHE_ERROR_TEXT,Toast.LENGTH_SHORT).show();
 
         } else if (request.getTaskId() == RequestTaskIds.FICHADA_ALUMNO) {
             try {
@@ -251,31 +257,49 @@ public class AlumnoMain extends AppCompatActivity
         } else if(request.getTaskId() == RequestTaskIds.HORARIO_ALUMNO) {
             if(errorId.equals(Error.SUCCESS)) {
                 linearLayoutHorarios.setVisibility(View.VISIBLE);
-                mostrarHorarios(request.getJsonResponse());
+                try {
+                    mostrarHorarios(request.getJsonResponse());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
             else if(errorId.equals(Error.CATEDRA_ERROR)) Toast.makeText(this,Error.CATEDRA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
             else if(errorId.equals(Error.CARRERA_ERROR)) Toast.makeText(this,Error.CARRERA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
             else if(errorId.equals(Error.MATERIA_ERROR)) Toast.makeText(this,Error.MATERIA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
             else if(errorId.equals(Error.CACHE_ERROR)) Toast.makeText(this,Error.CACHE_ERROR_TEXT,Toast.LENGTH_SHORT).show();
         }
-
-
         return false;
     }
 
     private void mostrarHorarios(JSONObject datos) throws JSONException {
-        EditText editTextHorarios = (EditText) findViewById(R.id.editTextHorarios);
-        JSONArray JSONArrayHorarios = datos.getJSONArray("horarios");
 
-        for() {
+        JSONArray JSONArrayHorarios = datos.getJSONArray("horario");
+        String texto = "Teoría:\n";
 
+        for(int i=0;i<JSONArrayHorarios.length();i++) {
+            String teoria = JSONArrayHorarios.getString(i).split(";")[0];
+            if((teoria.charAt(0)+"").equals("0")) texto = texto + "Lunes de ";
+            else if((teoria.charAt(0)+"").equals("1")) texto = texto + "Martes de ";
+            else if((teoria.charAt(0)+"").equals("2")) texto = texto + "Miercoles de ";
+            else if((teoria.charAt(0)+"").equals("3")) texto = texto + "Jueves de ";
+            else if((teoria.charAt(0)+"").equals("4")) texto = texto + "Viernes de ";
+            else if((teoria.charAt(0)+"").equals("5")) texto = texto + "Sábado de ";
+            texto = texto + (Integer.parseInt(teoria.charAt(1)+"", 16) + 7) + " a ";
+            texto = texto + (Integer.parseInt(teoria.charAt(2)+"", 16) + 7) + "hs.\n";
         }
-
-
-
-
-
-        editTextHorarios.setVisibility(View.VISIBLE);
+        texto = texto + "\nPráctica:\n";
+        for(int i=0;i<JSONArrayHorarios.length();i++) {
+            String teoria = JSONArrayHorarios.getString(i).split(";")[1];
+            if((teoria.charAt(0)+"").equals("0")) texto = texto + "Lunes de ";
+            else if((teoria.charAt(0)+"").equals("1")) texto = texto + "Martes de ";
+            else if((teoria.charAt(0)+"").equals("2")) texto = texto + "Miércoles de ";
+            else if((teoria.charAt(0)+"").equals("3")) texto = texto + "Jueves de ";
+            else if((teoria.charAt(0)+"").equals("4")) texto = texto + "Viernes de ";
+            else if((teoria.charAt(0)+"").equals("5")) texto = texto + "Sábado de ";
+            texto = texto + (Integer.parseInt(teoria.charAt(1)+"", 16) + 7) + " a ";
+            texto = texto + (Integer.parseInt(teoria.charAt(2)+"", 16) + 7) + "hs.\n";
+        }
+        editTextHorario.setText(texto);
     }
 
     private void crearTablaAsistencias(JSONArray datos) throws JSONException {
