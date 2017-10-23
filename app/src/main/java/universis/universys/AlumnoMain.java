@@ -2,8 +2,8 @@ package universis.universys;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,7 +14,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -24,14 +23,20 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.zip.Inflater;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 
 public class AlumnoMain extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, IRequestListener {
+        implements NavigationView.OnNavigationItemSelectedListener, IRequestListener,OnDateSelectedListener{
 
     private EditText editTextNombre;
     private EditText editTextApellido;
@@ -43,11 +48,13 @@ public class AlumnoMain extends AppCompatActivity
     private EditText editTextCarrera;
     private EditText editTextMateria;
     private TextView textViewOpcion;
+    private TextView textViewEvento;
     private EditText editTextHorario;
     private int itemMenu;
     private TextView textViewNota;
+    private HashMap<Date,String> calendarEvents;
     private FrameLayout frameLayoutRespuesta;
-    private CalendarView calendarioAlumno;
+    private MaterialCalendarView calendarioAlumno;
     private LinearLayout linearLayoutHorarios;
 
     public void enviarRequest(View v) {
@@ -123,7 +130,7 @@ public class AlumnoMain extends AppCompatActivity
         editTextEmail = (EditText) findViewById(R.id.editTextEmail);
         editTextFNac = (EditText) findViewById(R.id.editTextFNac);
         editTextTelefono = (EditText) findViewById(R.id.editTextTelefono);
-        calendarioAlumno = (CalendarView) findViewById(R.id.calendarioAlumno);
+        calendarioAlumno = (MaterialCalendarView) findViewById(R.id.calendarioAlumno);
         editTextCatedra = (EditText) findViewById(R.id.editTextCatedra);
         editTextCarrera = (EditText) findViewById(R.id.editTextCarrera);
         editTextMateria = (EditText) findViewById(R.id.editTextMateria);
@@ -132,9 +139,9 @@ public class AlumnoMain extends AppCompatActivity
         frameLayoutRespuesta = (FrameLayout) findViewById(R.id.frameLayoutRespuesta);
         linearLayoutHorarios = (LinearLayout) findViewById(R.id.linearLayoutHorarios);
         textViewOpcion = (TextView) findViewById(R.id.textViewOpcion);
-
-        LinearLayout layoutCalendario = (LinearLayout) findViewById(R.id.layoutCalendario);
-        layoutCalendario.setVisibility(View.VISIBLE);
+        textViewEvento = (TextView) findViewById(R.id.textViewEvento);
+        calendarioAlumno.setOnDateChangedListener(this);
+        calendarEvents = new HashMap<>();
     }
 
     @Override
@@ -180,10 +187,12 @@ public class AlumnoMain extends AppCompatActivity
         frameLayoutRespuesta.setVisibility(View.INVISIBLE);
 
         if (itemMenu == R.id.nav_calendario) {
-          /*  CHTTPRequest.postRequest(RequestTaskIds.CALENDARIO_ALUMNO,URLs.CALENDARIO_ALUMNO,
-                    new JSONBuilder().consultaDatosPersonales()).execute().addListener(this);*/
+          CHTTPRequest.postRequest(RequestTaskIds.CALENDARIO_ALUMNO,URLs.CALENDARIO_ALUMNO,
+                    new JSONBuilder().consultaDatosPersonales()).execute().addListener(this);
             layoutDatosPersonales.setVisibility(View.INVISIBLE);
             layoutFichadaAlumno.setVisibility(View.INVISIBLE);
+            calendarioAlumno.setDateSelected(calendarioAlumno.getSelectedDate(),false);
+            calendarioAlumno.setSelectedDate(new CalendarDay().getDate());
             layoutCalendario.setVisibility(View.VISIBLE);
         } else if (itemMenu == R.id.nav_datosPersonales){
             CHTTPRequest.postRequest(RequestTaskIds.DATOS_PERSONALES,URLs.DATOS_PERSONALES,
@@ -215,7 +224,24 @@ public class AlumnoMain extends AppCompatActivity
             e.printStackTrace();
         }
         if(request.getTaskId() == RequestTaskIds.CALENDARIO_ALUMNO) {
-
+            if(errorId.equals(Error.SUCCESS)) {
+                JSONArray eventos = new JSONArray();
+                try {
+                    eventos = request.getJsonResponse().getJSONArray("eventos");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                HashSet<CalendarDay> dias = new HashSet<>();
+                for (int i=0;i<eventos.length();i++) {
+                    try {
+                        dias.add(new CalendarDay(new Date(eventos.getJSONObject(i).getString("fecha"))));
+                        calendarEvents.put(new Date(eventos.getJSONObject(i).getString("fecha")),eventos.getJSONObject(i).getString("evento"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                calendarioAlumno.addDecorator(new CalendarDecorator(dias));
+            } else if(errorId.equals(Error.CACHE_ERROR)) Toast.makeText(this,Error.CACHE_ERROR_TEXT,Toast.LENGTH_SHORT).show();
         }
         else if(request.getTaskId() == RequestTaskIds.DATOS_PERSONALES) {
 
@@ -352,5 +378,10 @@ public class AlumnoMain extends AppCompatActivity
             fila.addView(presente);
             tabla.addView(fila);
         }
+    }
+
+    @Override
+    public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+        textViewEvento.setText(calendarEvents.get(date.getDate()));
     }
 }

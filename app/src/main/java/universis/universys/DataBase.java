@@ -100,6 +100,13 @@ public class DataBase {
                     return new JSONObject().put(Error.ERROR_ID,Error.MATERIA_ERROR);
             }
         }
+
+        if(request.getTaskId() == RequestTaskIds.CALENDARIO_ALUMNO) {
+            JSONObject e1 = new JSONObject().put("evento","final").put("fecha","2017/10/23");
+            JSONObject e2 = new JSONObject().put("evento","entrega tps").put("fecha","2017/10/25");
+            JSONArray eventos = new JSONArray().put(e1).put(e2);
+            return new JSONObject().put(Error.ERROR_ID,Error.SUCCESS).put("eventos",eventos);
+        }
         return null;
     }
 }
