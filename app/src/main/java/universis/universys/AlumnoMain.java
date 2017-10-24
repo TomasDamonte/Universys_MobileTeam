@@ -141,7 +141,7 @@ public class AlumnoMain extends AppCompatActivity
         textViewOpcion = (TextView) findViewById(R.id.textViewOpcion);
         textViewEvento = (TextView) findViewById(R.id.textViewEvento);
         calendarioAlumno.setOnDateChangedListener(this);
-        calendarEvents = new HashMap<>();
+
     }
 
     @Override
@@ -232,10 +232,14 @@ public class AlumnoMain extends AppCompatActivity
                     e.printStackTrace();
                 }
                 HashSet<CalendarDay> dias = new HashSet<>();
+                calendarEvents = new HashMap<>();
                 for (int i=0;i<eventos.length();i++) {
                     try {
                         dias.add(new CalendarDay(new Date(eventos.getJSONObject(i).getString("fecha"))));
-                        calendarEvents.put(new Date(eventos.getJSONObject(i).getString("fecha")),eventos.getJSONObject(i).getString("evento"));
+                        String evento;
+                        if(calendarEvents.get(new Date(eventos.getJSONObject(i).getString("fecha"))) == null) evento = eventos.getJSONObject(i).getString("evento");
+                        else evento = calendarEvents.get(new Date(eventos.getJSONObject(i).getString("fecha"))) + ", " + eventos.getJSONObject(i).getString("evento");
+                        calendarEvents.put(new Date(eventos.getJSONObject(i).getString("fecha")),evento);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

@@ -102,9 +102,24 @@ public class DataBase {
         }
 
         if(request.getTaskId() == RequestTaskIds.CALENDARIO_ALUMNO) {
-            JSONObject e1 = new JSONObject().put("evento","final").put("fecha","2017/10/23");
-            JSONObject e2 = new JSONObject().put("evento","entrega tps").put("fecha","2017/10/25");
-            JSONArray eventos = new JSONArray().put(e1).put(e2);
+            JSONObject evento = new JSONObject().put("evento","final proyecto 1").put("fecha","2017/12/01");
+            JSONArray eventos = new JSONArray().put(evento);
+            evento = new JSONObject().put("evento","final proyecto 2").put("fecha","2017/12/15");
+            eventos.put(evento);
+            evento = new JSONObject().put("evento","final BD 1").put("fecha","2017/12/05");
+            eventos.put(evento);
+            evento = new JSONObject().put("evento","final BD 2").put("fecha","2017/12/26");
+            eventos.put(evento);
+            evento = new JSONObject().put("evento","final WEB 1").put("fecha","2017/12/06");
+            eventos.put(evento);
+            evento = new JSONObject().put("evento","final WEB 2").put("fecha","2017/12/27");
+            eventos.put(evento);
+            evento = new JSONObject().put("evento","final seguridad informatica 1").put("fecha","2017/12/07");
+            eventos.put(evento);
+            evento = new JSONObject().put("evento","final seguridad informatica 2").put("fecha","2017/12/21");
+            eventos.put(evento);
+            evento = new JSONObject().put("evento","entrega 60hs/300hs").put("fecha","2017/12/21");
+            eventos.put(evento);
             return new JSONObject().put(Error.ERROR_ID,Error.SUCCESS).put("eventos",eventos);
         }
         return null;
