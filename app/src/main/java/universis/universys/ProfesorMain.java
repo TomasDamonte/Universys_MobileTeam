@@ -1,5 +1,8 @@
 package universis.universys;
 
+import android.annotation.TargetApi;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,20 +15,43 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 public class ProfesorMain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, IRequestListener {
 
-    EditText editTextNombre;
-    EditText editTextApellido;
-    EditText editTextDomicilio;
-    EditText editTextEmail;
-    EditText editTextFNac;
-    EditText editTextTelefono;
+    private EditText editTextNombre;
+    private EditText editTextApellido;
+    private EditText editTextDomicilio;
+    private EditText editTextEmail;
+    private EditText editTextFNac;
+    private EditText editTextTelefono;
+    private EditText editTextCatedra;
+    private EditText editTextCarrera;
+    private EditText editTextMateria;
 
+    public void enviarRequest(View v) {
+        TableLayout tablaNotas = (TableLayout) findViewById(R.id.tablaNotas);
+        tablaNotas.removeAllViews();
+        ScrollView scrollViewTablaNotas = (ScrollView) findViewById(R.id.ScrollViewTablaNotas);
+        scrollViewTablaNotas.setVisibility(View.INVISIBLE);
+        if (editTextCatedra.getText().toString().equals("") || editTextCarrera.getText().toString().equals("") || editTextMateria.getText().toString().equals("")) {
+            Toast.makeText(this, "Deben completarse todos los campos", Toast.LENGTH_LONG).show();
+        } else {
+            CHTTPRequest.postRequest(RequestTaskIds.NOTAS_PROFESOR,URLs.NOTAS_PROFESOR
+                    ,new JSONBuilder().fichadaAlumno(editTextCatedra.getText().toString()
+                            ,editTextCarrera.getText().toString(), editTextMateria.getText().toString())).execute().addListener(this);
+        }
+
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +75,9 @@ public class ProfesorMain extends AppCompatActivity
         editTextEmail = (EditText) findViewById(R.id.editTextEmail);
         editTextFNac = (EditText) findViewById(R.id.editTextFNac);
         editTextTelefono = (EditText) findViewById(R.id.editTextTelefono);
+        editTextCatedra = (EditText) findViewById(R.id.editTextCatedra);
+        editTextCarrera = (EditText) findViewById(R.id.editTextCarrera);
+        editTextMateria = (EditText) findViewById(R.id.editTextMateria);
     }
 
     @Override
@@ -74,12 +103,6 @@ public class ProfesorMain extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-/*
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-*/
         return super.onOptionsItemSelected(item);
     }
 
@@ -89,10 +112,18 @@ public class ProfesorMain extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         LinearLayout layoutDatosPersonales = (LinearLayout) findViewById(R.id.layoutDatosPersonales);
+        LinearLayout layoutVerNotas = (LinearLayout) findViewById(R.id.layoutVerNotas);
 
         if (id == R.id.nav_datosPersonales){
-            CHTTPRequest.postRequest(RequestTaskIds.DATOS_PERSONALES,URLs.DATOS_PERSONALES,new JSONBuilder().consultaDatosPersonales()).execute().addListener(this);
+            CHTTPRequest.postRequest(RequestTaskIds.DATOS_PERSONALES,URLs.DATOS_PERSONALES
+                    ,new JSONBuilder().consultaDatosPersonales()).execute().addListener(this);
+            layoutVerNotas.setVisibility(View.INVISIBLE);
             layoutDatosPersonales.setVisibility(View.VISIBLE);
+        }
+
+        if (id == R.id.nav_verNotas) {
+            layoutDatosPersonales.setVisibility(View.INVISIBLE);
+            layoutVerNotas.setVisibility(View.VISIBLE);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -102,7 +133,12 @@ public class ProfesorMain extends AppCompatActivity
 
     @Override
     public boolean onResponse(CHTTPRequest request, String response) {
-
+        String errorId = null;
+        try {
+            errorId = request.getJsonResponse().getString(Error.ERROR_ID);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         if(request.getTaskId() == RequestTaskIds.DATOS_PERSONALES) {
             try {
                 editTextNombre.setText(request.getJsonResponse().getString("nombre"));
@@ -115,6 +151,61 @@ public class ProfesorMain extends AppCompatActivity
                 e.printStackTrace();
             }
         }
+
+        else if(request.getTaskId() == RequestTaskIds.NOTAS_PROFESOR) {
+            if(errorId.equals(Error.SUCCESS)) {
+                try {
+                    crearTablaNotas(request.getJsonResponse().getJSONArray("alumnos"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            else if(errorId.equals(Error.CATEDRA_ERROR)) Toast.makeText(this,Error.CATEDRA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
+            else if(errorId.equals(Error.CARRERA_ERROR)) Toast.makeText(this,Error.CARRERA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
+            else if(errorId.equals(Error.MATERIA_ERROR)) Toast.makeText(this,Error.MATERIA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
+            else if(errorId.equals(Error.CACHE_ERROR)) Toast.makeText(this,Error.CACHE_ERROR_TEXT,Toast.LENGTH_SHORT).show();
+        }
         return false;
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    private void crearTablaNotas(JSONArray datos) throws JSONException {
+        ScrollView scrollViewTablaNotas = (ScrollView) findViewById(R.id.ScrollViewTablaNotas);
+        scrollViewTablaNotas.setVisibility(View.VISIBLE);
+        TableLayout tabla = (TableLayout)findViewById(R.id.tablaNotas);
+        TableRow fila = new TableRow(this);
+        TextView nombre = new TextView(this);
+        TextView nota = new TextView(this);
+
+        nombre.setText("NOMBRE");
+        nota.setText("NOTA");
+        nombre.setTextColor(Color.WHITE);
+        nota.setTextColor(Color.WHITE);
+        nombre.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        fila.addView(nombre);
+        fila.addView(nota);
+        fila.setBackgroundColor(Color.DKGRAY);
+        tabla.addView(fila);
+        tabla.setPadding(5,5,5,5);
+        tabla.setBackgroundColor(Color.BLACK);
+
+        for(int i=0; i<datos.length();i++){
+            fila = new TableRow(this);
+            nombre = new TextView(this);
+            nota = new TextView(this);
+            nombre.setTextColor(Color.BLACK);
+            nota.setTextColor(Color.BLACK);
+            nota.setPadding(10,10,10,10);
+            nombre.setPadding(10,10,10,10);
+            JSONObject dato = datos.getJSONObject(i);
+            nombre.setText(dato.getString("nombre"));
+            nota.setText(dato.getString("nota"));
+            fila.setPadding(5,5,5,5);
+            nota.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            fila.setBackgroundColor(Color.WHITE);
+            fila.addView(nombre);
+            fila.addView(nota);
+            tabla.addView(fila);
+        }
     }
 }
