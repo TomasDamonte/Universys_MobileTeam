@@ -122,6 +122,27 @@ public class DataBase {
             eventos.put(evento);
             return new JSONObject().put(Error.ERROR_ID,Error.SUCCESS).put("eventos",eventos);
         }
+
+        if(request.getTaskId() == RequestTaskIds.NOTAS_PROFESOR) {
+            JSONArray jsonArray = new JSONArray();
+            for(int i=1;i<=10;i++) {
+                JSONObject alumno = new JSONObject().put("nombre", "Juan Pérez").put("nota", i+"");
+                jsonArray.put(alumno);
+            }
+            JSONObject db2 = new JSONObject().put("alumnos",jsonArray);
+            JSONObject catedras = new JSONObject().put("catedra","a").put("carrera","b").put("materia","c");
+
+            if(jsonReq.getString("catedra").equals(catedras.getString("catedra")) && jsonReq.getString("carrera").equals(catedras.getString("carrera")) && jsonReq.getString("materia").equals(catedras.getString("materia")))
+                return db2.put(Error.ERROR_ID,Error.SUCCESS);
+            else {
+                if(!jsonReq.getString("catedra").equals(catedras.getString("catedra")))
+                    return new JSONObject().put(Error.ERROR_ID,Error.CATEDRA_ERROR);
+                if(!jsonReq.getString("carrera").equals(catedras.getString("carrera")))
+                    return new JSONObject().put(Error.ERROR_ID,Error.CARRERA_ERROR);
+                if(!jsonReq.getString("materia").equals(catedras.getString("materia")))
+                    return new JSONObject().put(Error.ERROR_ID,Error.MATERIA_ERROR);
+            }
+        }
         return null;
     }
 }

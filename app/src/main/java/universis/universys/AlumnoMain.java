@@ -1,6 +1,8 @@
 package universis.universys;
 
+import android.annotation.TargetApi;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -337,6 +339,7 @@ public class AlumnoMain extends AppCompatActivity
         editTextHorario.setText(texto);
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     private void crearTablaAsistencias(JSONArray datos) throws JSONException {
         ScrollView sVTablaFichadas = (ScrollView) findViewById(R.id.sVTablaFichadas);
         sVTablaFichadas.setVisibility(View.VISIBLE);
