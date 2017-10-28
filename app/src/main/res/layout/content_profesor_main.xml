@@ -304,7 +304,7 @@
                 android:id="@+id/buttonEnviarRequest"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="enviarRequestVerNotas"
+                android:onClick="requestVerNotas"
                 android:text="OK" />
 
             <ScrollView
@@ -330,15 +330,23 @@
             android:orientation="vertical"
             android:visibility="invisible">
 
+            <TextView
+                android:id="@+id/tVsolicitudesInscripcion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Solicitudes de inscripción"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
             <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:id="@+id/sVTablaSolicitudes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:gravity="center_horizontal">
 
                 <ScrollView
-                    android:id="@+id/sVTablaSolicitudes"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_margin="15dp"
                     android:gravity="center_horizontal">
 
                     <TableLayout
@@ -348,6 +356,14 @@
                     </TableLayout>
                 </ScrollView>
             </HorizontalScrollView>
+
+            <Button
+                android:id="@+id/enviarSolicitudes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="requestEnviarSolicitudes"
+                android:text="ENVIAR"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
         </LinearLayout>
 

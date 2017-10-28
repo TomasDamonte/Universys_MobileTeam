@@ -151,6 +151,10 @@ public class DataBase {
             dbResp.put("solicitudes",solicitudes);
             return dbResp;
         }
+
+        if(request.getTaskId() == RequestTaskIds.ACEPTAR_SOLICITUDES) {
+            return new JSONObject().put(Error.ERROR_ID,Error.SUCCESS);
+        }
         return null;
     }
 }

@@ -1,6 +1,10 @@
 package universis.universys;
 
 
+import android.util.Log;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -31,6 +35,16 @@ public class JSONBuilder {
         datos.put("carrera",carrera);
         datos.put("materia",materia);
         return new JSONObject(datos);
+    }
+
+    public JSONObject enviarSolicitudesInscripcion(HashMap<String,String> solicitudes) {
+        JSONObject body = new JSONObject(datos);
+        try {
+            body.put("solicitudes",new JSONObject(solicitudes));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return body;
     }
 
 }

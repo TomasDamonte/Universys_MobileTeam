@@ -4,30 +4,38 @@ import android.annotation.TargetApi;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.print.PrintAttributes;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+
 public class ProfesorMain extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, IRequestListener {
+        implements NavigationView.OnNavigationItemSelectedListener, IRequestListener, View.OnClickListener {
 
     private EditText editTextNombre;
     private EditText editTextApellido;
@@ -38,8 +46,10 @@ public class ProfesorMain extends AppCompatActivity
     private EditText editTextCatedra;
     private EditText editTextCarrera;
     private EditText editTextMateria;
+    private HashMap<Integer,String> idSolicitud;
+    private HashMap<String,String> estadoSolicitud;
 
-    public void enviarRequestVerNotas(View v) {
+    public void requestVerNotas(View v) {
         TableLayout tablaNotas = (TableLayout) findViewById(R.id.tablaNotas);
         tablaNotas.removeAllViews();
         ScrollView scrollViewTablaNotas = (ScrollView) findViewById(R.id.scrollViewTablaNotas);
@@ -53,13 +63,18 @@ public class ProfesorMain extends AppCompatActivity
         }
     }
 
-    public void enviarRequestSolicitudes() {
+    public void requestVerSolicitudes() {
         TableLayout tablaSolicitudes = (TableLayout) findViewById(R.id.tablaSolicitudes);
         tablaSolicitudes.removeAllViews();
-        ScrollView scrollViewTablaSolicitudes = (ScrollView) findViewById(R.id.scrollViewTablaNotas);
+        HorizontalScrollView scrollViewTablaSolicitudes = (HorizontalScrollView) findViewById(R.id.sVTablaSolicitudes);
         scrollViewTablaSolicitudes.setVisibility(View.INVISIBLE);
         CHTTPRequest.postRequest(RequestTaskIds.VER_SOLICITUDES,URLs.VER_SOLICITUDES
                 ,new JSONBuilder().consultaDatosPersonales()).execute().addListener(this);
+    }
+
+    public void requestEnviarSolicitudes(View v) {
+        CHTTPRequest.postRequest(RequestTaskIds.ACEPTAR_SOLICITUDES,URLs.ACEPTAR_SOLICITUDES
+                ,new JSONBuilder().enviarSolicitudesInscripcion(estadoSolicitud)).execute().addListener(this);
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,7 +154,7 @@ public class ProfesorMain extends AppCompatActivity
         else if (id == R.id.nav_solicitudes) {
             layoutDatosPersonales.setVisibility(View.INVISIBLE);
             layoutVerNotas.setVisibility(View.INVISIBLE);
-            enviarRequestSolicitudes();
+            requestVerSolicitudes();
             layoutSolicitudes.setVisibility(View.VISIBLE);
         }
 
@@ -189,6 +204,13 @@ public class ProfesorMain extends AppCompatActivity
                 }
             } else if(errorId.equals(Error.CACHE_ERROR)) Toast.makeText(this,Error.CACHE_ERROR_TEXT,Toast.LENGTH_SHORT).show();
         }
+
+        else if (request.getTaskId() == RequestTaskIds.ACEPTAR_SOLICITUDES) {
+            if(errorId.equals(Error.SUCCESS)){
+               // requestVerSolicitudes();
+            }
+            else if(errorId.equals(Error.CACHE_ERROR)) Toast.makeText(this,Error.CACHE_ERROR_TEXT,Toast.LENGTH_SHORT).show();
+        }
         return false;
     }
 
@@ -234,7 +256,7 @@ public class ProfesorMain extends AppCompatActivity
     }
 
     public void crearTablaSolicitudes(JSONArray datos) throws JSONException {
-        ScrollView scrollViewSolicitudes = (ScrollView) findViewById(R.id.sVTablaSolicitudes);
+        HorizontalScrollView scrollViewSolicitudes = (HorizontalScrollView) findViewById(R.id.sVTablaSolicitudes);
         scrollViewSolicitudes.setVisibility(View.VISIBLE);
         TableLayout tablaSolicitudes = (TableLayout)findViewById(R.id.tablaSolicitudes);
         TableRow fila = new TableRow(this);
@@ -242,56 +264,87 @@ public class ProfesorMain extends AppCompatActivity
         TextView tVcarrera = new TextView(this);
         TextView tVmateria = new TextView(this);
         TextView tValumno = new TextView(this);
-
-        tVcatedra.setText("CATEDRA");
-        tVcarrera.setText("CARRERA");
-        tVmateria.setText("MATERIA");
-        tValumno.setText("ALUMNO");
+        TextView tVaceptar = new TextView(this);
+        TableRow.LayoutParams margenes = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+        margenes.setMargins(4, 4, 4, 4);
+        tablaSolicitudes.setPadding(5,5,5,5);
+        tablaSolicitudes.setBackgroundColor(Color.BLACK);
+        tVaceptar.setTextColor(Color.WHITE);
         tVcatedra.setTextColor(Color.WHITE);
         tVcarrera.setTextColor(Color.WHITE);
         tVmateria.setTextColor(Color.WHITE);
         tValumno.setTextColor(Color.WHITE);
-        fila.addView(tVcatedra);
-        fila.addView(tVcarrera);
-        fila.addView(tVmateria);
-        fila.addView(tValumno);
-        fila.setBackgroundColor(Color.DKGRAY);
+        tVaceptar.setPadding(10,10,10,10);
+        tVcatedra.setPadding(10,10,10,10);
+        tVcarrera.setPadding(10,10,10,10);
+        tVmateria.setPadding(10,10,10,10);
+        tValumno.setPadding(10,10,10,10);
+        tVcatedra.setText("CATEDRA");
+        tVcarrera.setText("CARRERA");
+        tVmateria.setText("MATERIA");
+        tValumno.setText("ALUMNO");
+        tVaceptar.setText("ACCION");
+        fila.addView(tVaceptar,margenes);
+        fila.addView(tValumno,margenes);
+        fila.addView(tVmateria,margenes);
+        fila.addView(tVcarrera,margenes);
+        fila.addView(tVcatedra,margenes);
+        tVaceptar.setBackgroundColor(Color.DKGRAY);
+        tVcatedra.setBackgroundColor(Color.DKGRAY);
+        tVcarrera.setBackgroundColor(Color.DKGRAY);
+        tVmateria.setBackgroundColor(Color.DKGRAY);
+        tValumno.setBackgroundColor(Color.DKGRAY);
+        fila.setBackgroundColor(Color.BLACK);
         tablaSolicitudes.addView(fila);
-        tablaSolicitudes.setPadding(5,5,5,5);
-        tablaSolicitudes.setBackgroundColor(Color.BLACK);
-
+        idSolicitud = new HashMap<>();
+        estadoSolicitud = new HashMap<>();
         for (int i=0;i<datos.length();i++) {
             fila = new TableRow(this);
             tVcatedra = new TextView(this);
             tVcarrera = new TextView(this);
             tVmateria = new TextView(this);
             tValumno = new TextView(this);
-
-            CheckBox checkBox = new CheckBox(this);
-            checkBox.setPadding(10,10,10,10);
+            ToggleButton accion = new ToggleButton(this);
+            accion.setTextOn("ACEPTAR");
+            accion.setTextOff("RECHAZAR");
+            accion.setId(i);
+            accion.setOnClickListener(this);
             tVcatedra.setTextColor(Color.BLACK);
             tVcarrera.setTextColor(Color.BLACK);
             tVmateria.setTextColor(Color.BLACK);
             tValumno.setTextColor(Color.BLACK);
+            tVcatedra.setBackgroundColor(Color.WHITE);
+            tVcarrera.setBackgroundColor(Color.WHITE);
+            tVmateria.setBackgroundColor(Color.WHITE);
+            tValumno.setBackgroundColor(Color.WHITE);
             tVcatedra.setPadding(10,10,10,10);
             tVcarrera.setPadding(10,10,10,10);
             tVmateria.setPadding(10,10,10,10);
             tValumno.setPadding(10,10,10,10);
             JSONObject dato = datos.getJSONObject(i);
+            idSolicitud.put(i,dato.getString("idSolicitud"));
             tVcatedra.setText(dato.getString("catedra"));
             tVcarrera.setText(dato.getString("carrera"));
             tVmateria.setText(dato.getString("materia"));
             tValumno.setText(dato.getString("alumno"));
-            fila.setPadding(5,5,5,5);
-            fila.setBackgroundColor(Color.WHITE);
-            fila.addView(tVcatedra);
-            fila.addView(tVcarrera);
-            fila.addView(tVmateria);
-            fila.addView(tValumno);
-            fila.addView(checkBox);
+            fila.setBackgroundColor(Color.BLACK);
+            fila.addView(accion,margenes);
+            fila.addView(tValumno,margenes);
+            fila.addView(tVmateria,margenes);
+            fila.addView(tVcarrera,margenes);
+            fila.addView(tVcatedra,margenes);
             tablaSolicitudes.addView(fila);
         }
+    }
 
-
+    @Override
+    public void onClick(View v) {
+        ToggleButton boton = (ToggleButton) v;
+        if(boton.isChecked()) {
+            estadoSolicitud.put(idSolicitud.get(boton.getId()),"aceptada");
+        }
+        if(!boton.isChecked()) {
+            estadoSolicitud.put(idSolicitud.get(boton.getId()),"rechazada");
+        }
     }
 }
