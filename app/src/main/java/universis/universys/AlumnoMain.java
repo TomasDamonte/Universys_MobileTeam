@@ -235,16 +235,16 @@ public class AlumnoMain extends AppCompatActivity
                 }
                 HashSet<CalendarDay> dias = new HashSet<>();
                 calendarEvents = new HashMap<>();
+                try {
                 for (int i=0;i<eventos.length();i++) {
-                    try {
                         dias.add(new CalendarDay(new Date(eventos.getJSONObject(i).getString("fecha"))));
                         String evento;
                         if(calendarEvents.get(new Date(eventos.getJSONObject(i).getString("fecha"))) == null) evento = eventos.getJSONObject(i).getString("evento");
                         else evento = calendarEvents.get(new Date(eventos.getJSONObject(i).getString("fecha"))) + ", " + eventos.getJSONObject(i).getString("evento");
                         calendarEvents.put(new Date(eventos.getJSONObject(i).getString("fecha")),evento);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
+                }catch (JSONException e) {
+                    e.printStackTrace();
                 }
                 calendarioAlumno.addDecorator(new CalendarDecorator(dias));
             } else if(errorId.equals(Error.CACHE_ERROR)) Toast.makeText(this,Error.CACHE_ERROR_TEXT,Toast.LENGTH_SHORT).show();

@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -38,10 +39,10 @@ public class ProfesorMain extends AppCompatActivity
     private EditText editTextCarrera;
     private EditText editTextMateria;
 
-    public void enviarRequest(View v) {
+    public void enviarRequestVerNotas(View v) {
         TableLayout tablaNotas = (TableLayout) findViewById(R.id.tablaNotas);
         tablaNotas.removeAllViews();
-        ScrollView scrollViewTablaNotas = (ScrollView) findViewById(R.id.ScrollViewTablaNotas);
+        ScrollView scrollViewTablaNotas = (ScrollView) findViewById(R.id.scrollViewTablaNotas);
         scrollViewTablaNotas.setVisibility(View.INVISIBLE);
         if (editTextCatedra.getText().toString().equals("") || editTextCarrera.getText().toString().equals("") || editTextMateria.getText().toString().equals("")) {
             Toast.makeText(this, "Deben completarse todos los campos", Toast.LENGTH_LONG).show();
@@ -50,7 +51,15 @@ public class ProfesorMain extends AppCompatActivity
                     ,new JSONBuilder().fichadaAlumno(editTextCatedra.getText().toString()
                             ,editTextCarrera.getText().toString(), editTextMateria.getText().toString())).execute().addListener(this);
         }
+    }
 
+    public void enviarRequestSolicitudes() {
+        TableLayout tablaSolicitudes = (TableLayout) findViewById(R.id.tablaSolicitudes);
+        tablaSolicitudes.removeAllViews();
+        ScrollView scrollViewTablaSolicitudes = (ScrollView) findViewById(R.id.scrollViewTablaNotas);
+        scrollViewTablaSolicitudes.setVisibility(View.INVISIBLE);
+        CHTTPRequest.postRequest(RequestTaskIds.VER_SOLICITUDES,URLs.VER_SOLICITUDES
+                ,new JSONBuilder().consultaDatosPersonales()).execute().addListener(this);
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,21 +118,29 @@ public class ProfesorMain extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
+
         int id = item.getItemId();
         LinearLayout layoutDatosPersonales = (LinearLayout) findViewById(R.id.layoutDatosPersonales);
         LinearLayout layoutVerNotas = (LinearLayout) findViewById(R.id.layoutVerNotas);
+        LinearLayout layoutSolicitudes = (LinearLayout) findViewById(R.id.layoutSolicitudes);
 
         if (id == R.id.nav_datosPersonales){
             CHTTPRequest.postRequest(RequestTaskIds.DATOS_PERSONALES,URLs.DATOS_PERSONALES
                     ,new JSONBuilder().consultaDatosPersonales()).execute().addListener(this);
             layoutVerNotas.setVisibility(View.INVISIBLE);
+            layoutSolicitudes.setVisibility(View.INVISIBLE);
             layoutDatosPersonales.setVisibility(View.VISIBLE);
         }
-
-        if (id == R.id.nav_verNotas) {
+        else if (id == R.id.nav_verNotas) {
             layoutDatosPersonales.setVisibility(View.INVISIBLE);
+            layoutSolicitudes.setVisibility(View.INVISIBLE);
             layoutVerNotas.setVisibility(View.VISIBLE);
+        }
+        else if (id == R.id.nav_solicitudes) {
+            layoutDatosPersonales.setVisibility(View.INVISIBLE);
+            layoutVerNotas.setVisibility(View.INVISIBLE);
+            enviarRequestSolicitudes();
+            layoutSolicitudes.setVisibility(View.VISIBLE);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -160,17 +177,24 @@ public class ProfesorMain extends AppCompatActivity
                     e.printStackTrace();
                 }
             }
-            else if(errorId.equals(Error.CATEDRA_ERROR)) Toast.makeText(this,Error.CATEDRA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
-            else if(errorId.equals(Error.CARRERA_ERROR)) Toast.makeText(this,Error.CARRERA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
-            else if(errorId.equals(Error.MATERIA_ERROR)) Toast.makeText(this,Error.MATERIA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
             else if(errorId.equals(Error.CACHE_ERROR)) Toast.makeText(this,Error.CACHE_ERROR_TEXT,Toast.LENGTH_SHORT).show();
+        }
+
+        else if (request.getTaskId() == RequestTaskIds.VER_SOLICITUDES) {
+            if(errorId.equals(Error.SUCCESS)) {
+                try {
+                    crearTablaSolicitudes(request.getJsonResponse().getJSONArray("solicitudes"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else if(errorId.equals(Error.CACHE_ERROR)) Toast.makeText(this,Error.CACHE_ERROR_TEXT,Toast.LENGTH_SHORT).show();
         }
         return false;
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-    private void crearTablaNotas(JSONArray datos) throws JSONException {
-        ScrollView scrollViewTablaNotas = (ScrollView) findViewById(R.id.ScrollViewTablaNotas);
+    public void crearTablaNotas(JSONArray datos) throws JSONException {
+        ScrollView scrollViewTablaNotas = (ScrollView) findViewById(R.id.scrollViewTablaNotas);
         scrollViewTablaNotas.setVisibility(View.VISIBLE);
         TableLayout tabla = (TableLayout)findViewById(R.id.tablaNotas);
         TableRow fila = new TableRow(this);
@@ -207,5 +231,67 @@ public class ProfesorMain extends AppCompatActivity
             fila.addView(nota);
             tabla.addView(fila);
         }
+    }
+
+    public void crearTablaSolicitudes(JSONArray datos) throws JSONException {
+        ScrollView scrollViewSolicitudes = (ScrollView) findViewById(R.id.sVTablaSolicitudes);
+        scrollViewSolicitudes.setVisibility(View.VISIBLE);
+        TableLayout tablaSolicitudes = (TableLayout)findViewById(R.id.tablaSolicitudes);
+        TableRow fila = new TableRow(this);
+        TextView tVcatedra = new TextView(this);
+        TextView tVcarrera = new TextView(this);
+        TextView tVmateria = new TextView(this);
+        TextView tValumno = new TextView(this);
+
+        tVcatedra.setText("CATEDRA");
+        tVcarrera.setText("CARRERA");
+        tVmateria.setText("MATERIA");
+        tValumno.setText("ALUMNO");
+        tVcatedra.setTextColor(Color.WHITE);
+        tVcarrera.setTextColor(Color.WHITE);
+        tVmateria.setTextColor(Color.WHITE);
+        tValumno.setTextColor(Color.WHITE);
+        fila.addView(tVcatedra);
+        fila.addView(tVcarrera);
+        fila.addView(tVmateria);
+        fila.addView(tValumno);
+        fila.setBackgroundColor(Color.DKGRAY);
+        tablaSolicitudes.addView(fila);
+        tablaSolicitudes.setPadding(5,5,5,5);
+        tablaSolicitudes.setBackgroundColor(Color.BLACK);
+
+        for (int i=0;i<datos.length();i++) {
+            fila = new TableRow(this);
+            tVcatedra = new TextView(this);
+            tVcarrera = new TextView(this);
+            tVmateria = new TextView(this);
+            tValumno = new TextView(this);
+
+            CheckBox checkBox = new CheckBox(this);
+            checkBox.setPadding(10,10,10,10);
+            tVcatedra.setTextColor(Color.BLACK);
+            tVcarrera.setTextColor(Color.BLACK);
+            tVmateria.setTextColor(Color.BLACK);
+            tValumno.setTextColor(Color.BLACK);
+            tVcatedra.setPadding(10,10,10,10);
+            tVcarrera.setPadding(10,10,10,10);
+            tVmateria.setPadding(10,10,10,10);
+            tValumno.setPadding(10,10,10,10);
+            JSONObject dato = datos.getJSONObject(i);
+            tVcatedra.setText(dato.getString("catedra"));
+            tVcarrera.setText(dato.getString("carrera"));
+            tVmateria.setText(dato.getString("materia"));
+            tValumno.setText(dato.getString("alumno"));
+            fila.setPadding(5,5,5,5);
+            fila.setBackgroundColor(Color.WHITE);
+            fila.addView(tVcatedra);
+            fila.addView(tVcarrera);
+            fila.addView(tVmateria);
+            fila.addView(tValumno);
+            fila.addView(checkBox);
+            tablaSolicitudes.addView(fila);
+        }
+
+
     }
 }

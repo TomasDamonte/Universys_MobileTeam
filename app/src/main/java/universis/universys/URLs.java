@@ -9,5 +9,7 @@ public class URLs {
     public static final String NOTA_ALUMNO = "http://jsonplaceholder.typicode.com/posts";
     public static final String HORARIO_ALUMNO = "http://jsonplaceholder.typicode.com/posts";
     public static final String NOTAS_PROFESOR = "http://jsonplaceholder.typicode.com/posts";
+    public static final String VER_SOLICITUDES = "http://jsonplaceholder.typicode.com/posts";
+    public static final String ACEPTAR_SOLICITUDES = "http://jsonplaceholder.typicode.com/posts";
 
 }

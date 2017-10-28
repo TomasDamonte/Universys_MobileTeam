@@ -3,7 +3,7 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_solIns"
+            android:id="@+id/nav_solicitudes"
             android:icon="@android:drawable/ic_menu_my_calendar"
             android:title="Solicitudes de inscripcion" />
         <item

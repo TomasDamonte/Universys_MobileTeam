@@ -143,6 +143,14 @@ public class DataBase {
                     return new JSONObject().put(Error.ERROR_ID,Error.MATERIA_ERROR);
             }
         }
+
+        if(request.getTaskId() == RequestTaskIds.VER_SOLICITUDES) {
+            JSONObject dbResp = new JSONObject().put(Error.ERROR_ID,Error.SUCCESS);
+            JSONArray solicitudes = new JSONArray().put(new JSONObject().put("idSolicitud","214").put("catedra","Didier Renard").put("carrera","Ingenieria en Sistemas").put("materia","Testing").put("alumno","Juan Perez"))
+                    .put(new JSONObject().put("idSolicitud","591").put("catedra","Pandolfo").put("carrera","Ingenieria en Sistemas").put("materia","Programación III").put("alumno","Juan Perez"));
+            dbResp.put("solicitudes",solicitudes);
+            return dbResp;
+        }
         return null;
     }
 }

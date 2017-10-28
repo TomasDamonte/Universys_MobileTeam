@@ -8,4 +8,6 @@ public class RequestTaskIds {
     public static final int NOTA_ALUMNO = 5;
     public static final int HORARIO_ALUMNO = 6;
     public static final int NOTAS_PROFESOR = 7;
+    public static final int VER_SOLICITUDES = 8;
+    public static final int ACEPTAR_SOLICITUDES = 9;
 }
