@@ -195,27 +195,27 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:orientation="horizontal">
-                <!--
+
 
                 <Button
-                    android:id="@+id/buttonModifDatosAlumno"
+                    android:id="@+id/buttonModifDatosProfesor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:onClick="modificarDatosAlumno"
+                    android:onClick="modificarDatosProfesor"
                     android:text="Modificar"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
                 <Button
-                    android:id="@+id/buttonEnviarDatosAlumno"
+                    android:id="@+id/buttonEnviarDatosProfesor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:enabled="false"
-                    android:onClick="enviarDatosAlumno"
+                    android:onClick="enviarDatosProfesor"
                     android:text="Guardar"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large" />
- -->
+
 
             </LinearLayout>
 

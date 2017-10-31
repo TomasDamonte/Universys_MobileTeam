@@ -96,7 +96,8 @@ public class AlumnoMain extends AppCompatActivity
         editTextEmail.setFocusableInTouchMode(true);
         editTextFNac.setFocusableInTouchMode(true);
         editTextTelefono.setFocusableInTouchMode(true);
-       // findViewById(R.id.buttonEnviarDatosAlumno).setEnabled(true);
+        findViewById(R.id.buttonEnviarDatosAlumno).setEnabled(true);
+
     }
 
     public void enviarDatosAlumno(View v) {
@@ -106,7 +107,11 @@ public class AlumnoMain extends AppCompatActivity
         editTextEmail.setFocusable(false);
         editTextFNac.setFocusable(false);
         editTextTelefono.setFocusable(false);
-       // findViewById(R.id.buttonEnviarDatosAlumno).setEnabled(false);
+        findViewById(R.id.buttonEnviarDatosAlumno).setEnabled(false);
+        String[] datos = {editTextNombre.getText().toString(),editTextApellido.getText().toString(),editTextDomicilio.getText().toString(),
+                editTextEmail.getText().toString(),editTextFNac.getText().toString(),editTextTelefono.getText().toString()};
+        CHTTPRequest.postRequest(RequestTaskIds.MODIFICAR_DATOS_PERSONALES,URLs.MODIFICAR_DATOS_PERSONALES
+                ,new JSONBuilder().modificarDatosPersonales(datos)).execute().addListener(this);
     }
 
     @Override
@@ -169,12 +174,6 @@ public class AlumnoMain extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-/*
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-*/
         return super.onOptionsItemSelected(item);
     }
 
@@ -264,7 +263,8 @@ public class AlumnoMain extends AppCompatActivity
                 }
             } else if(errorId.equals(Error.CACHE_ERROR)) Toast.makeText(this,Error.CACHE_ERROR_TEXT,Toast.LENGTH_SHORT).show();
 
-        } else if (request.getTaskId() == RequestTaskIds.FICHADA_ALUMNO) {
+        }
+        else if (request.getTaskId() == RequestTaskIds.FICHADA_ALUMNO) {
             try {
                 errorId = request.getJsonArrayResponse().getJSONObject(0).getString(Error.ERROR_ID);
                 if(errorId.equals(Error.SUCCESS))
@@ -276,7 +276,8 @@ public class AlumnoMain extends AppCompatActivity
                 e.printStackTrace();
                 if(errorId.equals(Error.CACHE_ERROR)) Toast.makeText(this,Error.CACHE_ERROR_TEXT,Toast.LENGTH_SHORT).show();
             }
-        } else if (request.getTaskId() == RequestTaskIds.NOTA_ALUMNO) {
+        }
+        else if (request.getTaskId() == RequestTaskIds.NOTA_ALUMNO) {
 
             if(errorId.equals(Error.SUCCESS)) {
                 textViewNota.setVisibility(View.VISIBLE);
@@ -291,7 +292,8 @@ public class AlumnoMain extends AppCompatActivity
             else if(errorId.equals(Error.MATERIA_ERROR)) Toast.makeText(this,Error.MATERIA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
             else if(errorId.equals(Error.CACHE_ERROR)) Toast.makeText(this,Error.CACHE_ERROR_TEXT,Toast.LENGTH_SHORT).show();
 
-        } else if(request.getTaskId() == RequestTaskIds.HORARIO_ALUMNO) {
+        }
+        else if(request.getTaskId() == RequestTaskIds.HORARIO_ALUMNO) {
             if(errorId.equals(Error.SUCCESS)) {
                 linearLayoutHorarios.setVisibility(View.VISIBLE);
                 try {
@@ -304,6 +306,14 @@ public class AlumnoMain extends AppCompatActivity
             else if(errorId.equals(Error.CARRERA_ERROR)) Toast.makeText(this,Error.CARRERA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
             else if(errorId.equals(Error.MATERIA_ERROR)) Toast.makeText(this,Error.MATERIA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
             else if(errorId.equals(Error.CACHE_ERROR)) Toast.makeText(this,Error.CACHE_ERROR_TEXT,Toast.LENGTH_SHORT).show();
+        }
+        else if (request.getTaskId() == RequestTaskIds.MODIFICAR_DATOS_PERSONALES) {
+            if (errorId.equals(Error.SUCCESS))
+                Toast.makeText(this, "Datos guardados", Toast.LENGTH_LONG).show();
+            else if (errorId.equals(Error.EMAIL_REPETIDO_ERROR))
+                Toast.makeText(this, Error.EMAIL_REPETIDO_ERROR_TEXT, Toast.LENGTH_SHORT).show();
+            else if (errorId.equals(Error.CAMPOS_INCOMPLETOS_ERROR))
+                Toast.makeText(this, Error.CAMPOS_INCOMPLETOS_ERROR_TEXT, Toast.LENGTH_SHORT).show();
         }
         return false;
     }

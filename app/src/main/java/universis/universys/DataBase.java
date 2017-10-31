@@ -35,7 +35,7 @@ public class DataBase {
             return jsonResp;
         }
 
-        if(request.getTaskId() == RequestTaskIds.DATOS_PERSONALES) {
+        if(request.getTaskId() == RequestTaskIds.DATOS_PERSONALES || request.getTaskId() == RequestTaskIds.MODIFICAR_DATOS_PERSONALES) {
             int aux = -1;
             for (int i = 0; i < db.size(); i++) {
                 if(jsonReq.get("idSesion").equals(db.get(i).get("idSesion"))) {

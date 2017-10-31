@@ -194,7 +194,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:orientation="horizontal">
-                <!--
+
 
                 <Button
                     android:id="@+id/buttonModifDatosAlumno"
@@ -214,7 +214,7 @@
                     android:onClick="enviarDatosAlumno"
                     android:text="Guardar"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large" />
- -->
+
 
             </LinearLayout>
 

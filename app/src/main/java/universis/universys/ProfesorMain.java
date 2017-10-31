@@ -76,6 +76,30 @@ public class ProfesorMain extends AppCompatActivity
         CHTTPRequest.postRequest(RequestTaskIds.ACEPTAR_SOLICITUDES,URLs.ACEPTAR_SOLICITUDES
                 ,new JSONBuilder().enviarSolicitudesInscripcion(estadoSolicitud)).execute().addListener(this);
     }
+
+    public void modificarDatosProfesor(View v) {
+        editTextNombre.setFocusableInTouchMode(true);
+        editTextApellido.setFocusableInTouchMode(true);
+        editTextDomicilio.setFocusableInTouchMode(true);
+        editTextEmail.setFocusableInTouchMode(true);
+        editTextFNac.setFocusableInTouchMode(true);
+        editTextTelefono.setFocusableInTouchMode(true);
+        findViewById(R.id.buttonEnviarDatosProfesor).setEnabled(true);
+    }
+
+    public void enviarDatosProfesor(View v) {
+        editTextNombre.setFocusable(false);
+        editTextApellido.setFocusable(false);
+        editTextDomicilio.setFocusable(false);;
+        editTextEmail.setFocusable(false);
+        editTextFNac.setFocusable(false);
+        editTextTelefono.setFocusable(false);
+        findViewById(R.id.buttonEnviarDatosProfesor).setEnabled(false);
+        String[] datos = {editTextNombre.getText().toString(),editTextApellido.getText().toString(),editTextDomicilio.getText().toString(),
+        editTextEmail.getText().toString(),editTextFNac.getText().toString(),editTextTelefono.getText().toString()};
+        CHTTPRequest.postRequest(RequestTaskIds.MODIFICAR_DATOS_PERSONALES,URLs.MODIFICAR_DATOS_PERSONALES
+                ,new JSONBuilder().modificarDatosPersonales(datos)).execute().addListener(this);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -183,7 +207,6 @@ public class ProfesorMain extends AppCompatActivity
                 e.printStackTrace();
             }
         }
-
         else if(request.getTaskId() == RequestTaskIds.NOTAS_PROFESOR) {
             if(errorId.equals(Error.SUCCESS)) {
                 try {
@@ -194,7 +217,6 @@ public class ProfesorMain extends AppCompatActivity
             }
             else if(errorId.equals(Error.CACHE_ERROR)) Toast.makeText(this,Error.CACHE_ERROR_TEXT,Toast.LENGTH_SHORT).show();
         }
-
         else if (request.getTaskId() == RequestTaskIds.VER_SOLICITUDES) {
             if(errorId.equals(Error.SUCCESS)) {
                 try {
@@ -204,12 +226,21 @@ public class ProfesorMain extends AppCompatActivity
                 }
             } else if(errorId.equals(Error.CACHE_ERROR)) Toast.makeText(this,Error.CACHE_ERROR_TEXT,Toast.LENGTH_SHORT).show();
         }
-
         else if (request.getTaskId() == RequestTaskIds.ACEPTAR_SOLICITUDES) {
             if(errorId.equals(Error.SUCCESS)){
-               // requestVerSolicitudes();
+               Toast.makeText(this,"Acción realizada correctamente",Toast.LENGTH_SHORT).show();
             }
             else if(errorId.equals(Error.CACHE_ERROR)) Toast.makeText(this,Error.CACHE_ERROR_TEXT,Toast.LENGTH_SHORT).show();
+            else if(errorId.equals(Error.ACEPTAR_SOLICITUDES_ERROR)) Toast.makeText(this,Error.ACEPTAR_SOLICITUDES_ERROR_TEXT,Toast.LENGTH_SHORT).show();
+        }
+
+        else if (request.getTaskId() == RequestTaskIds.MODIFICAR_DATOS_PERSONALES) {
+            if (errorId.equals(Error.SUCCESS))
+                Toast.makeText(this, "Datos guardados", Toast.LENGTH_LONG).show();
+            else if (errorId.equals(Error.EMAIL_REPETIDO_ERROR))
+                Toast.makeText(this, Error.EMAIL_REPETIDO_ERROR_TEXT, Toast.LENGTH_SHORT).show();
+            else if (errorId.equals(Error.CAMPOS_INCOMPLETOS_ERROR))
+                Toast.makeText(this, Error.CAMPOS_INCOMPLETOS_ERROR_TEXT, Toast.LENGTH_SHORT).show();
         }
         return false;
     }

@@ -47,4 +47,14 @@ public class JSONBuilder {
         return body;
     }
 
+    public  JSONObject modificarDatosPersonales(String[] datosPersonales) {
+        datos.put("nombre",datosPersonales[0]);
+        datos.put("apellido",datosPersonales[1]);
+        datos.put("domicilio",datosPersonales[2]);
+        datos.put("mail",datosPersonales[3]);
+        datos.put("fNac",datosPersonales[4]);
+        datos.put("telefono",datosPersonales[5]);
+        return  new JSONObject(datos);
+    }
+
 }
