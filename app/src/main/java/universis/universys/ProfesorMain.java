@@ -58,7 +58,7 @@ public class ProfesorMain extends AppCompatActivity
             Toast.makeText(this, "Deben completarse todos los campos", Toast.LENGTH_LONG).show();
         } else {
             CHTTPRequest.postRequest(RequestTaskIds.NOTAS_PROFESOR,URLs.NOTAS_PROFESOR
-                    ,new JSONBuilder().fichadaAlumno(editTextCatedra.getText().toString()
+                    ,new JSONBuilder().requestGenerico(editTextCatedra.getText().toString()
                             ,editTextCarrera.getText().toString(), editTextMateria.getText().toString())).execute().addListener(this);
         }
     }
@@ -69,7 +69,7 @@ public class ProfesorMain extends AppCompatActivity
         HorizontalScrollView scrollViewTablaSolicitudes = (HorizontalScrollView) findViewById(R.id.sVTablaSolicitudes);
         scrollViewTablaSolicitudes.setVisibility(View.INVISIBLE);
         CHTTPRequest.postRequest(RequestTaskIds.VER_SOLICITUDES,URLs.VER_SOLICITUDES
-                ,new JSONBuilder().consultaDatosPersonales()).execute().addListener(this);
+                ,new JSONBuilder().requestBasico()).execute().addListener(this);
     }
 
     public void requestEnviarSolicitudes(View v) {
@@ -165,7 +165,7 @@ public class ProfesorMain extends AppCompatActivity
 
         if (id == R.id.nav_datosPersonales){
             CHTTPRequest.postRequest(RequestTaskIds.DATOS_PERSONALES,URLs.DATOS_PERSONALES
-                    ,new JSONBuilder().consultaDatosPersonales()).execute().addListener(this);
+                    ,new JSONBuilder().requestBasico()).execute().addListener(this);
             layoutVerNotas.setVisibility(View.INVISIBLE);
             layoutSolicitudes.setVisibility(View.INVISIBLE);
             layoutDatosPersonales.setVisibility(View.VISIBLE);

@@ -74,16 +74,20 @@ public class AlumnoMain extends AppCompatActivity
         } else {
             if(itemMenu == R.id.nav_asistencias) {
                 CHTTPRequest.postRequest(RequestTaskIds.FICHADA_ALUMNO, URLs.FICHADA_ALUMNO
-                        ,new JSONBuilder().fichadaAlumno(editTextCatedra.getText().toString()
+                        ,new JSONBuilder().requestGenerico(editTextCatedra.getText().toString()
                                 ,editTextCarrera.getText().toString(), editTextMateria.getText().toString())).execute().addListener(this);
             } else if(itemMenu == R.id.nav_notas) {
                 CHTTPRequest.postRequest(RequestTaskIds.NOTA_ALUMNO, URLs.NOTA_ALUMNO
-                        ,new JSONBuilder().fichadaAlumno(editTextCatedra.getText().toString()
+                        ,new JSONBuilder().requestGenerico(editTextCatedra.getText().toString()
                                 ,editTextCarrera.getText().toString(), editTextMateria.getText().toString())).execute().addListener(this);
 
             } else if (itemMenu == R.id.nav_horarios) {
                 CHTTPRequest.postRequest(RequestTaskIds.HORARIO_ALUMNO, URLs.HORARIO_ALUMNO
-                        ,new JSONBuilder().fichadaAlumno(editTextCatedra.getText().toString()
+                        ,new JSONBuilder().requestGenerico(editTextCatedra.getText().toString()
+                                ,editTextCarrera.getText().toString(), editTextMateria.getText().toString())).execute().addListener(this);
+            } else if (itemMenu == R.id.nav_baja) {
+                CHTTPRequest.postRequest(RequestTaskIds.BAJA_MATERIA, URLs.BAJA_MATERIA
+                        ,new JSONBuilder().requestGenerico(editTextCatedra.getText().toString()
                                 ,editTextCarrera.getText().toString(), editTextMateria.getText().toString())).execute().addListener(this);
             }
         }
@@ -114,24 +118,14 @@ public class AlumnoMain extends AppCompatActivity
         CHTTPRequest.postRequest(RequestTaskIds.MODIFICAR_DATOS_PERSONALES,URLs.MODIFICAR_DATOS_PERSONALES
                 ,new JSONBuilder().modificarDatosPersonales(datos)).execute().addListener(this);
     }
-    public void inscripcionesDisponibles(View v) {
+    public void inscripcionesDisponibles() {
         CHTTPRequest.postRequest(RequestTaskIds.MATERIAS_DISPONIBLES,URLs.MATERIAS_DISPONIBLES,
-                new JSONBuilder().consultaDatosPersonales()).execute().addListener(this);
-        LinearLayout layoutBajas = (LinearLayout) findViewById(R.id.layoutBajas);
+                new JSONBuilder().requestBasico()).execute().addListener(this);
         LinearLayout layoutInscripciones = (LinearLayout) findViewById(R.id.layoutInscripciones);
         LinearLayout inscripciones = (LinearLayout) findViewById(R.id.layoutInscripDisp);
         inscripciones.removeAllViews();
-        layoutBajas.setVisibility(View.INVISIBLE);
         layoutInscripciones.setVisibility(View.VISIBLE);
     }
-
-    public void bajasDisponibles(View v) {
-        LinearLayout layoutBajas = (LinearLayout) findViewById(R.id.layoutBajas);
-        LinearLayout layoutInscripciones = (LinearLayout) findViewById(R.id.layoutInscripciones);
-        layoutInscripciones.setVisibility(View.INVISIBLE);
-        layoutBajas.setVisibility(View.VISIBLE);
-    }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -201,16 +195,19 @@ public class AlumnoMain extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         itemMenu = item.getItemId();
+        editTextCarrera.setText("");
+        editTextCatedra.setText("");
+        editTextMateria.setText("");
         LinearLayout layoutDatosPersonales = (LinearLayout) findViewById(R.id.layoutDatosPersonales);
         LinearLayout layoutCalendario = (LinearLayout) findViewById(R.id.layoutCalendario);
         LinearLayout layoutFichadaAlumno = (LinearLayout) findViewById(R.id.layoutFichadaAlumno);
-        LinearLayout layoutMaterias = (LinearLayout) findViewById(R.id.layoutMaterias);
+        LinearLayout layoutInscripciones = (LinearLayout) findViewById(R.id.layoutInscripciones);
         frameLayoutRespuesta.setVisibility(View.INVISIBLE);
 
         if (itemMenu == R.id.nav_calendario) {
           CHTTPRequest.postRequest(RequestTaskIds.CALENDARIO_ALUMNO,URLs.CALENDARIO_ALUMNO,
-                    new JSONBuilder().consultaDatosPersonales()).execute().addListener(this);
-            layoutMaterias.setVisibility(View.INVISIBLE);
+                    new JSONBuilder().requestBasico()).execute().addListener(this);
+            layoutInscripciones.setVisibility(View.INVISIBLE);
             layoutDatosPersonales.setVisibility(View.INVISIBLE);
             layoutFichadaAlumno.setVisibility(View.INVISIBLE);
             calendarioAlumno.setDateSelected(calendarioAlumno.getSelectedDate(),false);
@@ -218,25 +215,28 @@ public class AlumnoMain extends AppCompatActivity
             layoutCalendario.setVisibility(View.VISIBLE);
         } else if (itemMenu == R.id.nav_datosPersonales){
             CHTTPRequest.postRequest(RequestTaskIds.DATOS_PERSONALES,URLs.DATOS_PERSONALES,
-                    new JSONBuilder().consultaDatosPersonales()).execute().addListener(this);
-            layoutMaterias.setVisibility(View.INVISIBLE);
+                    new JSONBuilder().requestBasico()).execute().addListener(this);
+            layoutInscripciones.setVisibility(View.INVISIBLE);
             layoutCalendario.setVisibility(View.INVISIBLE);
             layoutFichadaAlumno.setVisibility(View.INVISIBLE);
             layoutDatosPersonales.setVisibility(View.VISIBLE);
-        } else if (itemMenu == R.id.nav_asistencias || itemMenu == R.id.nav_notas || itemMenu == R.id.nav_horarios) {
+        } else if (itemMenu == R.id.nav_asistencias || itemMenu == R.id.nav_notas || itemMenu == R.id.nav_horarios
+                || itemMenu == R.id.nav_baja) {
             if(itemMenu == R.id.nav_asistencias) textViewOpcion.setText("Asistencias");
             else if(itemMenu == R.id.nav_notas) textViewOpcion.setText("Notas");
-            else textViewOpcion.setText("Horarios");
-            layoutMaterias.setVisibility(View.INVISIBLE);
+            else if(itemMenu == R.id.nav_horarios) textViewOpcion.setText("Horarios");
+            else textViewOpcion.setText("Darse de baja");
+            layoutInscripciones.setVisibility(View.INVISIBLE);
             layoutCalendario.setVisibility(View.INVISIBLE);
             layoutDatosPersonales.setVisibility(View.INVISIBLE);
             layoutFichadaAlumno.setVisibility(View.VISIBLE);
         }
-        else {
+        else if (itemMenu == R.id.nav_inscripcion) {
+            inscripcionesDisponibles();
             layoutCalendario.setVisibility(View.INVISIBLE);
             layoutDatosPersonales.setVisibility(View.INVISIBLE);
             layoutFichadaAlumno.setVisibility(View.INVISIBLE);
-            layoutMaterias.setVisibility(View.VISIBLE);
+            layoutInscripciones.setVisibility(View.VISIBLE);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -360,10 +360,19 @@ public class AlumnoMain extends AppCompatActivity
         else if (request.getTaskId() == RequestTaskIds.INSCRIPCION_MATERIA) {
             if (errorId.equals(Error.SUCCESS)) {
                 Toast.makeText(this,"Inscripción realizada exitosamente!",Toast.LENGTH_SHORT).show();
-                inscripcionesDisponibles(new View(this));
+                inscripcionesDisponibles();
             }
             else if (errorId.equals(Error.CACHE_ERROR))
                 Toast.makeText(this, Error.CACHE_ERROR_TEXT, Toast.LENGTH_SHORT).show();
+        }
+        else if (request.getTaskId() == RequestTaskIds.BAJA_MATERIA) {
+            if (errorId.equals(Error.SUCCESS)) {
+                Toast.makeText(this,"Te has dado te baja exitosamente!",Toast.LENGTH_SHORT).show();
+            }
+            else if(errorId.equals(Error.CATEDRA_ERROR)) Toast.makeText(this,Error.CATEDRA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
+            else if(errorId.equals(Error.CARRERA_ERROR)) Toast.makeText(this,Error.CARRERA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
+            else if(errorId.equals(Error.MATERIA_ERROR)) Toast.makeText(this,Error.MATERIA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
+            else if(errorId.equals(Error.CACHE_ERROR)) Toast.makeText(this,Error.CACHE_ERROR_TEXT,Toast.LENGTH_SHORT).show();
         }
         return false;
     }

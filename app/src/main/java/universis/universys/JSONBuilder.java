@@ -26,11 +26,11 @@ public class JSONBuilder {
         return new JSONObject(datos);
     }
 
-    public JSONObject consultaDatosPersonales() {
+    public JSONObject requestBasico() {
         return new JSONObject(datos);
     }
 
-    public JSONObject fichadaAlumno(String catedra, String carrera, String materia) {
+    public JSONObject requestGenerico(String catedra, String carrera, String materia) {
         datos.put("catedra",catedra);
         datos.put("carrera",carrera);
         datos.put("materia",materia);

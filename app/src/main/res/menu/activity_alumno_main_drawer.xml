@@ -15,9 +15,13 @@
             android:icon="@android:drawable/ic_menu_edit"
             android:title="Asistencias" />
         <item
-            android:id="@+id/nav_materias"
+            android:id="@+id/nav_inscripcion"
             android:icon="@android:drawable/ic_input_get"
-            android:title="Materias" />
+            android:title="Inscribirse a materia" />
+        <item
+            android:id="@+id/nav_baja"
+            android:icon="@android:drawable/ic_input_get"
+            android:title="Darse de baja a materia" />
         <item
             android:id="@+id/nav_notas"
             android:icon="@android:drawable/ic_input_get"

@@ -16,93 +16,29 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:id="@+id/layoutMaterias"
+            android:id="@+id/layoutInscripciones"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:visibility="invisible">
 
-            <LinearLayout
-                android:id="@+id/layoutAccion"
+            <TextView
+                android:id="@+id/tVInscripcionesDisponibles"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:text="Inscripciones Disponibles:"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
-                <Button
-                    android:id="@+id/botonInscribirse"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:onClick="inscripcionesDisponibles"
-                    android:text="Inscribirse a materia" />
-
-                <Button
-                    android:id="@+id/botonBaja"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:onClick="bajasDisponibles"
-                    android:text="Darse de baja" />
-            </LinearLayout>
-
-            <FrameLayout
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <LinearLayout
-                    android:id="@+id/layoutInscripciones"
+                    android:id="@+id/layoutInscripDisp"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:visibility="invisible">
-
-                    <TextView
-                        android:id="@+id/tVInscripcionesDisponibles"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Inscripciones Disponibles:"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-
-                    <ScrollView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <LinearLayout
-                            android:id="@+id/layoutInscripDisp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical" />
-                    </ScrollView>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/layoutBajas"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:visibility="invisible">
-
-                    <TextView
-                        android:id="@+id/tVBajasDisponibles"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Bajas Disponibles"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-
-                    <ScrollView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <LinearLayout
-                            android:id="@+id/layoutBajasDisp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical" />
-                    </ScrollView>
-                </LinearLayout>
-
-            </FrameLayout>
-
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+            </ScrollView>
         </LinearLayout>
 
         <LinearLayout

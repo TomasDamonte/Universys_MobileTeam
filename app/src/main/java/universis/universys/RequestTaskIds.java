@@ -13,4 +13,5 @@ public class RequestTaskIds {
     public static final int MODIFICAR_DATOS_PERSONALES = 10;
     public static final int INSCRIPCION_MATERIA = 11;
     public static final int MATERIAS_DISPONIBLES = 12;
+    public static final int BAJA_MATERIA = 13;
 }
