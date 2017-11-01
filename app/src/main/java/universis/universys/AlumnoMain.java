@@ -58,6 +58,7 @@ public class AlumnoMain extends AppCompatActivity
     private FrameLayout frameLayoutRespuesta;
     private MaterialCalendarView calendarioAlumno;
     private LinearLayout linearLayoutHorarios;
+    private HashMap<Integer,String> idCursada;
 
     public void enviarRequest(View v) {
 
@@ -113,6 +114,24 @@ public class AlumnoMain extends AppCompatActivity
         CHTTPRequest.postRequest(RequestTaskIds.MODIFICAR_DATOS_PERSONALES,URLs.MODIFICAR_DATOS_PERSONALES
                 ,new JSONBuilder().modificarDatosPersonales(datos)).execute().addListener(this);
     }
+    public void inscripcionesDisponibles(View v) {
+        CHTTPRequest.postRequest(RequestTaskIds.MATERIAS_DISPONIBLES,URLs.MATERIAS_DISPONIBLES,
+                new JSONBuilder().consultaDatosPersonales()).execute().addListener(this);
+        LinearLayout layoutBajas = (LinearLayout) findViewById(R.id.layoutBajas);
+        LinearLayout layoutInscripciones = (LinearLayout) findViewById(R.id.layoutInscripciones);
+        LinearLayout inscripciones = (LinearLayout) findViewById(R.id.layoutInscripDisp);
+        inscripciones.removeAllViews();
+        layoutBajas.setVisibility(View.INVISIBLE);
+        layoutInscripciones.setVisibility(View.VISIBLE);
+    }
+
+    public void bajasDisponibles(View v) {
+        LinearLayout layoutBajas = (LinearLayout) findViewById(R.id.layoutBajas);
+        LinearLayout layoutInscripciones = (LinearLayout) findViewById(R.id.layoutInscripciones);
+        layoutInscripciones.setVisibility(View.INVISIBLE);
+        layoutBajas.setVisibility(View.VISIBLE);
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -185,11 +204,13 @@ public class AlumnoMain extends AppCompatActivity
         LinearLayout layoutDatosPersonales = (LinearLayout) findViewById(R.id.layoutDatosPersonales);
         LinearLayout layoutCalendario = (LinearLayout) findViewById(R.id.layoutCalendario);
         LinearLayout layoutFichadaAlumno = (LinearLayout) findViewById(R.id.layoutFichadaAlumno);
+        LinearLayout layoutMaterias = (LinearLayout) findViewById(R.id.layoutMaterias);
         frameLayoutRespuesta.setVisibility(View.INVISIBLE);
 
         if (itemMenu == R.id.nav_calendario) {
           CHTTPRequest.postRequest(RequestTaskIds.CALENDARIO_ALUMNO,URLs.CALENDARIO_ALUMNO,
                     new JSONBuilder().consultaDatosPersonales()).execute().addListener(this);
+            layoutMaterias.setVisibility(View.INVISIBLE);
             layoutDatosPersonales.setVisibility(View.INVISIBLE);
             layoutFichadaAlumno.setVisibility(View.INVISIBLE);
             calendarioAlumno.setDateSelected(calendarioAlumno.getSelectedDate(),false);
@@ -198,6 +219,7 @@ public class AlumnoMain extends AppCompatActivity
         } else if (itemMenu == R.id.nav_datosPersonales){
             CHTTPRequest.postRequest(RequestTaskIds.DATOS_PERSONALES,URLs.DATOS_PERSONALES,
                     new JSONBuilder().consultaDatosPersonales()).execute().addListener(this);
+            layoutMaterias.setVisibility(View.INVISIBLE);
             layoutCalendario.setVisibility(View.INVISIBLE);
             layoutFichadaAlumno.setVisibility(View.INVISIBLE);
             layoutDatosPersonales.setVisibility(View.VISIBLE);
@@ -205,9 +227,16 @@ public class AlumnoMain extends AppCompatActivity
             if(itemMenu == R.id.nav_asistencias) textViewOpcion.setText("Asistencias");
             else if(itemMenu == R.id.nav_notas) textViewOpcion.setText("Notas");
             else textViewOpcion.setText("Horarios");
+            layoutMaterias.setVisibility(View.INVISIBLE);
             layoutCalendario.setVisibility(View.INVISIBLE);
             layoutDatosPersonales.setVisibility(View.INVISIBLE);
             layoutFichadaAlumno.setVisibility(View.VISIBLE);
+        }
+        else {
+            layoutCalendario.setVisibility(View.INVISIBLE);
+            layoutDatosPersonales.setVisibility(View.INVISIBLE);
+            layoutFichadaAlumno.setVisibility(View.INVISIBLE);
+            layoutMaterias.setVisibility(View.VISIBLE);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -218,7 +247,7 @@ public class AlumnoMain extends AppCompatActivity
     @Override
     public boolean onResponse(CHTTPRequest request, String response) {
         frameLayoutRespuesta.setVisibility(View.VISIBLE);
-        String errorId = null;
+        String errorId = "";
         try {
             errorId = request.getJsonResponse().getString(Error.ERROR_ID);
         } catch (JSONException e) {
@@ -314,11 +343,71 @@ public class AlumnoMain extends AppCompatActivity
                 Toast.makeText(this, Error.EMAIL_REPETIDO_ERROR_TEXT, Toast.LENGTH_SHORT).show();
             else if (errorId.equals(Error.CAMPOS_INCOMPLETOS_ERROR))
                 Toast.makeText(this, Error.CAMPOS_INCOMPLETOS_ERROR_TEXT, Toast.LENGTH_SHORT).show();
+            else if(errorId.equals(Error.CACHE_ERROR))
+                Toast.makeText(this,Error.CACHE_ERROR_TEXT,Toast.LENGTH_SHORT).show();
+        }
+        else if (request.getTaskId() == RequestTaskIds.MATERIAS_DISPONIBLES){
+            if (errorId.equals(Error.SUCCESS)) {
+                try {
+                    mostrarInscripciones(request.getJsonResponse());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            else if (errorId.equals(Error.CACHE_ERROR))
+                Toast.makeText(this, Error.CACHE_ERROR_TEXT, Toast.LENGTH_SHORT).show();
+        }
+        else if (request.getTaskId() == RequestTaskIds.INSCRIPCION_MATERIA) {
+            if (errorId.equals(Error.SUCCESS)) {
+                Toast.makeText(this,"Inscripción realizada exitosamente!",Toast.LENGTH_SHORT).show();
+                inscripcionesDisponibles(new View(this));
+            }
+            else if (errorId.equals(Error.CACHE_ERROR))
+                Toast.makeText(this, Error.CACHE_ERROR_TEXT, Toast.LENGTH_SHORT).show();
         }
         return false;
     }
 
-    private void mostrarHorarios(JSONObject datos) throws JSONException {
+    private void mostrarInscripciones(JSONObject datos) throws JSONException {
+        JSONArray inscripcionesDisponibles = datos.getJSONArray("inscripcionesDisponibles");
+        LinearLayout inscripciones = (LinearLayout) findViewById(R.id.layoutInscripDisp);
+        idCursada = new HashMap<>();
+        for(int i=0;i<inscripcionesDisponibles.length();i++) {
+            String texto = "";
+            EditText editText = new EditText(this);
+            JSONObject materias = inscripcionesDisponibles.getJSONObject(i);
+            texto = texto +"Materia: " + materias.getString("nombre") + "\n";
+            JSONArray catedras = materias.getJSONArray("catedras");
+            for(int j=0;j<catedras.length();j++) {
+                JSONObject cursadas = catedras.getJSONObject(j);
+                texto = texto + "Catedra: " + cursadas.getString("catedra")+ "\n";
+                JSONArray horarios = cursadas.getJSONArray("cursadas");
+                for(int k=0;k<horarios.length();k++) {
+                    JSONObject clase = horarios.getJSONObject(k);
+                    texto = texto + "Horarios:\n" + mostrarHorarios(clase) + "\n";
+
+                    editText.setText(texto);
+                    Button inscribir = new Button(this);
+                    inscribir.setId(i);
+                    editText.setFocusable(false);
+                    inscribir.setText("Inscribirse");
+                    idCursada.put(i,clase.getString("idCursada"));
+                    inscribir.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            CHTTPRequest.postRequest(RequestTaskIds.INSCRIPCION_MATERIA,URLs.INSCRIPCION_MATERIA,
+                                    new JSONBuilder().inscripcionAMateria(idCursada.get(v.getId()))).execute().addListener(AlumnoMain.this);
+                        }
+                    });
+                    inscripciones.addView(editText);
+                    inscripciones.addView(inscribir);
+                }
+            }
+        }
+
+    }
+
+    private String mostrarHorarios(JSONObject datos) throws JSONException {
 
         JSONArray JSONArrayHorarios = datos.getJSONArray("horario");
         String texto = "Teoría:\n";
@@ -347,6 +436,7 @@ public class AlumnoMain extends AppCompatActivity
             texto = texto + (Integer.parseInt(teoria.charAt(2)+"", 16) + 7) + "hs.\n";
         }
         editTextHorario.setText(texto);
+        return texto;
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)

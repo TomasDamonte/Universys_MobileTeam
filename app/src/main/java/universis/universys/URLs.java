@@ -12,5 +12,7 @@ public class URLs {
     public static final String VER_SOLICITUDES = "http://jsonplaceholder.typicode.com/posts";
     public static final String ACEPTAR_SOLICITUDES = "http://jsonplaceholder.typicode.com/posts";
     public static final String MODIFICAR_DATOS_PERSONALES = "http://jsonplaceholder.typicode.com/posts";
+    public static final String INSCRIPCION_MATERIA = "http://jsonplaceholder.typicode.com/posts";
+    public static final String MATERIAS_DISPONIBLES = "http://jsonplaceholder.typicode.com/posts";
 
 }

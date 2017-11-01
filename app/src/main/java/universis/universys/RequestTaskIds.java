@@ -11,4 +11,6 @@ public class RequestTaskIds {
     public static final int VER_SOLICITUDES = 8;
     public static final int ACEPTAR_SOLICITUDES = 9;
     public static final int MODIFICAR_DATOS_PERSONALES = 10;
+    public static final int INSCRIPCION_MATERIA = 11;
+    public static final int MATERIAS_DISPONIBLES = 12;
 }

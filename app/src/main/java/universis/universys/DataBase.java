@@ -155,6 +155,19 @@ public class DataBase {
         if(request.getTaskId() == RequestTaskIds.ACEPTAR_SOLICITUDES) {
             return new JSONObject().put(Error.ERROR_ID,Error.SUCCESS);
         }
+
+        if(request.getTaskId() == RequestTaskIds.MATERIAS_DISPONIBLES) {
+            JSONArray horario = new JSONArray().put(0,"4C1;30D").put(1,"13B;2F7");
+            JSONObject cursadas = new JSONObject().put("idCursada","123").put("horario",horario);
+            JSONObject catedras = new JSONObject().put("catedra","didier").put("cursadas",new JSONArray().put(cursadas));
+            JSONObject catedras2 = new JSONObject().put("nombre","matematica").put("catedras",new JSONArray().put(catedras));
+            JSONObject disponibles = new JSONObject().put(Error.ERROR_ID,Error.SUCCESS).put("inscripcionesDisponibles",new JSONArray().put(catedras2));
+            return disponibles;
+        }
+
+        if(request.getTaskId() == RequestTaskIds.INSCRIPCION_MATERIA) {
+            return new JSONObject().put(Error.ERROR_ID,Error.SUCCESS);
+        }
         return null;
     }
 }
