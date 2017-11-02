@@ -13,7 +13,7 @@
         <item
             android:id="@+id/nav_asistencias"
             android:icon="@android:drawable/ic_menu_edit"
-            android:title="Asistencias" />
+            android:title="Ver Asistencias" />
         <item
             android:id="@+id/nav_cargarNotas"
             android:icon="@android:drawable/ic_input_get"

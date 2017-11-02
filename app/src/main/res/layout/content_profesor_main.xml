@@ -228,6 +228,12 @@
             android:orientation="vertical"
             android:visibility="invisible">
 
+            <TextView
+                android:id="@+id/textViewOpcion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
             <LinearLayout
                 android:id="@+id/linearLayoutCatedra"
                 android:layout_width="wrap_content"
@@ -304,22 +310,43 @@
                 android:id="@+id/buttonEnviarRequest"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="requestVerNotas"
+                android:onClick="enviarRequest"
                 android:text="OK" />
 
-            <ScrollView
-                android:id="@+id/scrollViewTablaNotas"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:gravity="center_horizontal">
+            <FrameLayout
+                android:id="@+id/frameLayoutRespuesta"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-                <TableLayout
-                    android:id="@+id/tablaNotas"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">       
-                </TableLayout>
-            </ScrollView>
+                <ScrollView
+                    android:id="@+id/scrollViewTablaAsistencias"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
+                    android:gravity="center_horizontal">
+
+                    <TableLayout
+                        android:id="@+id/tablaAsistencias"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                    </TableLayout>
+                </ScrollView>
+
+                <ScrollView
+                    android:id="@+id/scrollViewTablaNotas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
+                    android:gravity="center_horizontal">
+
+                    <TableLayout
+                        android:id="@+id/tablaNotas"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">       
+                    </TableLayout>
+                </ScrollView>
+            </FrameLayout>
 
         </LinearLayout>
 

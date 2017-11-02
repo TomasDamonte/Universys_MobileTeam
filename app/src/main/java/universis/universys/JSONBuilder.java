@@ -20,9 +20,9 @@ public class JSONBuilder {
         datos.put("idSesion",LoginActivity.ID_SESION);
     }
 
-    public JSONObject logIn() {
-        datos.put("mail",LoginActivity.EMAIL);
-        datos.put("password",LoginActivity.PASSWORD);
+    public JSONObject logIn(String email, String password) {
+        datos.put("mail",email);
+        datos.put("password",password);
         return new JSONObject(datos);
     }
 

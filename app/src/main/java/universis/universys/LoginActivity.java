@@ -36,8 +36,6 @@ public class LoginActivity extends AppCompatActivity{
     private View mProgressView;
     private View mLoginFormView;
     public static String ID_SESION;
-    public static String EMAIL;
-    public static String PASSWORD;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +44,13 @@ public class LoginActivity extends AppCompatActivity{
         setContentView(R.layout.activity_login);
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-
-
         mPasswordView = (EditText) findViewById(R.id.password);
+        mEmailView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                mPasswordView.setText("");
+            }
+        });
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -125,12 +127,10 @@ public class LoginActivity extends AppCompatActivity{
     }
 
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
         return email.contains("@");
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
         return password.length() > 4;
     }
 
@@ -166,9 +166,7 @@ public class LoginActivity extends AppCompatActivity{
     public class UserLoginTask implements IRequestListener {
 
         UserLoginTask(String email, String password) {
-            LoginActivity.EMAIL = email;
-            LoginActivity.PASSWORD = password;
-           CHTTPRequest.postRequest(RequestTaskIds.LOGIN,URLs.LOGIN,new JSONBuilder().logIn()).execute().addListener(this);
+           CHTTPRequest.postRequest(RequestTaskIds.LOGIN,URLs.LOGIN,new JSONBuilder().logIn(email,password)).execute().addListener(this);
         }
 
         @Override

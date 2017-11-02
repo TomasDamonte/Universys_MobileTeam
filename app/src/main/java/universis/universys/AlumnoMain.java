@@ -278,7 +278,6 @@ public class AlumnoMain extends AppCompatActivity
             } else if(errorId.equals(Error.CACHE_ERROR)) Toast.makeText(this,Error.CACHE_ERROR_TEXT,Toast.LENGTH_SHORT).show();
         }
         else if(request.getTaskId() == RequestTaskIds.DATOS_PERSONALES) {
-
             if(errorId.equals(Error.SUCCESS)) {
                 try {
                     editTextNombre.setText(request.getJsonResponse().getString("nombre"));
@@ -291,7 +290,6 @@ public class AlumnoMain extends AppCompatActivity
                     e.printStackTrace();
                 }
             } else if(errorId.equals(Error.CACHE_ERROR)) Toast.makeText(this,Error.CACHE_ERROR_TEXT,Toast.LENGTH_SHORT).show();
-
         }
         else if (request.getTaskId() == RequestTaskIds.FICHADA_ALUMNO) {
             try {
@@ -307,7 +305,6 @@ public class AlumnoMain extends AppCompatActivity
             }
         }
         else if (request.getTaskId() == RequestTaskIds.NOTA_ALUMNO) {
-
             if(errorId.equals(Error.SUCCESS)) {
                 textViewNota.setVisibility(View.VISIBLE);
                 try {
@@ -320,7 +317,6 @@ public class AlumnoMain extends AppCompatActivity
             else if(errorId.equals(Error.CARRERA_ERROR)) Toast.makeText(this,Error.CARRERA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
             else if(errorId.equals(Error.MATERIA_ERROR)) Toast.makeText(this,Error.MATERIA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
             else if(errorId.equals(Error.CACHE_ERROR)) Toast.makeText(this,Error.CACHE_ERROR_TEXT,Toast.LENGTH_SHORT).show();
-
         }
         else if(request.getTaskId() == RequestTaskIds.HORARIO_ALUMNO) {
             if(errorId.equals(Error.SUCCESS)) {
@@ -394,7 +390,6 @@ public class AlumnoMain extends AppCompatActivity
                 for(int k=0;k<horarios.length();k++) {
                     JSONObject clase = horarios.getJSONObject(k);
                     texto = texto + "Horarios:\n" + mostrarHorarios(clase) + "\n";
-
                     editText.setText(texto);
                     Button inscribir = new Button(this);
                     inscribir.setId(i);
@@ -417,10 +412,8 @@ public class AlumnoMain extends AppCompatActivity
     }
 
     private String mostrarHorarios(JSONObject datos) throws JSONException {
-
         JSONArray JSONArrayHorarios = datos.getJSONArray("horario");
         String texto = "Teoría:\n";
-
         for(int i=0;i<JSONArrayHorarios.length();i++) {
             String teoria = JSONArrayHorarios.getString(i).split(";")[0];
             if((teoria.charAt(0)+"").equals("0")) texto = texto + "Lunes de ";
