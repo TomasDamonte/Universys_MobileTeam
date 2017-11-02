@@ -11,8 +11,11 @@ public class TestDataBase {
 
     @Test
     public void testRespuestaDB() throws Exception {
-        JSONObject expected = new JSONObject().put("errorId", "200").put("tipo", "alumno");
+        String expected = "200";
         JSONObject test = new JSONObject().put("mail", "alumno@alumno").put("password", "alumno");
-        assertEquals(expected,DataBase.respuestaDB(test));
+        JSONObject respuesta =(JSONObject) DataBase.respuestaDB(CHTTPRequest.postRequest(RequestTaskIds.LOGIN,URLs.LOGIN, test));
+        assertEquals(expected,respuesta.getString("errorId"));
+        expected = "alumno";
+        assertEquals(expected,respuesta.getString("tipo"));
     }
 }
