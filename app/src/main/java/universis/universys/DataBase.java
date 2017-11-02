@@ -46,7 +46,7 @@ public class DataBase {
             return db.get(aux).put(Error.ERROR_ID, Error.SUCCESS);
         }
 
-        if(request.getTaskId() == RequestTaskIds.NOTA_ALUMNO || request.getTaskId() == RequestTaskIds.BAJA_MATERIA) {
+        if(request.getTaskId() == RequestTaskIds.NOTA_ALUMNO || request.getTaskId() == RequestTaskIds.BAJA_MATERIA || request.getTaskId() == RequestTaskIds.CARGAR_NOTAS) {
             JSONObject db2 = new JSONObject().put("catedra","a").put("carrera","b").put("materia","c").put("nota","9");
 
             if(jsonReq.getString("catedra").equals(db2.getString("catedra")) && jsonReq.getString("carrera").equals(db2.getString("carrera")) && jsonReq.getString("materia").equals(db2.getString("materia")))
@@ -147,7 +147,7 @@ public class DataBase {
         if(request.getTaskId() == RequestTaskIds.VER_ASISTENCIAS) {
             JSONArray jsonArray = new JSONArray();
             for(int i=1;i<=10;i++) {
-                JSONObject alumno = new JSONObject().put("nombre", "Juan Pérez").put("asistencias", i+"%");
+                JSONObject alumno = new JSONObject().put("nombre", "Juan Pérez").put("asistencias", (i+10)+"%");
                 jsonArray.put(alumno);
             }
             JSONObject db2 = new JSONObject().put("asistencias",jsonArray);
@@ -185,6 +185,7 @@ public class DataBase {
             JSONObject disponibles = new JSONObject().put(Error.ERROR_ID,Error.SUCCESS).put("inscripcionesDisponibles",new JSONArray().put(catedras2));
             return disponibles;
         }
+
         return null;
     }
 }

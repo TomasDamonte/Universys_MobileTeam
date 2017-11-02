@@ -45,6 +45,8 @@ public class ProfesorMain extends AppCompatActivity
     private EditText editTextFNac;
     private EditText editTextTelefono;
     private EditText editTextCatedra;
+    private EditText editTextAlumno;
+    private EditText editTextNota;
     private EditText editTextCarrera;
     private EditText editTextMateria;
     private HashMap<Integer,String> idSolicitud;
@@ -70,6 +72,21 @@ public class ProfesorMain extends AppCompatActivity
             CHTTPRequest.postRequest(RequestTaskIds.NOTAS_PROFESOR,URLs.NOTAS_PROFESOR
                     ,new JSONBuilder().requestGenerico(editTextCatedra.getText().toString()
                             ,editTextCarrera.getText().toString(), editTextMateria.getText().toString())).execute().addListener(this);
+        }
+
+        else if (itemMenu == R.id.nav_cargarNotas) {
+            if (editTextAlumno.getText().toString().equals("") || editTextNota.getText().toString().equals("")) {
+                Toast.makeText(this, "Deben completarse todos los campos", Toast.LENGTH_LONG).show();
+            }
+            else if (Integer.parseInt( editTextNota.getText().toString())>10 || Integer.parseInt( editTextNota.getText().toString())<1) {
+                Toast.makeText(this, "Nota inválida", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                CHTTPRequest.postRequest(RequestTaskIds.CARGAR_NOTAS,URLs.CARGAR_NOTAS
+                        ,new JSONBuilder().requestGenerico(editTextCatedra.getText().toString()
+                                ,editTextCarrera.getText().toString(), editTextMateria.getText().toString()
+                                ,editTextAlumno.getText().toString(),editTextNota.getText().toString())).execute().addListener(this);
+            }
         }
         else {
             CHTTPRequest.postRequest(RequestTaskIds.VER_ASISTENCIAS,URLs.VER_ASISTENCIAS
@@ -101,6 +118,14 @@ public class ProfesorMain extends AppCompatActivity
         editTextFNac.setFocusableInTouchMode(true);
         editTextTelefono.setFocusableInTouchMode(true);
         findViewById(R.id.buttonEnviarDatosProfesor).setEnabled(true);
+    }
+
+    public void blanquearCampos() {
+        editTextCarrera.setText("");
+        editTextCatedra.setText("");
+        editTextMateria.setText("");
+        editTextNota.setText("");
+        editTextAlumno.setText("");
     }
 
     public void enviarDatosProfesor(View v) {
@@ -142,6 +167,8 @@ public class ProfesorMain extends AppCompatActivity
         editTextCatedra = (EditText) findViewById(R.id.editTextCatedra);
         editTextCarrera = (EditText) findViewById(R.id.editTextCarrera);
         editTextMateria = (EditText) findViewById(R.id.editTextMateria);
+        editTextAlumno = (EditText) findViewById(R.id.editTextAlumno);
+        editTextNota = (EditText) findViewById(R.id.editTextNota);
         textViewOpcion = (TextView) findViewById(R.id.textViewOpcion);
         tablaNotas = (TableLayout) findViewById(R.id.tablaNotas);
         tablaAsistencias = (TableLayout) findViewById(R.id.tablaAsistencias);
@@ -172,20 +199,19 @@ public class ProfesorMain extends AppCompatActivity
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
         return super.onOptionsItemSelected(item);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        editTextCarrera.setText("");
-        editTextCatedra.setText("");
-        editTextMateria.setText("");
+        blanquearCampos();
         itemMenu = item.getItemId();
         LinearLayout layoutDatosPersonales = (LinearLayout) findViewById(R.id.layoutDatosPersonales);
         LinearLayout layoutVerNotas = (LinearLayout) findViewById(R.id.layoutVerNotas);
         LinearLayout layoutSolicitudes = (LinearLayout) findViewById(R.id.layoutSolicitudes);
+        LinearLayout layoutAlumno = (LinearLayout) findViewById(R.id.linearLayoutAlumno);
+        LinearLayout layoutNota = (LinearLayout) findViewById(R.id.linearLayoutNota);
         frameLayoutRespuesta.setVisibility(View.INVISIBLE);
 
         if (itemMenu == R.id.nav_datosPersonales){
@@ -198,6 +224,8 @@ public class ProfesorMain extends AppCompatActivity
         else if (itemMenu == R.id.nav_verNotas || itemMenu == R.id.nav_asistencias) {
             if (itemMenu == R.id.nav_verNotas) textViewOpcion.setText("Ver Notas");
             else textViewOpcion.setText("Ver Asistencias");
+            layoutAlumno.setVisibility(View.INVISIBLE);
+            layoutNota.setVisibility(View.INVISIBLE);
             layoutDatosPersonales.setVisibility(View.INVISIBLE);
             layoutSolicitudes.setVisibility(View.INVISIBLE);
             layoutVerNotas.setVisibility(View.VISIBLE);
@@ -207,6 +235,15 @@ public class ProfesorMain extends AppCompatActivity
             layoutVerNotas.setVisibility(View.INVISIBLE);
             requestVerSolicitudes();
             layoutSolicitudes.setVisibility(View.VISIBLE);
+        }
+
+        else {
+            textViewOpcion.setText("Cargar Nota");
+            layoutDatosPersonales.setVisibility(View.INVISIBLE);
+            layoutSolicitudes.setVisibility(View.INVISIBLE);
+            layoutAlumno.setVisibility(View.VISIBLE);
+            layoutNota.setVisibility(View.VISIBLE);
+            layoutVerNotas.setVisibility(View.VISIBLE);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -276,6 +313,16 @@ public class ProfesorMain extends AppCompatActivity
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            }
+            else if(errorId.equals(Error.CATEDRA_ERROR)) Toast.makeText(this,Error.CATEDRA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
+            else if(errorId.equals(Error.CARRERA_ERROR)) Toast.makeText(this,Error.CARRERA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
+            else if(errorId.equals(Error.MATERIA_ERROR)) Toast.makeText(this,Error.MATERIA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
+            else if(errorId.equals(Error.CACHE_ERROR)) Toast.makeText(this,Error.CACHE_ERROR_TEXT,Toast.LENGTH_SHORT).show();
+        }
+        else if (request.getTaskId() == RequestTaskIds.CARGAR_NOTAS) {
+            blanquearCampos();
+            if (errorId.equals(Error.SUCCESS)) {
+                Toast.makeText(this,"Nota cargada correctamente",Toast.LENGTH_SHORT).show();
             }
             else if(errorId.equals(Error.CATEDRA_ERROR)) Toast.makeText(this,Error.CATEDRA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
             else if(errorId.equals(Error.CARRERA_ERROR)) Toast.makeText(this,Error.CARRERA_ERROR_TEXT,Toast.LENGTH_SHORT).show();

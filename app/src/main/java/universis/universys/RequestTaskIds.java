@@ -15,4 +15,5 @@ public class RequestTaskIds {
     public static final int MATERIAS_DISPONIBLES = 12;
     public static final int BAJA_MATERIA = 13;
     public static final int VER_ASISTENCIAS = 14;
+    public static final int CARGAR_NOTAS = 15;
 }

@@ -37,6 +37,15 @@ public class JSONBuilder {
         return new JSONObject(datos);
     }
 
+    public JSONObject requestGenerico(String catedra, String carrera, String materia, String alumno, String nota) {
+        datos.put("catedra",catedra);
+        datos.put("carrera",carrera);
+        datos.put("materia",materia);
+        datos.put("alumno",alumno);
+        datos.put("nota",nota);
+        return new JSONObject(datos);
+    }
+
     public JSONObject enviarSolicitudesInscripcion(HashMap<String,String> solicitudes) {
         JSONObject body = new JSONObject(datos);
         try {
