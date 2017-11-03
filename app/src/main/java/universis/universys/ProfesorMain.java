@@ -34,6 +34,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class ProfesorMain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, IRequestListener, View.OnClickListener {
@@ -50,7 +51,7 @@ public class ProfesorMain extends AppCompatActivity
     private EditText editTextCarrera;
     private EditText editTextMateria;
     private HashMap<Integer,String> idSolicitud;
-    private HashMap<String,String> estadoSolicitud;
+    private LinkedHashMap<String,String> estadoSolicitud;
     private int itemMenu;
     private TextView textViewOpcion;
     private ScrollView sVNotas;
@@ -451,7 +452,7 @@ public class ProfesorMain extends AppCompatActivity
         fila.setBackgroundColor(Color.BLACK);
         tablaSolicitudes.addView(fila);
         idSolicitud = new HashMap<>();
-        estadoSolicitud = new HashMap<>();
+        estadoSolicitud = new LinkedHashMap<>();
         for (int i=0;i<datos.length();i++) {
             fila = new TableRow(this);
             tVcatedra = new TextView(this);

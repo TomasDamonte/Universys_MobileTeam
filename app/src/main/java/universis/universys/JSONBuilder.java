@@ -8,16 +8,20 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class JSONBuilder {
 
     public static final String APIVER = "1.0";
-    private HashMap<String,String> datos;
+    private LinkedHashMap<String,String> datos;
 
     public JSONBuilder() {
-        datos = new HashMap<>();
+        datos = new LinkedHashMap<>();
         datos.put("apiVer",APIVER);
-        datos.put("idSesion",LoginActivity.ID_SESION);
+        if (LoginActivity.ID_SESION != null)
+            datos.put("idSesion",LoginActivity.ID_SESION);
+        else
+            datos.put("idSesion","000");
     }
 
     public JSONObject logIn(String email, String password) {
@@ -46,10 +50,10 @@ public class JSONBuilder {
         return new JSONObject(datos);
     }
 
-    public JSONObject enviarSolicitudesInscripcion(HashMap<String,String> solicitudes) {
+    public JSONObject enviarSolicitudesInscripcion(LinkedHashMap<String,String> solicitudes) {
         JSONObject body = new JSONObject(datos);
         try {
-            body.put("solicitudes",new JSONObject(solicitudes));
+            body.put("solicitudes",solicitudes);
         } catch (JSONException e) {
             e.printStackTrace();
         }
