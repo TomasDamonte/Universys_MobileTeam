@@ -362,7 +362,7 @@ public class AlumnoMain extends AppCompatActivity
         }catch (JSONException e) {
             e.printStackTrace();
         }
-        calendarioAlumno.addDecorator(new CalendarDecorator(dias));
+        calendarioAlumno.addDecorator(new CalendarDecorator(dias,Color.RED));
     }
 
     private void taskMateriasDisponibles(JSONObject datos) throws JSONException {

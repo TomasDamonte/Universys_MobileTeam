@@ -14,8 +14,8 @@ public class CalendarDecorator implements DayViewDecorator {
     private final int color;
     private final HashSet<CalendarDay> dates;
 
-    public CalendarDecorator(Collection<CalendarDay> dates) {
-        this.color = Color.RED;
+    public CalendarDecorator(Collection<CalendarDay> dates,int color) {
+        this.color = color;
         this.dates = new HashSet<>(dates);
     }
 

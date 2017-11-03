@@ -1,6 +1,7 @@
 package universis.universys;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -13,6 +14,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
 import android.widget.LinearLayout;
+
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+
+import java.util.Calendar;
+import java.util.HashSet;
 
 public class VistaInicial extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -38,6 +45,7 @@ public class VistaInicial extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        cargarCalendarioPublico();
     }
 
     @Override
@@ -69,24 +77,23 @@ public class VistaInicial extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         LinearLayout layoutContacto = (LinearLayout) findViewById(R.id.layoutContacto);
-        WebView webCalendario = (WebView) findViewById(R.id.webCalendario);
+        LinearLayout layoutCalendario = (LinearLayout) findViewById(R.id.layoutCalendario);
         LinearLayout layoutHistoria = (LinearLayout) findViewById(R.id.layoutHistoria);
         int id = item.getItemId();
         switch (id){
             case R.id.nav_contacto:
-                webCalendario.setVisibility(View.INVISIBLE);
+                layoutCalendario.setVisibility(View.INVISIBLE);
                 layoutHistoria.setVisibility(View.INVISIBLE);
                 layoutContacto.setVisibility(View.VISIBLE);
                 break;
             case R.id.nav_calendario:
                 layoutContacto.setVisibility(View.INVISIBLE);
                 layoutHistoria.setVisibility(View.INVISIBLE);
-                webCalendario.setVisibility(View.VISIBLE);
-                webCalendario.loadUrl("http://www.ub.edu.ar/academico.php?opcion=calendarios");
+                layoutCalendario.setVisibility(View.VISIBLE);
                 break;
             case R.id.nav_historia:
                 layoutContacto.setVisibility(View.INVISIBLE);
-                webCalendario.setVisibility(View.INVISIBLE);
+                layoutCalendario.setVisibility(View.INVISIBLE);
                 layoutHistoria.setVisibility(View.VISIBLE);
                 break;
         }
@@ -97,6 +104,40 @@ public class VistaInicial extends AppCompatActivity
     private void closeDrawer() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+    }
+
+    private void cargarCalendarioPublico() {
+
+        MaterialCalendarView calendarioPublico = (MaterialCalendarView) findViewById(R.id.calendarioPublico);
+        HashSet<CalendarDay> dias = new HashSet<>();
+        for(int i=15;i<=30;i++){
+            dias.add(new CalendarDay(2017,6,i));
+        }
+        for(int i=1;i<=30;i++){
+            dias.add(new CalendarDay(2017,11,i));
+        }
+        calendarioPublico.addDecorator(new CalendarDecorator(dias, Color.RED));
+
+        dias = new HashSet<>();
+        for(int i= 2;i<=5;i++){
+            for (int j=1;j<=31;j++){
+                dias.add(new CalendarDay(2017,i,j));
+            }
+        }
+        for(int i= 7;i<=10;i++){
+            for (int j=1;j<=31;j++){
+                dias.add(new CalendarDay(2017,i,j));
+            }
+        }
+
+        calendarioPublico.addDecorator(new CalendarDecorator(dias, Color.GREEN));
+
+
+
+
+
+
+
     }
 }
 
