@@ -68,7 +68,6 @@ public class JSONBuilder {
 
     public JSONObject inscripcionAMateria(String idCursada) {
         datos.put("idCursada",idCursada);
-        Log.v("asd",new JSONObject(datos).toString());
         return new JSONObject(datos);
     }
 

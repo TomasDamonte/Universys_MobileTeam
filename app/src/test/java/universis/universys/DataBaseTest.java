@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 public class DataBaseTest {
 
     @Test
-    public void testRespuestaDB() throws Exception {
+    public void respuestaDB() throws Exception {
         String expected = "200";
         JSONObject test = new JSONObject().put("mail", "alumno@alumno").put("password", "alumno");
         JSONObject respuesta =(JSONObject) DataBase.respuestaDB(CHTTPRequest.postRequest(RequestTaskIds.LOGIN,URLs.LOGIN, test));
