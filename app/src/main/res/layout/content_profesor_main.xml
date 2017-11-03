@@ -16,13 +16,6 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:id="@+id/layoutCargarNotas"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:visibility="invisible"></LinearLayout>
-
-        <LinearLayout
             android:id="@+id/layoutDatosPersonales"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -314,96 +307,112 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/linearLayoutAlumno"
+                android:id="@+id/layoutAlumnoNota"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/textViewAlumno"
+                <LinearLayout
+                    android:id="@+id/linearLayoutAlumno"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Alumno: "
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+                    android:orientation="horizontal">
 
-                <EditText
-                    android:id="@+id/editTextAlumno"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:inputType="text"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                    <TextView
+                        android:id="@+id/textViewAlumno"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Alumno: "
+                        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+                    <EditText
+                        android:id="@+id/editTextAlumno"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:inputType="text"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutNota"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textViewNota"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Nota: "
+                        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+                    <EditText
+                        android:id="@+id/editTextNota"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:inputType="number"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/linearLayoutNota"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:id="@+id/layoutOKRespuesta"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/textViewNota"
+                <Button
+                    android:id="@+id/buttonEnviarRequest"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Nota: "
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+                    android:onClick="enviarRequest"
+                    android:text="OK" />
 
-                <EditText
-                    android:id="@+id/editTextNota"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:inputType="number"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                <FrameLayout
+                    android:id="@+id/frameLayoutRespuesta"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ScrollView
+                        android:id="@+id/scrollViewTablaAsistencias"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="15dp"
+                        android:gravity="center_horizontal">
+
+                        <TableLayout
+                            android:id="@+id/tablaAsistencias"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                        </TableLayout>
+                    </ScrollView>
+
+                    <ScrollView
+                        android:id="@+id/scrollViewTablaNotas"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="15dp"
+                        android:gravity="center_horizontal">
+
+                        <TableLayout
+                            android:id="@+id/tablaNotas"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">       
+                        </TableLayout>
+                    </ScrollView>
+                </FrameLayout>
 
             </LinearLayout>
-
-            <Button
-                android:id="@+id/buttonEnviarRequest"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="enviarRequest"
-                android:text="OK" />
-
-            <FrameLayout
-                android:id="@+id/frameLayoutRespuesta"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ScrollView
-                    android:id="@+id/scrollViewTablaAsistencias"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="15dp"
-                    android:gravity="center_horizontal">
-
-                    <TableLayout
-                        android:id="@+id/tablaAsistencias"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                    </TableLayout>
-                </ScrollView>
-
-                <ScrollView
-                    android:id="@+id/scrollViewTablaNotas"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="15dp"
-                    android:gravity="center_horizontal">
-
-                    <TableLayout
-                        android:id="@+id/tablaNotas"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">       
-                    </TableLayout>
-                </ScrollView>
-            </FrameLayout>
 
         </LinearLayout>
 

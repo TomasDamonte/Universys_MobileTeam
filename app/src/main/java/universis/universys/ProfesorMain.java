@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.print.PrintAttributes;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -217,7 +218,11 @@ public class ProfesorMain extends AppCompatActivity
         LinearLayout layoutSolicitudes = (LinearLayout) findViewById(R.id.layoutSolicitudes);
         LinearLayout layoutAlumno = (LinearLayout) findViewById(R.id.linearLayoutAlumno);
         LinearLayout layoutNota = (LinearLayout) findViewById(R.id.linearLayoutNota);
+        LinearLayout layoutAlumnoNota = (LinearLayout) findViewById(R.id.layoutAlumnoNota);
+        LinearLayout layoutOKRespuesta = (LinearLayout) findViewById(R.id.layoutOKRespuesta);
         frameLayoutRespuesta.setVisibility(View.INVISIBLE);
+
+
 
         switch (itemMenu) {
             case R.id.nav_datosPersonales:
