@@ -576,7 +576,6 @@ public class CHTTPRequest extends AsyncTask<String, String, String>
         HttpClient httpclient = new DefaultHttpClient();
         HttpResponse response;
         String responseString = null;
-        //Para q salga el simbolito de 'cargando' =P
 
         try
         {
@@ -634,25 +633,16 @@ public class CHTTPRequest extends AsyncTask<String, String, String>
             // Execute the http request and wait for a response. This method is synchronized, but
             // this method runs in another thread, as of AsyncTask implementation.
             response = httpclient.execute(req);
-          /*  try {
-                Thread.sleep(1500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }*/
+
             // Response arrived, Check what is the status.
             StatusLine statusLine = response.getStatusLine();
             // If everything is OK, convert the response into a String.
 
             if(statusLine.getStatusCode() <= HttpStatus.SC_MULTIPLE_CHOICES)
             {
-              /*ByteArrayOutputStream out = new ByteArrayOutputStream();
-                response.getEntity().writeTo(out);
-                out.close();
-                responseString = new String(out.toByteArray(), "ISO-8859-1");
-                 */
                 responseString = EntityUtils.toString(response.getEntity());
 
-                //Hardcodeo de respuesta jej >.>
+                //Hardcodeo de respuesta
                 try {
                   responseString = DataBase.respuestaDB(this).toString();
                 } catch (JSONException e) {

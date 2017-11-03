@@ -162,6 +162,7 @@ public class AlumnoMain extends AppCompatActivity
         textViewEvento = (TextView) findViewById(R.id.textViewEvento);
         calendarioAlumno.setOnDateChangedListener(this);
 
+        onNavigationItemSelected(navigationView.getMenu().getItem(0));
     }
 
     @Override
@@ -177,7 +178,6 @@ public class AlumnoMain extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-      //  getMenuInflater().inflate(R.menu.alumno_main, menu);
         return true;
     }
 
@@ -186,11 +186,9 @@ public class AlumnoMain extends AppCompatActivity
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.

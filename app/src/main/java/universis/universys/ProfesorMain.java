@@ -176,6 +176,8 @@ public class ProfesorMain extends AppCompatActivity
         sVNotas = (ScrollView) findViewById(R.id.scrollViewTablaNotas);
         sVAsistencias = (ScrollView) findViewById(R.id.scrollViewTablaAsistencias);
         frameLayoutRespuesta = (FrameLayout) findViewById(R.id.frameLayoutRespuesta);
+
+        onNavigationItemSelected(navigationView.getMenu().getItem(0));
     }
 
     @Override
@@ -191,7 +193,6 @@ public class ProfesorMain extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-       // getMenuInflater().inflate(R.menu.profesor_main, menu);
         return true;
     }
 
