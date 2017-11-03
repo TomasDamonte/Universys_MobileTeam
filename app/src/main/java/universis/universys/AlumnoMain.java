@@ -207,39 +207,42 @@ public class AlumnoMain extends AppCompatActivity
         LinearLayout layoutInscripciones = (LinearLayout) findViewById(R.id.layoutInscripciones);
         frameLayoutRespuesta.setVisibility(View.INVISIBLE);
 
-        if (itemMenu == R.id.nav_calendario) {
-          CHTTPRequest.postRequest(RequestTaskIds.CALENDARIO_ALUMNO,URLs.CALENDARIO_ALUMNO,
-                    new JSONBuilder().requestBasico()).execute().addListener(this);
-            layoutInscripciones.setVisibility(View.INVISIBLE);
-            layoutDatosPersonales.setVisibility(View.INVISIBLE);
-            layoutFichadaAlumno.setVisibility(View.INVISIBLE);
-            calendarioAlumno.setDateSelected(calendarioAlumno.getSelectedDate(),false);
-            calendarioAlumno.setSelectedDate(new CalendarDay().getDate());
-            layoutCalendario.setVisibility(View.VISIBLE);
-        } else if (itemMenu == R.id.nav_datosPersonales){
-            CHTTPRequest.postRequest(RequestTaskIds.DATOS_PERSONALES,URLs.DATOS_PERSONALES,
-                    new JSONBuilder().requestBasico()).execute().addListener(this);
-            layoutInscripciones.setVisibility(View.INVISIBLE);
-            layoutCalendario.setVisibility(View.INVISIBLE);
-            layoutFichadaAlumno.setVisibility(View.INVISIBLE);
-            layoutDatosPersonales.setVisibility(View.VISIBLE);
-        } else if (itemMenu == R.id.nav_asistencias || itemMenu == R.id.nav_notas || itemMenu == R.id.nav_horarios
-                || itemMenu == R.id.nav_baja) {
-            if(itemMenu == R.id.nav_asistencias) textViewOpcion.setText("Asistencias");
-            else if(itemMenu == R.id.nav_notas) textViewOpcion.setText("Notas");
-            else if(itemMenu == R.id.nav_horarios) textViewOpcion.setText("Horarios");
-            else textViewOpcion.setText("Darse de baja");
-            layoutInscripciones.setVisibility(View.INVISIBLE);
-            layoutCalendario.setVisibility(View.INVISIBLE);
-            layoutDatosPersonales.setVisibility(View.INVISIBLE);
-            layoutFichadaAlumno.setVisibility(View.VISIBLE);
-        }
-        else if (itemMenu == R.id.nav_inscripcion) {
-            inscripcionesDisponibles();
-            layoutCalendario.setVisibility(View.INVISIBLE);
-            layoutDatosPersonales.setVisibility(View.INVISIBLE);
-            layoutFichadaAlumno.setVisibility(View.INVISIBLE);
-            layoutInscripciones.setVisibility(View.VISIBLE);
+        switch (itemMenu){
+            case R.id.nav_calendario:
+                CHTTPRequest.postRequest(RequestTaskIds.CALENDARIO_ALUMNO,URLs.CALENDARIO_ALUMNO,
+                        new JSONBuilder().requestBasico()).execute().addListener(this);
+                layoutInscripciones.setVisibility(View.INVISIBLE);
+                layoutDatosPersonales.setVisibility(View.INVISIBLE);
+                layoutFichadaAlumno.setVisibility(View.INVISIBLE);
+                calendarioAlumno.setDateSelected(calendarioAlumno.getSelectedDate(),false);
+                calendarioAlumno.setSelectedDate(new CalendarDay().getDate());
+                layoutCalendario.setVisibility(View.VISIBLE);
+                break;
+            case R.id.nav_datosPersonales:
+                CHTTPRequest.postRequest(RequestTaskIds.DATOS_PERSONALES,URLs.DATOS_PERSONALES,
+                        new JSONBuilder().requestBasico()).execute().addListener(this);
+                layoutInscripciones.setVisibility(View.INVISIBLE);
+                layoutCalendario.setVisibility(View.INVISIBLE);
+                layoutFichadaAlumno.setVisibility(View.INVISIBLE);
+                layoutDatosPersonales.setVisibility(View.VISIBLE);
+                break;
+            case R.id.nav_inscripcion:
+                inscripcionesDisponibles();
+                layoutCalendario.setVisibility(View.INVISIBLE);
+                layoutDatosPersonales.setVisibility(View.INVISIBLE);
+                layoutFichadaAlumno.setVisibility(View.INVISIBLE);
+                layoutInscripciones.setVisibility(View.VISIBLE);
+                break;
+            default:
+                if(itemMenu == R.id.nav_asistencias) textViewOpcion.setText("Asistencias");
+                else if(itemMenu == R.id.nav_notas) textViewOpcion.setText("Notas");
+                else if(itemMenu == R.id.nav_horarios) textViewOpcion.setText("Horarios");
+                else textViewOpcion.setText("Darse de baja");
+                layoutInscripciones.setVisibility(View.INVISIBLE);
+                layoutCalendario.setVisibility(View.INVISIBLE);
+                layoutDatosPersonales.setVisibility(View.INVISIBLE);
+                layoutFichadaAlumno.setVisibility(View.VISIBLE);
+                break;
         }
         closeDrawer();
         return true;

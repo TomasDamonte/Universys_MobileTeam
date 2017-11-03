@@ -219,36 +219,37 @@ public class ProfesorMain extends AppCompatActivity
         LinearLayout layoutNota = (LinearLayout) findViewById(R.id.linearLayoutNota);
         frameLayoutRespuesta.setVisibility(View.INVISIBLE);
 
-        if (itemMenu == R.id.nav_datosPersonales){
-            CHTTPRequest.postRequest(RequestTaskIds.DATOS_PERSONALES,URLs.DATOS_PERSONALES
-                    ,new JSONBuilder().requestBasico()).execute().addListener(this);
-            layoutVerNotas.setVisibility(View.INVISIBLE);
-            layoutSolicitudes.setVisibility(View.INVISIBLE);
-            layoutDatosPersonales.setVisibility(View.VISIBLE);
-        }
-        else if (itemMenu == R.id.nav_verNotas || itemMenu == R.id.nav_asistencias) {
-            if (itemMenu == R.id.nav_verNotas) textViewOpcion.setText("Ver Notas");
-            else textViewOpcion.setText("Ver Asistencias");
-            layoutAlumno.setVisibility(View.INVISIBLE);
-            layoutNota.setVisibility(View.INVISIBLE);
-            layoutDatosPersonales.setVisibility(View.INVISIBLE);
-            layoutSolicitudes.setVisibility(View.INVISIBLE);
-            layoutVerNotas.setVisibility(View.VISIBLE);
-        }
-        else if (itemMenu == R.id.nav_solicitudes) {
-            layoutDatosPersonales.setVisibility(View.INVISIBLE);
-            layoutVerNotas.setVisibility(View.INVISIBLE);
-            requestVerSolicitudes();
-            layoutSolicitudes.setVisibility(View.VISIBLE);
-        }
-
-        else {
-            textViewOpcion.setText("Cargar Nota");
-            layoutDatosPersonales.setVisibility(View.INVISIBLE);
-            layoutSolicitudes.setVisibility(View.INVISIBLE);
-            layoutAlumno.setVisibility(View.VISIBLE);
-            layoutNota.setVisibility(View.VISIBLE);
-            layoutVerNotas.setVisibility(View.VISIBLE);
+        switch (itemMenu) {
+            case R.id.nav_datosPersonales:
+                CHTTPRequest.postRequest(RequestTaskIds.DATOS_PERSONALES,URLs.DATOS_PERSONALES
+                        ,new JSONBuilder().requestBasico()).execute().addListener(this);
+                layoutVerNotas.setVisibility(View.INVISIBLE);
+                layoutSolicitudes.setVisibility(View.INVISIBLE);
+                layoutDatosPersonales.setVisibility(View.VISIBLE);
+                break;
+            case R.id.nav_solicitudes:
+                layoutDatosPersonales.setVisibility(View.INVISIBLE);
+                layoutVerNotas.setVisibility(View.INVISIBLE);
+                requestVerSolicitudes();
+                layoutSolicitudes.setVisibility(View.VISIBLE);
+                break;
+            case R.id.nav_cargarNotas:
+                textViewOpcion.setText("Cargar Nota");
+                layoutDatosPersonales.setVisibility(View.INVISIBLE);
+                layoutSolicitudes.setVisibility(View.INVISIBLE);
+                layoutAlumno.setVisibility(View.VISIBLE);
+                layoutNota.setVisibility(View.VISIBLE);
+                layoutVerNotas.setVisibility(View.VISIBLE);
+                break;
+            default:
+                if (itemMenu == R.id.nav_verNotas) textViewOpcion.setText("Ver Notas");
+                else textViewOpcion.setText("Ver Asistencias");
+                layoutAlumno.setVisibility(View.INVISIBLE);
+                layoutNota.setVisibility(View.INVISIBLE);
+                layoutDatosPersonales.setVisibility(View.INVISIBLE);
+                layoutSolicitudes.setVisibility(View.INVISIBLE);
+                layoutVerNotas.setVisibility(View.VISIBLE);
+                break;
         }
         closeDrawer();
         return true;
