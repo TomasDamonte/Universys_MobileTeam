@@ -70,11 +70,8 @@ public class ProfesorMain extends AppCompatActivity
             Toast.makeText(this, "Deben completarse todos los campos", Toast.LENGTH_LONG).show();
         }
         else if (itemMenu == R.id.nav_verNotas) {
-            CHTTPRequest.postRequest(RequestTaskIds.NOTAS_PROFESOR,URLs.NOTAS_PROFESOR
-                    ,new JSONBuilder().requestGenerico(editTextCatedra.getText().toString()
-                            ,editTextCarrera.getText().toString(), editTextMateria.getText().toString())).execute().addListener(this);
+            enviarRequest(RequestTaskIds.NOTAS_PROFESOR,URLs.NOTAS_PROFESOR);
         }
-
         else if (itemMenu == R.id.nav_cargarNotas) {
             if (editTextAlumno.getText().toString().equals("") || editTextNota.getText().toString().equals("")) {
                 Toast.makeText(this, "Deben completarse todos los campos", Toast.LENGTH_LONG).show();
@@ -83,17 +80,23 @@ public class ProfesorMain extends AppCompatActivity
                 Toast.makeText(this, "Nota inválida", Toast.LENGTH_SHORT).show();
             }
             else {
-                CHTTPRequest.postRequest(RequestTaskIds.CARGAR_NOTAS,URLs.CARGAR_NOTAS
-                        ,new JSONBuilder().requestGenerico(editTextCatedra.getText().toString()
-                                ,editTextCarrera.getText().toString(), editTextMateria.getText().toString()
-                                ,editTextAlumno.getText().toString(),editTextNota.getText().toString())).execute().addListener(this);
+                enviarRequest(RequestTaskIds.CARGAR_NOTAS,URLs.CARGAR_NOTAS);
             }
         }
         else {
-            CHTTPRequest.postRequest(RequestTaskIds.VER_ASISTENCIAS,URLs.VER_ASISTENCIAS
-                    ,new JSONBuilder().requestGenerico(editTextCatedra.getText().toString()
-                            ,editTextCarrera.getText().toString(), editTextMateria.getText().toString())).execute().addListener(this);
+            enviarRequest(RequestTaskIds.VER_ASISTENCIAS,URLs.VER_ASISTENCIAS);
+        }
+    }
 
+    public void enviarRequest(int id, String url) {
+        if (itemMenu == R.id.nav_cargarNotas){
+            CHTTPRequest.postRequest(id, url, new JSONBuilder().requestGenerico(editTextCatedra.getText().toString()
+                            ,editTextCarrera.getText().toString(), editTextMateria.getText().toString()
+                            ,editTextAlumno.getText().toString(),editTextNota.getText().toString())).execute().addListener(this);
+        }
+        else {
+            CHTTPRequest.postRequest(id, url, new JSONBuilder().requestGenerico(editTextCatedra.getText().toString()
+                    , editTextCarrera.getText().toString(), editTextMateria.getText().toString())).execute().addListener(this);
         }
     }
 

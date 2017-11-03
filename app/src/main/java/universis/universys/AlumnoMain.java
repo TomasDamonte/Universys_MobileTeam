@@ -69,29 +69,29 @@ public class AlumnoMain extends AppCompatActivity
         textViewNota.setVisibility(View.INVISIBLE);
         linearLayoutHorarios.setVisibility(View.INVISIBLE);
 
-        if (editTextCatedra.getText().toString().equals("") || editTextCarrera.getText().toString().equals("") || editTextMateria.getText().toString().equals("")) {
+        if (editTextCatedra.getText().toString().equals("") || editTextCarrera.getText().toString().equals("")
+                || editTextMateria.getText().toString().equals("")) {
             Toast.makeText(this, "Deben completarse todos los campos", Toast.LENGTH_LONG).show();
-        } else {
+        }
+        else {
             if(itemMenu == R.id.nav_asistencias) {
-                CHTTPRequest.postRequest(RequestTaskIds.FICHADA_ALUMNO, URLs.FICHADA_ALUMNO
-                        ,new JSONBuilder().requestGenerico(editTextCatedra.getText().toString()
-                                ,editTextCarrera.getText().toString(), editTextMateria.getText().toString())).execute().addListener(this);
-            } else if(itemMenu == R.id.nav_notas) {
-                CHTTPRequest.postRequest(RequestTaskIds.NOTA_ALUMNO, URLs.NOTA_ALUMNO
-                        ,new JSONBuilder().requestGenerico(editTextCatedra.getText().toString()
-                                ,editTextCarrera.getText().toString(), editTextMateria.getText().toString())).execute().addListener(this);
-
-            } else if (itemMenu == R.id.nav_horarios) {
-                CHTTPRequest.postRequest(RequestTaskIds.HORARIO_ALUMNO, URLs.HORARIO_ALUMNO
-                        ,new JSONBuilder().requestGenerico(editTextCatedra.getText().toString()
-                                ,editTextCarrera.getText().toString(), editTextMateria.getText().toString())).execute().addListener(this);
-            } else if (itemMenu == R.id.nav_baja) {
-                CHTTPRequest.postRequest(RequestTaskIds.BAJA_MATERIA, URLs.BAJA_MATERIA
-                        ,new JSONBuilder().requestGenerico(editTextCatedra.getText().toString()
-                                ,editTextCarrera.getText().toString(), editTextMateria.getText().toString())).execute().addListener(this);
+                enviarRequest(RequestTaskIds.FICHADA_ALUMNO, URLs.FICHADA_ALUMNO);
+            }
+            else if(itemMenu == R.id.nav_notas) {
+                enviarRequest(RequestTaskIds.NOTA_ALUMNO, URLs.NOTA_ALUMNO);
+            }
+            else if (itemMenu == R.id.nav_horarios) {
+                enviarRequest(RequestTaskIds.HORARIO_ALUMNO, URLs.HORARIO_ALUMNO);
+            }
+            else if (itemMenu == R.id.nav_baja) {
+                enviarRequest(RequestTaskIds.BAJA_MATERIA, URLs.BAJA_MATERIA);
             }
         }
+    }
 
+    public void enviarRequest(int id, String url) {
+        CHTTPRequest.postRequest(id, url, new JSONBuilder().requestGenerico(editTextCatedra.getText().toString()
+                        ,editTextCarrera.getText().toString(), editTextMateria.getText().toString())).execute().addListener(this);
     }
 
     public void modificarDatosAlumno(View v) {
@@ -118,6 +118,7 @@ public class AlumnoMain extends AppCompatActivity
         CHTTPRequest.postRequest(RequestTaskIds.MODIFICAR_DATOS_PERSONALES,URLs.MODIFICAR_DATOS_PERSONALES
                 ,new JSONBuilder().modificarDatosPersonales(datos)).execute().addListener(this);
     }
+
     public void inscripcionesDisponibles() {
         CHTTPRequest.postRequest(RequestTaskIds.MATERIAS_DISPONIBLES,URLs.MATERIAS_DISPONIBLES,
                 new JSONBuilder().requestBasico()).execute().addListener(this);
@@ -125,6 +126,12 @@ public class AlumnoMain extends AppCompatActivity
         LinearLayout inscripciones = (LinearLayout) findViewById(R.id.layoutInscripDisp);
         inscripciones.removeAllViews();
         layoutInscripciones.setVisibility(View.VISIBLE);
+    }
+
+    public void blanquearCampos() {
+        editTextCarrera.setText("");
+        editTextCatedra.setText("");
+        editTextMateria.setText("");
     }
 
     @Override
@@ -193,9 +200,7 @@ public class AlumnoMain extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         itemMenu = item.getItemId();
-        editTextCarrera.setText("");
-        editTextCatedra.setText("");
-        editTextMateria.setText("");
+        blanquearCampos();
         LinearLayout layoutDatosPersonales = (LinearLayout) findViewById(R.id.layoutDatosPersonales);
         LinearLayout layoutCalendario = (LinearLayout) findViewById(R.id.layoutCalendario);
         LinearLayout layoutFichadaAlumno = (LinearLayout) findViewById(R.id.layoutFichadaAlumno);
@@ -361,6 +366,7 @@ public class AlumnoMain extends AppCompatActivity
         }
         else if (request.getTaskId() == RequestTaskIds.BAJA_MATERIA) {
             if (errorId.equals(Error.SUCCESS)) {
+                blanquearCampos();
                 Toast.makeText(this,"Te has dado te baja exitosamente!",Toast.LENGTH_SHORT).show();
             }
             else if(errorId.equals(Error.CATEDRA_ERROR)) Toast.makeText(this,Error.CATEDRA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
