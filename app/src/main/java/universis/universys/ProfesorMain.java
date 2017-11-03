@@ -124,7 +124,7 @@ public class ProfesorMain extends AppCompatActivity
         findViewById(R.id.buttonEnviarDatosProfesor).setEnabled(true);
     }
 
-    public void blanquearCampos() {
+    private void blanquearCampos() {
         editTextCarrera.setText("");
         editTextCatedra.setText("");
         editTextMateria.setText("");
@@ -250,10 +250,13 @@ public class ProfesorMain extends AppCompatActivity
             layoutNota.setVisibility(View.VISIBLE);
             layoutVerNotas.setVisibility(View.VISIBLE);
         }
+        closeDrawer();
+        return true;
+    }
 
+    private void closeDrawer() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
-        return true;
     }
 
     @Override

@@ -128,7 +128,7 @@ public class AlumnoMain extends AppCompatActivity
         layoutInscripciones.setVisibility(View.VISIBLE);
     }
 
-    public void blanquearCampos() {
+    private void blanquearCampos() {
         editTextCarrera.setText("");
         editTextCatedra.setText("");
         editTextMateria.setText("");
@@ -241,10 +241,13 @@ public class AlumnoMain extends AppCompatActivity
             layoutFichadaAlumno.setVisibility(View.INVISIBLE);
             layoutInscripciones.setVisibility(View.VISIBLE);
         }
+        closeDrawer();
+        return true;
+    }
 
+    private void closeDrawer() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
-        return true;
     }
 
     @Override

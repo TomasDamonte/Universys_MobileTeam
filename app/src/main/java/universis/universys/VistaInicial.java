@@ -100,9 +100,14 @@ public class VistaInicial extends AppCompatActivity
             webHistoria.setVisibility(View.VISIBLE);
             webHistoria.loadUrl("http://www.ub.edu.ar/institucional.php");
         }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        closeDrawer();
         return true;
     }
+
+    private void closeDrawer() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+    }
 }
+
+
