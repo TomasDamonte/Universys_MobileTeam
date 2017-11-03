@@ -38,9 +38,6 @@ public class VistaInicial extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        WebView webHistoria = (WebView) findViewById(R.id.webHistoria);
-        webHistoria.setVisibility(View.VISIBLE);
-        webHistoria.loadUrl("http://www.ub.edu.ar/institucional.php");
     }
 
     @Override
@@ -73,25 +70,24 @@ public class VistaInicial extends AppCompatActivity
         // Handle navigation view item clicks here.
         LinearLayout layoutContacto = (LinearLayout) findViewById(R.id.layoutContacto);
         WebView webCalendario = (WebView) findViewById(R.id.webCalendario);
-        WebView webHistoria = (WebView) findViewById(R.id.webHistoria);
+        LinearLayout layoutHistoria = (LinearLayout) findViewById(R.id.layoutHistoria);
         int id = item.getItemId();
         switch (id){
             case R.id.nav_contacto:
                 webCalendario.setVisibility(View.INVISIBLE);
-                webHistoria.setVisibility(View.INVISIBLE);
+                layoutHistoria.setVisibility(View.INVISIBLE);
                 layoutContacto.setVisibility(View.VISIBLE);
                 break;
             case R.id.nav_calendario:
                 layoutContacto.setVisibility(View.INVISIBLE);
-                webHistoria.setVisibility(View.INVISIBLE);
+                layoutHistoria.setVisibility(View.INVISIBLE);
                 webCalendario.setVisibility(View.VISIBLE);
                 webCalendario.loadUrl("http://www.ub.edu.ar/academico.php?opcion=calendarios");
                 break;
             case R.id.nav_historia:
                 layoutContacto.setVisibility(View.INVISIBLE);
                 webCalendario.setVisibility(View.INVISIBLE);
-                webHistoria.setVisibility(View.VISIBLE);
-                webHistoria.loadUrl("http://www.ub.edu.ar/institucional.php");
+                layoutHistoria.setVisibility(View.VISIBLE);
                 break;
         }
         closeDrawer();

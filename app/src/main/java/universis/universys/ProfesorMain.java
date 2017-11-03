@@ -222,8 +222,6 @@ public class ProfesorMain extends AppCompatActivity
         LinearLayout layoutOKRespuesta = (LinearLayout) findViewById(R.id.layoutOKRespuesta);
         frameLayoutRespuesta.setVisibility(View.INVISIBLE);
 
-
-
         switch (itemMenu) {
             case R.id.nav_datosPersonales:
                 CHTTPRequest.postRequest(RequestTaskIds.DATOS_PERSONALES,URLs.DATOS_PERSONALES
