@@ -14,18 +14,14 @@ import static org.junit.Assert.*;
 @RunWith(AndroidJUnit4.class)
 public class JSONBuilderTest {
 
-    public JSONBuilder jsonBuilder = new JSONBuilder();
-    public JSONObject expected = new JSONObject().put("apiVer","1.0").put("idSesion","000");
+    private JSONBuilder jsonBuilder = new JSONBuilder();
+    private JSONObject expected = new JSONObject().put("apiVer","1.0").put("idSesion","000");
 
     public JSONBuilderTest() throws JSONException {
     }
 
-    public void setUp() throws Exception {
-        expected = new JSONObject().put("idSesion","000").put("apiVer","1.0");
-    }
-
     @Test
-    public void testlogIn() throws Exception {
+    public void logIn() throws Exception {
         expected.put("mail","alumno@alumno").put("password","alumno");
         assertEquals(expected.toString(),jsonBuilder.logIn("alumno@alumno","alumno").toString());
     }
