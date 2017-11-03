@@ -268,79 +268,70 @@ public class ProfesorMain extends AppCompatActivity
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        if(request.getTaskId() == RequestTaskIds.DATOS_PERSONALES) {
-            try {
-                editTextNombre.setText(request.getJsonResponse().getString("nombre"));
-                editTextApellido.setText(request.getJsonResponse().getString("apellido"));
-                editTextEmail.setText(request.getJsonResponse().getString("mail"));
-                editTextFNac.setText(request.getJsonResponse().getString("fNac"));
-                editTextDomicilio.setText(request.getJsonResponse().getString("domicilio"));
-                editTextTelefono.setText(request.getJsonResponse().getString("telefono"));
-            } catch (JSONException e) {
-                e.printStackTrace();
+        if(!errorId.equals(Error.SUCCESS))
+            Error.mostrar(errorId);
+        else {
+            switch (request.getTaskId()){
+
+                case RequestTaskIds.DATOS_PERSONALES:
+                    taskDatosPersonales(request);
+                    break;
+
+                case RequestTaskIds.NOTAS_PROFESOR:
+                    try {
+                        taskNotasProfesor(request.getJsonResponse().getJSONArray("alumnos"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+
+                case RequestTaskIds.VER_SOLICITUDES:
+                    try {
+                        crearTablaSolicitudes(request.getJsonResponse().getJSONArray("solicitudes"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+
+                case RequestTaskIds.ACEPTAR_SOLICITUDES:
+                    Toast.makeText(this,"Acción realizada correctamente",Toast.LENGTH_SHORT).show();
+                    break;
+
+                case RequestTaskIds.MODIFICAR_DATOS_PERSONALES:
+                    Toast.makeText(this, "Datos guardados", Toast.LENGTH_LONG).show();
+                    break;
+
+                case RequestTaskIds.VER_ASISTENCIAS:
+                    try {
+                        crearTablaAsistencias(request.getJsonResponse().getJSONArray("asistencias"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+
+                case RequestTaskIds.CARGAR_NOTAS:
+                    Toast.makeText(this,"Nota cargada correctamente",Toast.LENGTH_SHORT).show();
+                    blanquearCampos();
+                    break;
             }
-        }
-        else if(request.getTaskId() == RequestTaskIds.NOTAS_PROFESOR) {
-            if(errorId.equals(Error.SUCCESS)) {
-                try {
-                    crearTablaNotas(request.getJsonResponse().getJSONArray("alumnos"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-            else if(errorId.equals(Error.CACHE_ERROR)) Toast.makeText(this,Error.CACHE_ERROR_TEXT,Toast.LENGTH_SHORT).show();
-        }
-        else if (request.getTaskId() == RequestTaskIds.VER_SOLICITUDES) {
-            if(errorId.equals(Error.SUCCESS)) {
-                try {
-                    crearTablaSolicitudes(request.getJsonResponse().getJSONArray("solicitudes"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            } else if(errorId.equals(Error.CACHE_ERROR)) Toast.makeText(this,Error.CACHE_ERROR_TEXT,Toast.LENGTH_SHORT).show();
-        }
-        else if (request.getTaskId() == RequestTaskIds.ACEPTAR_SOLICITUDES) {
-            if(errorId.equals(Error.SUCCESS)){
-               Toast.makeText(this,"Acción realizada correctamente",Toast.LENGTH_SHORT).show();
-            }
-            else if(errorId.equals(Error.CACHE_ERROR)) Toast.makeText(this,Error.CACHE_ERROR_TEXT,Toast.LENGTH_SHORT).show();
-            else if(errorId.equals(Error.ACEPTAR_SOLICITUDES_ERROR)) Toast.makeText(this,Error.ACEPTAR_SOLICITUDES_ERROR_TEXT,Toast.LENGTH_SHORT).show();
-        }
-        else if (request.getTaskId() == RequestTaskIds.MODIFICAR_DATOS_PERSONALES) {
-            if (errorId.equals(Error.SUCCESS))
-                Toast.makeText(this, "Datos guardados", Toast.LENGTH_LONG).show();
-            else if (errorId.equals(Error.EMAIL_REPETIDO_ERROR))
-                Toast.makeText(this, Error.EMAIL_REPETIDO_ERROR_TEXT, Toast.LENGTH_SHORT).show();
-            else if (errorId.equals(Error.CAMPOS_INCOMPLETOS_ERROR))
-                Toast.makeText(this, Error.CAMPOS_INCOMPLETOS_ERROR_TEXT, Toast.LENGTH_SHORT).show();
-        }
-        else if (request.getTaskId() == RequestTaskIds.VER_ASISTENCIAS) {
-            if (errorId.equals(Error.SUCCESS)) {
-                try {
-                    crearTablaAsistencias(request.getJsonResponse().getJSONArray("asistencias"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-            else if(errorId.equals(Error.CATEDRA_ERROR)) Toast.makeText(this,Error.CATEDRA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
-            else if(errorId.equals(Error.CARRERA_ERROR)) Toast.makeText(this,Error.CARRERA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
-            else if(errorId.equals(Error.MATERIA_ERROR)) Toast.makeText(this,Error.MATERIA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
-            else if(errorId.equals(Error.CACHE_ERROR)) Toast.makeText(this,Error.CACHE_ERROR_TEXT,Toast.LENGTH_SHORT).show();
-        }
-        else if (request.getTaskId() == RequestTaskIds.CARGAR_NOTAS) {
-            blanquearCampos();
-            if (errorId.equals(Error.SUCCESS)) {
-                Toast.makeText(this,"Nota cargada correctamente",Toast.LENGTH_SHORT).show();
-            }
-            else if(errorId.equals(Error.CATEDRA_ERROR)) Toast.makeText(this,Error.CATEDRA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
-            else if(errorId.equals(Error.CARRERA_ERROR)) Toast.makeText(this,Error.CARRERA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
-            else if(errorId.equals(Error.MATERIA_ERROR)) Toast.makeText(this,Error.MATERIA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
-            else if(errorId.equals(Error.CACHE_ERROR)) Toast.makeText(this,Error.CACHE_ERROR_TEXT,Toast.LENGTH_SHORT).show();
         }
         return false;
     }
 
-    public void crearTablaAsistencias (JSONArray datos) throws JSONException {
+    private void taskDatosPersonales(CHTTPRequest request) {
+        try {
+            editTextNombre.setText(request.getJsonResponse().getString("nombre"));
+            editTextApellido.setText(request.getJsonResponse().getString("apellido"));
+            editTextEmail.setText(request.getJsonResponse().getString("mail"));
+            editTextFNac.setText(request.getJsonResponse().getString("fNac"));
+            editTextDomicilio.setText(request.getJsonResponse().getString("domicilio"));
+            editTextTelefono.setText(request.getJsonResponse().getString("telefono"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void crearTablaAsistencias (JSONArray datos) throws JSONException {
         sVAsistencias.setVisibility(View.VISIBLE);
         TableRow fila = new TableRow(this);
         TextView nombre = new TextView(this);
@@ -378,8 +369,7 @@ public class ProfesorMain extends AppCompatActivity
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-    public void crearTablaNotas(JSONArray datos) throws JSONException {
+    private void taskNotasProfesor(JSONArray datos) throws JSONException {
         sVNotas.setVisibility(View.VISIBLE);
         TableRow fila = new TableRow(this);
         TextView nombre = new TextView(this);
@@ -417,7 +407,7 @@ public class ProfesorMain extends AppCompatActivity
         }
     }
 
-    public void crearTablaSolicitudes(JSONArray datos) throws JSONException {
+    private void crearTablaSolicitudes(JSONArray datos) throws JSONException {
         HorizontalScrollView scrollViewSolicitudes = (HorizontalScrollView) findViewById(R.id.sVTablaSolicitudes);
         scrollViewSolicitudes.setVisibility(View.VISIBLE);
         TableLayout tablaSolicitudes = (TableLayout)findViewById(R.id.tablaSolicitudes);

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class DataBase {
 
-    public static Object respuestaDB (CHTTPRequest request) throws JSONException {
+    public static JSONObject respuestaDB (CHTTPRequest request) throws JSONException {
         JSONObject jsonReq = request.getBody();
         ArrayList<JSONObject> db = new ArrayList<>();
         db.add(new JSONObject().put("mail", "alumno@alumno").put("password", "alumno").put("rol", "alumno").put("nombre", "carlos javier").put("apellido", "perez gonzalez").put("fNac", "15/10/1990").put("domicilio", "Beruti 1254").put("telefono", "4215-9547").put("idSesion", "7541"));
@@ -62,25 +62,26 @@ public class DataBase {
         }
 
         if(request.getTaskId() == RequestTaskIds.FICHADA_ALUMNO) {
-            JSONArray jsonResp = new JSONArray();
+            JSONArray fichadas = new JSONArray();
             JSONObject db2 = new JSONObject().put("catedra","a").put("carrera","b").put("materia","c");
-
+            JSONObject jsonResp = new JSONObject();
             if(jsonReq.getString("catedra").equals(db2.getString("catedra")) && jsonReq.getString("carrera").equals(db2.getString("carrera")) && jsonReq.getString("materia").equals(db2.getString("materia"))) {
-                jsonResp.put(new JSONObject().put(Error.ERROR_ID,Error.SUCCESS));
                 for (int i = 0; i < 20; i++) {
                     JSONObject temp = new JSONObject();
                     temp.put("fecha", i + 1 + "/10/2017");
                     if (i % 2 == 0) temp.put("presente", "SI");
                     else temp.put("presente", "NO");
-                    jsonResp.put(temp);
+                    fichadas.put(temp);
                 }
+                jsonResp.put(Error.ERROR_ID,Error.SUCCESS);
+                jsonResp.put("fichadas",fichadas);
             } else {
                 if(!jsonReq.getString("catedra").equals(db2.getString("catedra")))
-                    jsonResp.put(new JSONObject().put(Error.ERROR_ID,Error.CATEDRA_ERROR));
+                    jsonResp.put(Error.ERROR_ID,Error.CATEDRA_ERROR);
                 if(!jsonReq.getString("carrera").equals(db2.getString("carrera")))
-                    jsonResp.put(new JSONObject().put(Error.ERROR_ID,Error.CARRERA_ERROR));
+                    jsonResp.put(Error.ERROR_ID,Error.CARRERA_ERROR);
                 if(!jsonReq.getString("materia").equals(db2.getString("materia")))
-                    jsonResp.put(new JSONObject().put(Error.ERROR_ID,Error.MATERIA_ERROR));
+                    jsonResp.put(Error.ERROR_ID,Error.MATERIA_ERROR);
             }
             return jsonResp;
         }

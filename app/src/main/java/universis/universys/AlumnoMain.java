@@ -259,128 +259,110 @@ public class AlumnoMain extends AppCompatActivity
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        if(request.getTaskId() == RequestTaskIds.CALENDARIO_ALUMNO) {
-            if(errorId.equals(Error.SUCCESS)) {
-                JSONArray eventos = new JSONArray();
-                try {
-                    eventos = request.getJsonResponse().getJSONArray("eventos");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                HashSet<CalendarDay> dias = new HashSet<>();
-                calendarEvents = new HashMap<>();
-                try {
-                for (int i=0;i<eventos.length();i++) {
-                        dias.add(new CalendarDay(new Date(eventos.getJSONObject(i).getString("fecha"))));
-                        String evento;
-                        if(calendarEvents.get(new Date(eventos.getJSONObject(i).getString("fecha"))) == null) evento = eventos.getJSONObject(i).getString("evento");
-                        else evento = calendarEvents.get(new Date(eventos.getJSONObject(i).getString("fecha"))) + ", " + eventos.getJSONObject(i).getString("evento");
-                        calendarEvents.put(new Date(eventos.getJSONObject(i).getString("fecha")),evento);
+        if(!errorId.equals(Error.SUCCESS))
+            Error.mostrar(errorId);
+        else {
+            switch (request.getTaskId()){
+
+                case RequestTaskIds.CALENDARIO_ALUMNO:
+                    taskCalendario(request);
+                    break;
+
+                case RequestTaskIds.DATOS_PERSONALES:
+                    taskDatosPersonales(request);
+                    break;
+
+                case RequestTaskIds.FICHADA_ALUMNO:
+                    try {
+                        taskFichadaAlumno(request);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                }catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                calendarioAlumno.addDecorator(new CalendarDecorator(dias));
-            } else if(errorId.equals(Error.CACHE_ERROR)) Toast.makeText(this,Error.CACHE_ERROR_TEXT,Toast.LENGTH_SHORT).show();
-        }
-        else if(request.getTaskId() == RequestTaskIds.DATOS_PERSONALES) {
-            if(errorId.equals(Error.SUCCESS)) {
-                try {
-                    editTextNombre.setText(request.getJsonResponse().getString("nombre"));
-                    editTextApellido.setText(request.getJsonResponse().getString("apellido"));
-                    editTextEmail.setText(request.getJsonResponse().getString("mail"));
-                    editTextFNac.setText(request.getJsonResponse().getString("fNac"));
-                    editTextDomicilio.setText(request.getJsonResponse().getString("domicilio"));
-                    editTextTelefono.setText(request.getJsonResponse().getString("telefono"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            } else if(errorId.equals(Error.CACHE_ERROR)) Toast.makeText(this,Error.CACHE_ERROR_TEXT,Toast.LENGTH_SHORT).show();
-        }
-        else if (request.getTaskId() == RequestTaskIds.FICHADA_ALUMNO) {
-            try {
-                errorId = request.getJsonArrayResponse().getJSONObject(0).getString(Error.ERROR_ID);
-                if(errorId.equals(Error.SUCCESS))
-                    crearTablaAsistencias(request.getJsonArrayResponse());
-                else if(errorId.equals(Error.CATEDRA_ERROR)) Toast.makeText(this,Error.CATEDRA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
-                else if(errorId.equals(Error.CARRERA_ERROR)) Toast.makeText(this,Error.CARRERA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
-                else if(errorId.equals(Error.MATERIA_ERROR)) Toast.makeText(this,Error.MATERIA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
-            } catch (JSONException e) {
-                e.printStackTrace();
-                if(errorId.equals(Error.CACHE_ERROR)) Toast.makeText(this,Error.CACHE_ERROR_TEXT,Toast.LENGTH_SHORT).show();
+                    break;
+
+                case RequestTaskIds.NOTA_ALUMNO:
+                    textViewNota.setVisibility(View.VISIBLE);
+                    try {
+                        textViewNota.setText("Nota: " + request.getJsonResponse().getString("nota"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    break;
+
+                case RequestTaskIds.HORARIO_ALUMNO:
+                    linearLayoutHorarios.setVisibility(View.VISIBLE);
+                    try {
+                        mostrarHorarios(request.getJsonResponse());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+
+                case RequestTaskIds.MODIFICAR_DATOS_PERSONALES:
+                    Toast.makeText(this, "Datos guardados", Toast.LENGTH_LONG).show();
+                    break;
+
+                case RequestTaskIds.MATERIAS_DISPONIBLES:
+                    try {
+                        taskMateriasDisponibles(request.getJsonResponse());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+
+                case RequestTaskIds.INSCRIPCION_MATERIA:
+                    Toast.makeText(this, "Inscripción realizada exitosamente!", Toast.LENGTH_SHORT).show();
+                    inscripcionesDisponibles();
+                    break;
+
+                case RequestTaskIds.BAJA_MATERIA:
+                    Toast.makeText(this, "Te has dado te baja exitosamente!", Toast.LENGTH_SHORT).show();
+                    blanquearCampos();
+                    break;
             }
-        }
-        else if (request.getTaskId() == RequestTaskIds.NOTA_ALUMNO) {
-            if(errorId.equals(Error.SUCCESS)) {
-                textViewNota.setVisibility(View.VISIBLE);
-                try {
-                    textViewNota.setText("Nota: " + request.getJsonResponse().getString("nota"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-            else if(errorId.equals(Error.CATEDRA_ERROR)) Toast.makeText(this,Error.CATEDRA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
-            else if(errorId.equals(Error.CARRERA_ERROR)) Toast.makeText(this,Error.CARRERA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
-            else if(errorId.equals(Error.MATERIA_ERROR)) Toast.makeText(this,Error.MATERIA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
-            else if(errorId.equals(Error.CACHE_ERROR)) Toast.makeText(this,Error.CACHE_ERROR_TEXT,Toast.LENGTH_SHORT).show();
-        }
-        else if(request.getTaskId() == RequestTaskIds.HORARIO_ALUMNO) {
-            if(errorId.equals(Error.SUCCESS)) {
-                linearLayoutHorarios.setVisibility(View.VISIBLE);
-                try {
-                    mostrarHorarios(request.getJsonResponse());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-            else if(errorId.equals(Error.CATEDRA_ERROR)) Toast.makeText(this,Error.CATEDRA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
-            else if(errorId.equals(Error.CARRERA_ERROR)) Toast.makeText(this,Error.CARRERA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
-            else if(errorId.equals(Error.MATERIA_ERROR)) Toast.makeText(this,Error.MATERIA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
-            else if(errorId.equals(Error.CACHE_ERROR)) Toast.makeText(this,Error.CACHE_ERROR_TEXT,Toast.LENGTH_SHORT).show();
-        }
-        else if (request.getTaskId() == RequestTaskIds.MODIFICAR_DATOS_PERSONALES) {
-            if (errorId.equals(Error.SUCCESS))
-                Toast.makeText(this, "Datos guardados", Toast.LENGTH_LONG).show();
-            else if (errorId.equals(Error.EMAIL_REPETIDO_ERROR))
-                Toast.makeText(this, Error.EMAIL_REPETIDO_ERROR_TEXT, Toast.LENGTH_SHORT).show();
-            else if (errorId.equals(Error.CAMPOS_INCOMPLETOS_ERROR))
-                Toast.makeText(this, Error.CAMPOS_INCOMPLETOS_ERROR_TEXT, Toast.LENGTH_SHORT).show();
-            else if(errorId.equals(Error.CACHE_ERROR))
-                Toast.makeText(this,Error.CACHE_ERROR_TEXT,Toast.LENGTH_SHORT).show();
-        }
-        else if (request.getTaskId() == RequestTaskIds.MATERIAS_DISPONIBLES){
-            if (errorId.equals(Error.SUCCESS)) {
-                try {
-                    mostrarInscripciones(request.getJsonResponse());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-            else if (errorId.equals(Error.CACHE_ERROR))
-                Toast.makeText(this, Error.CACHE_ERROR_TEXT, Toast.LENGTH_SHORT).show();
-        }
-        else if (request.getTaskId() == RequestTaskIds.INSCRIPCION_MATERIA) {
-            if (errorId.equals(Error.SUCCESS)) {
-                Toast.makeText(this,"Inscripción realizada exitosamente!",Toast.LENGTH_SHORT).show();
-                inscripcionesDisponibles();
-            }
-            else if (errorId.equals(Error.CACHE_ERROR))
-                Toast.makeText(this, Error.CACHE_ERROR_TEXT, Toast.LENGTH_SHORT).show();
-        }
-        else if (request.getTaskId() == RequestTaskIds.BAJA_MATERIA) {
-            if (errorId.equals(Error.SUCCESS)) {
-                blanquearCampos();
-                Toast.makeText(this,"Te has dado te baja exitosamente!",Toast.LENGTH_SHORT).show();
-            }
-            else if(errorId.equals(Error.CATEDRA_ERROR)) Toast.makeText(this,Error.CATEDRA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
-            else if(errorId.equals(Error.CARRERA_ERROR)) Toast.makeText(this,Error.CARRERA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
-            else if(errorId.equals(Error.MATERIA_ERROR)) Toast.makeText(this,Error.MATERIA_ERROR_TEXT,Toast.LENGTH_SHORT).show();
-            else if(errorId.equals(Error.CACHE_ERROR)) Toast.makeText(this,Error.CACHE_ERROR_TEXT,Toast.LENGTH_SHORT).show();
         }
         return false;
     }
 
-    private void mostrarInscripciones(JSONObject datos) throws JSONException {
+
+    private void taskDatosPersonales(CHTTPRequest request) {
+        try {
+            editTextNombre.setText(request.getJsonResponse().getString("nombre"));
+            editTextApellido.setText(request.getJsonResponse().getString("apellido"));
+            editTextEmail.setText(request.getJsonResponse().getString("mail"));
+            editTextFNac.setText(request.getJsonResponse().getString("fNac"));
+            editTextDomicilio.setText(request.getJsonResponse().getString("domicilio"));
+            editTextTelefono.setText(request.getJsonResponse().getString("telefono"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void taskCalendario(CHTTPRequest request) {
+        JSONArray eventos = new JSONArray();
+        try {
+            eventos = request.getJsonResponse().getJSONArray("eventos");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        HashSet<CalendarDay> dias = new HashSet<>();
+        calendarEvents = new HashMap<>();
+        try {
+            for (int i=0;i<eventos.length();i++) {
+                dias.add(new CalendarDay(new Date(eventos.getJSONObject(i).getString("fecha"))));
+                String evento;
+                if(calendarEvents.get(new Date(eventos.getJSONObject(i).getString("fecha"))) == null) evento = eventos.getJSONObject(i).getString("evento");
+                else evento = calendarEvents.get(new Date(eventos.getJSONObject(i).getString("fecha"))) + ", " + eventos.getJSONObject(i).getString("evento");
+                calendarEvents.put(new Date(eventos.getJSONObject(i).getString("fecha")),evento);
+            }
+        }catch (JSONException e) {
+            e.printStackTrace();
+        }
+        calendarioAlumno.addDecorator(new CalendarDecorator(dias));
+    }
+
+    private void taskMateriasDisponibles(JSONObject datos) throws JSONException {
         JSONArray inscripcionesDisponibles = datos.getJSONArray("inscripcionesDisponibles");
         LinearLayout inscripciones = (LinearLayout) findViewById(R.id.layoutInscripDisp);
         idCursada = new HashMap<>();
@@ -447,9 +429,9 @@ public class AlumnoMain extends AppCompatActivity
         editTextHorario.setText(texto);
         return texto;
     }
-
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-    private void crearTablaAsistencias(JSONArray datos) throws JSONException {
+    
+    private void taskFichadaAlumno(CHTTPRequest request) throws JSONException {
+        JSONArray datos = request.getJsonResponse().getJSONArray("fichadas");
         ScrollView sVTablaFichadas = (ScrollView) findViewById(R.id.sVTablaFichadas);
         sVTablaFichadas.setVisibility(View.VISIBLE);
         TableLayout tabla = (TableLayout)findViewById(R.id.tablaFichadas);
@@ -469,7 +451,7 @@ public class AlumnoMain extends AppCompatActivity
         tabla.setPadding(5,5,5,5);
         tabla.setBackgroundColor(Color.BLACK);
 
-        for(int i=1; i<datos.length();i++){
+        for(int i=0; i<datos.length();i++){
             fila = new TableRow(this);
             fecha = new TextView(this);
             presente = new TextView(this);
