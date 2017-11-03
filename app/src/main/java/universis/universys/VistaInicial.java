@@ -56,7 +56,6 @@ public class VistaInicial extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-     //   getMenuInflater().inflate(R.menu.vista_inicial, menu);
         return true;
     }
 
@@ -73,32 +72,27 @@ public class VistaInicial extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         LinearLayout layoutContacto = (LinearLayout) findViewById(R.id.layoutContacto);
-        LinearLayout layoutPlanesEstudio = (LinearLayout) findViewById(R.id.layoutPlanesEstudio);
         WebView webCalendario = (WebView) findViewById(R.id.webCalendario);
         WebView webHistoria = (WebView) findViewById(R.id.webHistoria);
         int id = item.getItemId();
-        if (id == R.id.nav_contacto) {
-            layoutPlanesEstudio.setVisibility(View.INVISIBLE);
-            webCalendario.setVisibility(View.INVISIBLE);
-            webHistoria.setVisibility(View.INVISIBLE);
-            layoutContacto.setVisibility(View.VISIBLE);
-        } else if (id == R.id.nav_calendario) {
-            layoutContacto.setVisibility(View.INVISIBLE);
-            layoutPlanesEstudio.setVisibility(View.INVISIBLE);
-            webHistoria.setVisibility(View.INVISIBLE);
-            webCalendario.setVisibility(View.VISIBLE);
-            webCalendario.loadUrl("http://www.ub.edu.ar/academico.php?opcion=calendarios");
-        } else if (id == R.id.nav_planEstudio) {
-            layoutContacto.setVisibility(View.INVISIBLE);
-            webCalendario.setVisibility(View.INVISIBLE);
-            webHistoria.setVisibility(View.INVISIBLE);
-            layoutPlanesEstudio.setVisibility(View.VISIBLE);
-        } else if (id == R.id.nav_historia) {
-            layoutContacto.setVisibility(View.INVISIBLE);
-            layoutPlanesEstudio.setVisibility(View.INVISIBLE);
-            webCalendario.setVisibility(View.INVISIBLE);
-            webHistoria.setVisibility(View.VISIBLE);
-            webHistoria.loadUrl("http://www.ub.edu.ar/institucional.php");
+        switch (id){
+            case R.id.nav_contacto:
+                webCalendario.setVisibility(View.INVISIBLE);
+                webHistoria.setVisibility(View.INVISIBLE);
+                layoutContacto.setVisibility(View.VISIBLE);
+                break;
+            case R.id.nav_calendario:
+                layoutContacto.setVisibility(View.INVISIBLE);
+                webHistoria.setVisibility(View.INVISIBLE);
+                webCalendario.setVisibility(View.VISIBLE);
+                webCalendario.loadUrl("http://www.ub.edu.ar/academico.php?opcion=calendarios");
+                break;
+            case R.id.nav_historia:
+                layoutContacto.setVisibility(View.INVISIBLE);
+                webCalendario.setVisibility(View.INVISIBLE);
+                webHistoria.setVisibility(View.VISIBLE);
+                webHistoria.loadUrl("http://www.ub.edu.ar/institucional.php");
+                break;
         }
         closeDrawer();
         return true;

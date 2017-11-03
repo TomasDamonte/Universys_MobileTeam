@@ -429,7 +429,11 @@ public class AlumnoMain extends AppCompatActivity
         editTextHorario.setText(texto);
         return texto;
     }
-    
+
+    private TextView setPadding(TextView tV){
+        tV.setPadding(10,10,10,10);
+        return tV;
+    }
     private void taskFichadaAlumno(CHTTPRequest request) throws JSONException {
         JSONArray datos = request.getJsonResponse().getJSONArray("fichadas");
         ScrollView sVTablaFichadas = (ScrollView) findViewById(R.id.sVTablaFichadas);
@@ -457,8 +461,8 @@ public class AlumnoMain extends AppCompatActivity
             presente = new TextView(this);
             fecha.setTextColor(Color.BLACK);
             presente.setTextColor(Color.BLACK);
-            presente.setPadding(10,10,10,10);
-            fecha.setPadding(10,10,10,10);
+            presente = setPadding(presente);
+            fecha = setPadding(fecha);
             JSONObject dato = datos.getJSONObject(i);
             fecha.setText(dato.getString("fecha"));
             presente.setText(dato.getString("presente"));

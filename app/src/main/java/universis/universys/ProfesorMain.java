@@ -355,8 +355,8 @@ public class ProfesorMain extends AppCompatActivity
             asistencias = new TextView(this);
             nombre.setTextColor(Color.BLACK);
             asistencias.setTextColor(Color.BLACK);
-            asistencias.setPadding(10,10,10,10);
-            nombre.setPadding(10,10,10,10);
+            asistencias = setPadding(asistencias);
+            nombre = setPadding(nombre);
             JSONObject dato = datos.getJSONObject(i);
             nombre.setText(dato.getString("nombre"));
             asistencias.setText(dato.getString("asistencias"));
@@ -393,8 +393,8 @@ public class ProfesorMain extends AppCompatActivity
             nota = new TextView(this);
             nombre.setTextColor(Color.BLACK);
             nota.setTextColor(Color.BLACK);
-            nota.setPadding(10,10,10,10);
-            nombre.setPadding(10,10,10,10);
+            nota = setPadding(nota);
+            nombre = setPadding(nombre);
             JSONObject dato = datos.getJSONObject(i);
             nombre.setText(dato.getString("nombre"));
             nota.setText(dato.getString("nota"));
@@ -426,11 +426,11 @@ public class ProfesorMain extends AppCompatActivity
         tVcarrera.setTextColor(Color.WHITE);
         tVmateria.setTextColor(Color.WHITE);
         tValumno.setTextColor(Color.WHITE);
-        tVaceptar.setPadding(10,10,10,10);
-        tVcatedra.setPadding(10,10,10,10);
-        tVcarrera.setPadding(10,10,10,10);
-        tVmateria.setPadding(10,10,10,10);
-        tValumno.setPadding(10,10,10,10);
+        tVaceptar = setPadding(tVaceptar);
+        tVcatedra = setPadding(tVcatedra);
+        tVcarrera =setPadding(tVcarrera);
+        tVmateria = setPadding(tVmateria);
+        tValumno = setPadding(tValumno);
         tVcatedra.setText("CATEDRA");
         tVcarrera.setText("CARRERA");
         tVmateria.setText("MATERIA");
@@ -469,10 +469,10 @@ public class ProfesorMain extends AppCompatActivity
             tVcarrera.setBackgroundColor(Color.WHITE);
             tVmateria.setBackgroundColor(Color.WHITE);
             tValumno.setBackgroundColor(Color.WHITE);
-            tVcatedra.setPadding(10,10,10,10);
-            tVcarrera.setPadding(10,10,10,10);
-            tVmateria.setPadding(10,10,10,10);
-            tValumno.setPadding(10,10,10,10);
+            tVcatedra = setPadding(tVcatedra);
+            tVcarrera =setPadding(tVcarrera);
+            tVmateria = setPadding(tVmateria);
+            tValumno = setPadding(tValumno);
             JSONObject dato = datos.getJSONObject(i);
             idSolicitud.put(i,dato.getString("idSolicitud"));
             tVcatedra.setText(dato.getString("catedra"));
@@ -487,6 +487,11 @@ public class ProfesorMain extends AppCompatActivity
             fila.addView(tVcatedra,margenes);
             tablaSolicitudes.addView(fila);
         }
+    }
+
+    private TextView setPadding(TextView tV){
+        tV.setPadding(10,10,10,10);
+        return tV;
     }
 
     @Override
