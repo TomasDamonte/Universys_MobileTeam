@@ -129,15 +129,7 @@ public class VistaInicial extends AppCompatActivity
                 dias.add(new CalendarDay(2017,i,j));
             }
         }
-
         calendarioPublico.addDecorator(new CalendarDecorator(dias, Color.GREEN));
-
-
-
-
-
-
-
     }
 }
 

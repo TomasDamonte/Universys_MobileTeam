@@ -17,12 +17,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -60,7 +62,12 @@ public class ProfesorMain extends AppCompatActivity
     private ScrollView sVAsistencias;
     private TableLayout tablaAsistencias;
     private FrameLayout frameLayoutRespuesta;
-
+    private LinearLayout layoutDatosPersonales;
+    private LinearLayout layoutVerNotas;
+    private LinearLayout layoutSolicitudes;
+    private LinearLayout layoutAlumnoNota;
+    private Button botonEnviarRequest;
+    private RelativeLayout.LayoutParams posicionBoton;
 
     public void enviarRequest(View v) {
         tablaNotas.removeAllViews();
@@ -146,6 +153,7 @@ public class ProfesorMain extends AppCompatActivity
         CHTTPRequest.postRequest(RequestTaskIds.MODIFICAR_DATOS_PERSONALES,URLs.MODIFICAR_DATOS_PERSONALES
                 ,new JSONBuilder().modificarDatosPersonales(datos)).execute().addListener(this);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -179,7 +187,13 @@ public class ProfesorMain extends AppCompatActivity
         tablaAsistencias = (TableLayout) findViewById(R.id.tablaAsistencias);
         sVNotas = (ScrollView) findViewById(R.id.scrollViewTablaNotas);
         sVAsistencias = (ScrollView) findViewById(R.id.scrollViewTablaAsistencias);
+        layoutDatosPersonales = (LinearLayout) findViewById(R.id.layoutDatosPersonales);
         frameLayoutRespuesta = (FrameLayout) findViewById(R.id.frameLayoutRespuesta);
+        layoutVerNotas = (LinearLayout) findViewById(R.id.layoutVerNotas);
+        layoutSolicitudes = (LinearLayout) findViewById(R.id.layoutSolicitudes);
+        layoutAlumnoNota = (LinearLayout) findViewById(R.id.layoutAlumnoNota);
+        botonEnviarRequest = (Button) findViewById(R.id.buttonEnviarRequest);
+        posicionBoton = (RelativeLayout.LayoutParams)botonEnviarRequest.getLayoutParams();
 
         onNavigationItemSelected(navigationView.getMenu().getItem(0));
     }
@@ -208,18 +222,13 @@ public class ProfesorMain extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         blanquearCampos();
         itemMenu = item.getItemId();
-        LinearLayout layoutDatosPersonales = (LinearLayout) findViewById(R.id.layoutDatosPersonales);
-        LinearLayout layoutVerNotas = (LinearLayout) findViewById(R.id.layoutVerNotas);
-        LinearLayout layoutSolicitudes = (LinearLayout) findViewById(R.id.layoutSolicitudes);
-        LinearLayout layoutAlumno = (LinearLayout) findViewById(R.id.linearLayoutAlumno);
-        LinearLayout layoutNota = (LinearLayout) findViewById(R.id.linearLayoutNota);
-        LinearLayout layoutAlumnoNota = (LinearLayout) findViewById(R.id.layoutAlumnoNota);
-        LinearLayout layoutOKRespuesta = (LinearLayout) findViewById(R.id.layoutOKRespuesta);
+        posicionBoton.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        posicionBoton.removeRule(RelativeLayout.BELOW);
+        botonEnviarRequest.setLayoutParams(posicionBoton);
         frameLayoutRespuesta.setVisibility(View.INVISIBLE);
 
         switch (itemMenu) {
@@ -238,17 +247,18 @@ public class ProfesorMain extends AppCompatActivity
                 break;
             case R.id.nav_cargarNotas:
                 textViewOpcion.setText("Cargar Nota");
+                posicionBoton.addRule(RelativeLayout.BELOW,R.id.layoutAlumnoNota);
+                posicionBoton.removeRule(RelativeLayout.ALIGN_PARENT_TOP);
+                botonEnviarRequest.setLayoutParams(posicionBoton);
                 layoutDatosPersonales.setVisibility(View.INVISIBLE);
                 layoutSolicitudes.setVisibility(View.INVISIBLE);
-                layoutAlumno.setVisibility(View.VISIBLE);
-                layoutNota.setVisibility(View.VISIBLE);
+                layoutAlumnoNota.setVisibility(View.VISIBLE);
                 layoutVerNotas.setVisibility(View.VISIBLE);
                 break;
             default:
                 if (itemMenu == R.id.nav_verNotas) textViewOpcion.setText("Ver Notas");
                 else textViewOpcion.setText("Ver Asistencias");
-                layoutAlumno.setVisibility(View.INVISIBLE);
-                layoutNota.setVisibility(View.INVISIBLE);
+                layoutAlumnoNota.setVisibility(View.INVISIBLE);
                 layoutDatosPersonales.setVisibility(View.INVISIBLE);
                 layoutSolicitudes.setVisibility(View.INVISIBLE);
                 layoutVerNotas.setVisibility(View.VISIBLE);

@@ -59,6 +59,10 @@ public class AlumnoMain extends AppCompatActivity
     private MaterialCalendarView calendarioAlumno;
     private LinearLayout linearLayoutHorarios;
     private HashMap<Integer,String> idCursada;
+    private LinearLayout layoutDatosPersonales;
+    private LinearLayout layoutCalendario;
+    private LinearLayout layoutFichadaAlumno;
+    private LinearLayout layoutInscripciones;
 
     public void enviarRequest(View v) {
 
@@ -102,7 +106,6 @@ public class AlumnoMain extends AppCompatActivity
         editTextFNac.setFocusableInTouchMode(true);
         editTextTelefono.setFocusableInTouchMode(true);
         findViewById(R.id.buttonEnviarDatosAlumno).setEnabled(true);
-
     }
 
     public void enviarDatosAlumno(View v) {
@@ -168,6 +171,10 @@ public class AlumnoMain extends AppCompatActivity
         textViewOpcion = (TextView) findViewById(R.id.textViewOpcion);
         textViewEvento = (TextView) findViewById(R.id.textViewEvento);
         calendarioAlumno.setOnDateChangedListener(this);
+        layoutDatosPersonales = (LinearLayout) findViewById(R.id.layoutDatosPersonales);
+        layoutCalendario = (LinearLayout) findViewById(R.id.layoutCalendario);
+        layoutFichadaAlumno = (LinearLayout) findViewById(R.id.layoutFichadaAlumno);
+        layoutInscripciones = (LinearLayout) findViewById(R.id.layoutInscripciones);
 
         onNavigationItemSelected(navigationView.getMenu().getItem(0));
     }
@@ -201,10 +208,6 @@ public class AlumnoMain extends AppCompatActivity
         // Handle navigation view item clicks here.
         itemMenu = item.getItemId();
         blanquearCampos();
-        LinearLayout layoutDatosPersonales = (LinearLayout) findViewById(R.id.layoutDatosPersonales);
-        LinearLayout layoutCalendario = (LinearLayout) findViewById(R.id.layoutCalendario);
-        LinearLayout layoutFichadaAlumno = (LinearLayout) findViewById(R.id.layoutFichadaAlumno);
-        LinearLayout layoutInscripciones = (LinearLayout) findViewById(R.id.layoutInscripciones);
         frameLayoutRespuesta.setVisibility(View.INVISIBLE);
 
         switch (itemMenu){
