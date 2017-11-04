@@ -51,17 +51,6 @@ public class LoginActivity extends AppCompatActivity{
                 mPasswordView.setText("");
             }
         });
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
-            }
-        });
-
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -69,7 +58,6 @@ public class LoginActivity extends AppCompatActivity{
                 attemptLogin();
             }
         });
-
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
     }
@@ -171,21 +159,19 @@ public class LoginActivity extends AppCompatActivity{
 
         @Override
         public boolean onResponse(CHTTPRequest request, String response) {
-            String errorId = null;
-            String tipo = null;
+            String errorId = "";
+            String rol = "";
+            mAuthTask = null;
+            showProgress(false);
             try {
                 errorId = request.getJsonResponse().getString(Error.ERROR_ID);
                 LoginActivity.ID_SESION = request.getJsonResponse().getString("idSesion");
-                tipo = request.getJsonResponse().getString("rol");
+                rol = request.getJsonResponse().getString("rol");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
-            mAuthTask = null;
-            showProgress(false);
-
             if (errorId.equals(Error.SUCCESS)) {
-                if(tipo.equals("profesor")){
+                if(rol.equals("profesor")){
                     Intent i = new Intent(getApplicationContext(), ProfesorMain.class );
                     startActivity(i);
                 }
@@ -193,19 +179,17 @@ public class LoginActivity extends AppCompatActivity{
                     Intent i = new Intent(getApplicationContext(), AlumnoMain.class );
                     startActivity(i);
                 }
-            } else {
+            }
+            else {
                 if(errorId.equals(Error.EMAIL_ERROR)){
                     mEmailView.setError(Error.EMAIL_ERROR_TEXT);
                     mEmailView.requestFocus();
                 }
-                if(errorId.equals(Error.PASSWORD_ERROR)) {
+                else if(errorId.equals(Error.PASSWORD_ERROR)) {
                     mPasswordView.setError(Error.PASSWORD_ERROR_TEXT);
                     mPasswordView.requestFocus();
                 }
-                if(errorId.equals(Error.SECION_DUPLICADA))
-                    Toast.makeText(getApplicationContext(),Error.SECION_DUPLICADA_TEXT,Toast.LENGTH_LONG).show();
-                if(errorId.equals(Error.CACHE_ERROR))
-                    Toast.makeText(getApplicationContext(),Error.CACHE_ERROR_TEXT,Toast.LENGTH_LONG).show();
+                else Error.mostrar(errorId);
             }
             return false;
         }
