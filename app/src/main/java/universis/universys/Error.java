@@ -2,6 +2,9 @@ package universis.universys;
 
 import android.widget.Toast;
 
+/**
+ * Esta clase se encarga del manejo de errores.
+ */
 public class Error {
 
     public static final String SUCCESS = "200";
@@ -28,6 +31,10 @@ public class Error {
 
     public static final String ERROR_ID = "errorId";
 
+    /**
+     * Muestra un Toast con el mensaje correspondiente al id del error.
+     * @param id Id del error.
+     */
     public static void mostrar(String id) {
         switch (id) {
             case Error.CACHE_ERROR:
