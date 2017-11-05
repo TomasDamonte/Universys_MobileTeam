@@ -35,7 +35,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 /**
- * Esta clase es un Activity que se ejecuta cuando el usuario es un alumno.
+ * Esta clase es un Activity que se ejecuta cuando el usuario que se logeó es un alumno.
+ * Se encarga de todas las tareas que puede realizar el alumno con la aplicación.
  */
 public class AlumnoMain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, IRequestListener,OnDateSelectedListener{
