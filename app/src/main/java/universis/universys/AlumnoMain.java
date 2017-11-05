@@ -165,7 +165,7 @@ public class AlumnoMain extends AppCompatActivity
 
     /**
      * Inicializa el Activity y los atributos de la clase.
-     * @param savedInstanceState Variable recibida al ejecutarse el Activity
+     * @param savedInstanceState Parámetro recibido al ejecutarse el Activity
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -393,7 +393,7 @@ public class AlumnoMain extends AppCompatActivity
     }
 
     /**
-     * Se ejecuta cuando el servidor respondió a la request Calendario_Alumno.
+     * Muestra un calendario con fechas destacadas y eventos.
      * @dias Se guardan qué días tienen eventos.
      * @calendarEvents Se guardan los eventos asignados a cada día.
      * @param request Resquest de la cual se obtiene la respuesta del servidor.
@@ -422,7 +422,6 @@ public class AlumnoMain extends AppCompatActivity
     }
 
     /**
-     * Se ejecuta cuando el servidor respondió a la request Materias_Disponibles.
      * Muestra las materias con sus horarios y cátedras a las cuales al alumno puede inscribirse.
      * Se genera un botón 'Inscribirse' por cada materia.
      * @param datos Respuesta del servidor.
@@ -451,12 +450,18 @@ public class AlumnoMain extends AppCompatActivity
                     inscribir.setId(i+j+k);
                     editText.setFocusable(false);
                     inscribir.setText("Inscribirse");
+                    //Guarda a qué botón está asignada cada cursada.
                     idCursada.put(i+j+k,clase.getString("idCursada"));
                     inscribir.setOnClickListener(new View.OnClickListener() {
+                        /**
+                         * Ejecuta la request de inscripcion a materia.
+                         * @param view Vista que disparó el listener.
+                         */
                         @Override
-                        public void onClick(View v) {
+                        public void onClick(View view) {
                             CHTTPRequest.postRequest(RequestTaskIds.INSCRIPCION_MATERIA,URLs.INSCRIPCION_MATERIA,
-                                    new JSONBuilder().inscripcionAMateria(idCursada.get(v.getId()))).execute().addListener(AlumnoMain.this);
+                                    new JSONBuilder().inscripcionAMateria(idCursada.get(view.getId())))
+                                    .execute().addListener(AlumnoMain.this);
                         }
                     });
                     inscripciones.addView(editText);
@@ -572,7 +577,6 @@ public class AlumnoMain extends AppCompatActivity
      * Muestra los eventos asignados al día clickeado.
      * @param widget El calendario.
      * @param date Día clickeado.
-     * @param selected
      */
     @Override
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
