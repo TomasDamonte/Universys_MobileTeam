@@ -1,14 +1,23 @@
 package universis.universys;
 
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
+
+/**
+ * Simula la respuesta del servidor.
+ */
 
 public class DataBase {
 
+    /**
+     * Analiza una request y dependiendo de su id y contenido devuelve la respuesta correspondiente.
+     * @param request Request recibida por el servidor.
+     * @return Respuesta del servidor.
+     * @throws JSONException Por si ocurre algún error.
+     */
     public static JSONObject respuestaDB (CHTTPRequest request) throws JSONException {
         JSONObject jsonReq = request.getBody();
         ArrayList<JSONObject> db = new ArrayList<>();
