@@ -571,7 +571,7 @@ public class AlumnoMain extends AppCompatActivity
      * Muestra los eventos asignados al día clickeado.
      * @param widget El calendario.
      * @param date Día clickeado.
-     * @param selected 
+     * @param selected
      */
     @Override
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {

@@ -649,7 +649,7 @@ public class CHTTPRequest extends AsyncTask<String, String, String>
                     e.printStackTrace();
                 }
 
-                CacheHelper.setStringProperty(m_taskId + m_body.toString(),responseString);
+                CacheHelper.guardar(m_taskId + m_body.toString(),responseString);
 
             }
             // If something happened, throw an exception with the error.
@@ -663,14 +663,12 @@ public class CHTTPRequest extends AsyncTask<String, String, String>
         catch (ClientProtocolException e)
         {
             e.printStackTrace();
-            responseString = CacheHelper.getStringProperty(m_taskId + m_body.toString());
-            //TODO Handle problems..
+            responseString = CacheHelper.leer(m_taskId + m_body.toString());
         }
         catch (IOException e)
         {
-            responseString = CacheHelper.getStringProperty(m_taskId + m_body.toString());
+            responseString = CacheHelper.leer(m_taskId + m_body.toString());
             e.printStackTrace();
-            //TODO Handle problems..
         }
 
         // Store the response for later access
@@ -678,10 +676,20 @@ public class CHTTPRequest extends AsyncTask<String, String, String>
         return responseString;
     }
 
+    /**
+     * Crea un JSONObject a partir de la respuesta del servidor.
+     * @return Respuesta del servidor convertida en JSONObject.
+     * @throws JSONException Por si ocurre algún error.
+     */
     public JSONObject getJsonResponse() throws JSONException {
         return new JSONObject(m_response);
     }
 
+    /**
+     * Crea un JSONArray a partir de la respuesta del servidor.
+     * @return Respuesta del servidor convertida en JSONArray.
+     * @throws JSONException Por si ocurre algún error.
+     */
     public JSONArray getJsonArrayResponse() throws JSONException {
         return new JSONArray(m_response);
     }
