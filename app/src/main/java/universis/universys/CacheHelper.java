@@ -29,7 +29,7 @@ public class CacheHelper {
     public static String leer(String clave) {
         SharedPreferences sharedPreferences = CONTEXT.getSharedPreferences(CACHE_CONFIGURATION_NAME,Activity.MODE_PRIVATE);
         String res = null;
-        if(!sharedPreferences.contains(clave.toString())) {
+        if(!sharedPreferences.contains(clave)) {
             try {
                 return new JSONObject().put(Error.ERROR_ID, Error.CACHE_ERROR).toString();
             } catch (JSONException e) {
@@ -37,7 +37,7 @@ public class CacheHelper {
             }
         }
         if (sharedPreferences != null) {
-            res = sharedPreferences.getString(clave.toString(), null);
+            res = sharedPreferences.getString(clave, null);
         }
         return res;
     }
@@ -51,7 +51,7 @@ public class CacheHelper {
         SharedPreferences sharedPreferences = CONTEXT.getSharedPreferences(CACHE_CONFIGURATION_NAME, Activity.MODE_PRIVATE);
         if (sharedPreferences != null) {
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(clave.toString(), valor);
+            editor.putString(clave, valor);
             editor.commit();
         }
     }

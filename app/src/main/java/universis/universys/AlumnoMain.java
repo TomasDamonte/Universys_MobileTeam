@@ -9,6 +9,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -79,9 +80,9 @@ public class AlumnoMain extends AppCompatActivity
         textViewNota.setVisibility(View.INVISIBLE);
         linearLayoutHorarios.setVisibility(View.INVISIBLE);
 
-        if (editTextCatedra.getText().toString().equals("") || editTextCarrera.getText().toString().equals("")
-                || editTextMateria.getText().toString().equals("")) {
-            Toast.makeText(this, "Deben completarse todos los campos", Toast.LENGTH_LONG).show();
+        if (TextUtils.isEmpty(editTextCatedra.getText().toString()) || TextUtils.isEmpty(editTextCarrera.getText().toString())
+                || TextUtils.isEmpty(editTextMateria.getText().toString())) {
+            Error.mostrar(Error.CAMPOS_INCOMPLETOS_ERROR);
         }
         else {
             if(itemMenu == R.id.nav_asistencias) {
@@ -131,7 +132,7 @@ public class AlumnoMain extends AppCompatActivity
     public void enviarDatosAlumno(View v) {
         editTextNombre.setFocusable(false);
         editTextApellido.setFocusable(false);
-        editTextDomicilio.setFocusable(false);;
+        editTextDomicilio.setFocusable(false);
         editTextEmail.setFocusable(false);
         editTextFNac.setFocusable(false);
         editTextTelefono.setFocusable(false);

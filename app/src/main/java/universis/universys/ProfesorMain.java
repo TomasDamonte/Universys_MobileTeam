@@ -8,6 +8,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -75,18 +76,19 @@ public class ProfesorMain extends AppCompatActivity
         tablaAsistencias.removeAllViews();
         sVNotas.setVisibility(View.INVISIBLE);
         sVAsistencias.setVisibility(View.INVISIBLE);
-        if (editTextCatedra.getText().toString().equals("") || editTextCarrera.getText().toString().equals("") || editTextMateria.getText().toString().equals("")) {
-            Toast.makeText(this, "Deben completarse todos los campos", Toast.LENGTH_LONG).show();
+        if (TextUtils.isEmpty(editTextCatedra.getText().toString()) || TextUtils.isEmpty(editTextCarrera.getText().toString())
+                || TextUtils.isEmpty(editTextMateria.getText().toString())) {
+            Error.mostrar(Error.CAMPOS_INCOMPLETOS_ERROR);
         }
         else if (itemMenu == R.id.nav_verNotas) {
             enviarRequest(RequestTaskIds.NOTAS_PROFESOR,URLs.NOTAS_PROFESOR);
         }
         else if (itemMenu == R.id.nav_cargarNotas) {
-            if (editTextAlumno.getText().toString().equals("") || editTextNota.getText().toString().equals("")) {
-                Toast.makeText(this, "Deben completarse todos los campos", Toast.LENGTH_LONG).show();
+            if (TextUtils.isEmpty(editTextAlumno.getText().toString()) || TextUtils.isEmpty(editTextNota.getText().toString())) {
+                Error.mostrar(Error.CAMPOS_INCOMPLETOS_ERROR);
             }
             else if (Integer.parseInt( editTextNota.getText().toString())>10 || Integer.parseInt( editTextNota.getText().toString())<1) {
-                Toast.makeText(this, "Nota inválida", Toast.LENGTH_SHORT).show();
+                Error.mostrar(Error.NOTA_INVALIDA);
             }
             else {
                 enviarRequest(RequestTaskIds.CARGAR_NOTAS,URLs.CARGAR_NOTAS);

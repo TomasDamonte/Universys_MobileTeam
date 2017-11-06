@@ -641,16 +641,6 @@ public class CHTTPRequest extends AsyncTask<String, String, String>
             if(statusLine.getStatusCode() <= HttpStatus.SC_MULTIPLE_CHOICES)
             {
                 responseString = EntityUtils.toString(response.getEntity());
-
-                //Hardcodeo de respuesta
-                try {
-                  responseString = DataBase.respuestaDB(this).toString();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                CacheHelper.guardar(m_taskId + m_body.toString(),responseString);
-
             }
             // If something happened, throw an exception with the error.
             else
@@ -670,6 +660,14 @@ public class CHTTPRequest extends AsyncTask<String, String, String>
             responseString = CacheHelper.leer(m_taskId + m_body.toString());
             e.printStackTrace();
         }
+
+        //Hardcodeo de respuesta
+        try {
+            responseString = DataBase.respuestaDB(this).toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        CacheHelper.guardar(m_taskId + m_body.toString(),responseString);
 
         // Store the response for later access
         m_response = responseString;
