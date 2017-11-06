@@ -29,7 +29,7 @@ public class Error {
     public static final String EMAIL_REPETIDO_ERROR_TEXT = "Email en uso";
     public static final String CAMPOS_INCOMPLETOS_ERROR_TEXT = "Deben completarse todos los campos";
     public static final String ERROR_NO_IDENTIFICADO = "Error no identificado";
-    public static final String NOTA_INVALIDA_TEXT = "Nota inv{alida";
+    public static final String NOTA_INVALIDA_TEXT = "Nota inválida";
 
     public static final String ERROR_ID = "errorId";
 
