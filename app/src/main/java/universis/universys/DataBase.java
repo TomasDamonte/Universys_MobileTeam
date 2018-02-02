@@ -48,6 +48,11 @@ public class DataBase {
                     .put("rol", "profesor").put("nombre", "cacho").put("apellido", "riquelme")
                     .put("fNac", "06/03/1989").put("domicilio", "Austria 3561")
                     .put("telefono", "4215-9547").put("idSesion", "6320"));
+            //Declaracion nuevo objeto JSON admin. ------------------------------------- FEDE
+            db.put(new JSONObject().put("mail", "admin@admin").put("password", "admin")
+                    .put("rol", "admin").put("nombre", "pepe").put("apellido", "riquelme")
+                    .put("fNac", "06/03/1989").put("domicilio", "Austria 3561")
+                    .put("telefono", "4215-9547").put("idSesion", "6321"));
             CacheHelper.guardar("db",db.toString());
         }
 
