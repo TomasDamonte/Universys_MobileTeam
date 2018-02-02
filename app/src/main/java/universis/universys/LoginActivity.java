@@ -192,8 +192,12 @@ public class LoginActivity extends AppCompatActivity{
                     Intent i = new Intent(getApplicationContext(), ProfesorMain.class );
                     startActivity(i);
                 }
-                else {
+                else if(rol.equals("alumno")) {
                     Intent i = new Intent(getApplicationContext(), AlumnoMain.class );
+                    startActivity(i);
+                }
+                else {
+                    Intent i = new Intent(getApplicationContext(), AdminMain.class );
                     startActivity(i);
                 }
             }
