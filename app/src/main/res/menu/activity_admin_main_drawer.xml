@@ -11,10 +11,6 @@
             android:icon="@android:drawable/stat_notify_chat"
             android:title="Datos Personales" />
         <item
-            android:id="@+id/nav_asistencias"
-            android:icon="@android:drawable/ic_menu_edit"
-            android:title="Asistencias" />
-        <item
             android:id="@+id/nav_inscripcion"
             android:icon="@android:drawable/ic_input_get"
             android:title="Inscribirse a materia" />
@@ -22,14 +18,6 @@
             android:id="@+id/nav_baja"
             android:icon="@android:drawable/ic_input_get"
             android:title="Darse de baja a materia" />
-        <item
-            android:id="@+id/nav_notas"
-            android:icon="@android:drawable/ic_input_get"
-            android:title="Notas" />
-        <item
-            android:id="@+id/nav_horarios"
-            android:icon="@android:drawable/ic_input_get"
-            android:title="Horarios" />
     </group>
 
 </menu>
