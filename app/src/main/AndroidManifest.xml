@@ -32,6 +32,10 @@
             android:name=".ProfesorMain"
             android:label="Universys"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".AdminMain"
+            android:label="Universys"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
