@@ -68,8 +68,8 @@
                 android:layout_height="wrap_content"
                 android:text="Universidad de Belgrano"
                 android:textAlignment="center"
-                android:textColor="#00F"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="@android:color/holo_red_dark" />
 
             <ScrollView
                 android:layout_width="match_parent"

@@ -13,10 +13,10 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@mipmap/logo" />
+        android:id="@+id/imageView6"
+        android:layout_width="111dp"
+        android:layout_height="68dp"
+        app:srcCompat="@mipmap/ub" />
 
     <TextView
         android:layout_width="match_parent"
