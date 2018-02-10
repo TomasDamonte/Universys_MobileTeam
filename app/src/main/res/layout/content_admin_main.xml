@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
+<<<<<<< HEAD
 
 <!--- Nuevo Content Admin ++++++++++++++++++++++++++++++++++ FEDE -->
+=======
+>>>>>>> f259d96c19a4cbbf460084d64f6f1cd7f62e380b
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+<<<<<<< HEAD
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="universis.universys.AlumnoMain"
     tools:showIn="@layout/app_bar_alumno_main">
+=======
+    android:padding="3dp"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="universis.universys.ProfesorMain"
+    tools:showIn="@layout/app_bar_admin_main">
+>>>>>>> f259d96c19a4cbbf460084d64f6f1cd7f62e380b
 
     <FrameLayout
         android:layout_width="368dp"
@@ -18,13 +28,18 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
+<<<<<<< HEAD
             android:id="@+id/layoutInscripciones"
+=======
+            android:id="@+id/layoutVerNotas"
+>>>>>>> f259d96c19a4cbbf460084d64f6f1cd7f62e380b
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:visibility="invisible">
 
             <TextView
+<<<<<<< HEAD
                 android:id="@+id/tVInscripcionesDisponibles"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -41,6 +56,198 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical" />
             </ScrollView>
+=======
+                android:id="@+id/textViewOpcion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+            <LinearLayout
+                android:id="@+id/linearLayoutCatedra"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/textViewOpcion"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textViewCatedra"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Catedra: "
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+                <EditText
+                    android:id="@+id/editTextCatedra"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:inputType="text"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutCarrera"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/linearLayoutCatedra"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textViewCarrera"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Carrera: "
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+                <EditText
+                    android:id="@+id/editTextCarrera"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:inputType="text"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutMateria"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/linearLayoutCarrera"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textViewMateria"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Materia: "
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+                <EditText
+                    android:id="@+id/editTextMateria"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:inputType="text"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/layoutAlumnoNota"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="invisible">
+
+                    <LinearLayout
+                        android:id="@+id/linearLayoutAlumno"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textViewAlumno"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Alumno: "
+                            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+                        <EditText
+                            android:id="@+id/editTextAlumno"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:inputType="text"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linearLayoutNota"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textViewNota"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Nota: "
+                            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+                        <EditText
+                            android:id="@+id/editTextNota"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:inputType="number"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/buttonEnviarRequest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:onClick="enviarRequest"
+                    android:text="OK" />
+
+            </RelativeLayout>
+
+            <FrameLayout
+                android:id="@+id/frameLayoutRespuesta"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/buttonEnviarRequest">
+
+                <ScrollView
+                    android:id="@+id/scrollViewTablaAsistencias"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
+                    android:gravity="center_horizontal">
+
+                    <TableLayout
+                        android:id="@+id/tablaAsistencias"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                    </TableLayout>
+                </ScrollView>
+
+                <ScrollView
+                    android:id="@+id/scrollViewTablaNotas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
+                    android:gravity="center_horizontal">
+
+                    <TableLayout
+                        android:id="@+id/tablaNotas"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">       
+                    </TableLayout>
+                </ScrollView>
+            </FrameLayout>
+
+>>>>>>> f259d96c19a4cbbf460084d64f6f1cd7f62e380b
         </LinearLayout>
 
         <LinearLayout
@@ -204,6 +411,10 @@
                     android:text="Teléfono: "
                     android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> f259d96c19a4cbbf460084d64f6f1cd7f62e380b
                 <EditText
                     android:id="@+id/editTextTelefono"
                     style="@style/TextAppearance.AppCompat.Large"
@@ -225,37 +436,61 @@
 
 
                 <Button
+<<<<<<< HEAD
                     android:id="@+id/buttonModifDatosAlumno"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:onClick="modificarDatosAlumno"
+=======
+                    android:id="@+id/buttonModifDatosProfesor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="modificarDatosProfesor"
+>>>>>>> f259d96c19a4cbbf460084d64f6f1cd7f62e380b
                     android:text="Modificar"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
                 <Button
+<<<<<<< HEAD
                     android:id="@+id/buttonEnviarDatosAlumno"
+=======
+                    android:id="@+id/buttonEnviarDatosProfesor"
+>>>>>>> f259d96c19a4cbbf460084d64f6f1cd7f62e380b
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:enabled="false"
+<<<<<<< HEAD
                     android:onClick="enviarDatosAlumno"
+=======
+                    android:onClick="enviarDatosProfesor"
+>>>>>>> f259d96c19a4cbbf460084d64f6f1cd7f62e380b
                     android:text="Guardar"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
 
             </LinearLayout>
 
+<<<<<<< HEAD
 
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/layoutCalendario"
+=======
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutSolicitudes"
+>>>>>>> f259d96c19a4cbbf460084d64f6f1cd7f62e380b
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:visibility="invisible">
 
+<<<<<<< HEAD
             <com.prolificinteractive.materialcalendarview.MaterialCalendarView
                 android:id="@+id/calendarioAlumno"
                 android:layout_width="match_parent"
@@ -426,4 +661,45 @@
 
         </LinearLayout>
     </FrameLayout>
+=======
+            <TextView
+                android:id="@+id/tVsolicitudesInscripcion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Solicitudes de inscripción"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+            <HorizontalScrollView
+                android:id="@+id/sVTablaSolicitudes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:gravity="center_horizontal">
+
+                <ScrollView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal">
+
+                    <TableLayout
+                        android:id="@+id/tablaSolicitudes"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">       
+                    </TableLayout>
+                </ScrollView>
+            </HorizontalScrollView>
+
+            <Button
+                android:id="@+id/enviarSolicitudes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="requestEnviarSolicitudes"
+                android:text="ENVIAR"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+>>>>>>> f259d96c19a4cbbf460084d64f6f1cd7f62e380b
 </android.support.constraint.ConstraintLayout>

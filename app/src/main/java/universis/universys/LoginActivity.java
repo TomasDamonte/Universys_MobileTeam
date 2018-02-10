@@ -195,6 +195,7 @@ public class LoginActivity extends AppCompatActivity{
                     Intent i = new Intent(getApplicationContext(), ProfesorMain.class );
                     startActivity(i);
                 }
+<<<<<<< HEAD
                 else if (rol.equals("alumno")){
                     Intent i = new Intent(getApplicationContext(), AlumnoMain.class );
                     startActivity(i);
@@ -205,6 +206,16 @@ public class LoginActivity extends AppCompatActivity{
                     startActivity(i);
                 }
 
+=======
+                else if(rol.equals("alumno")) {
+                    Intent i = new Intent(getApplicationContext(), AlumnoMain.class );
+                    startActivity(i);
+                }
+                else {
+                    Intent i = new Intent(getApplicationContext(), AdminMain.class );
+                    startActivity(i);
+                }
+>>>>>>> f259d96c19a4cbbf460084d64f6f1cd7f62e380b
             }
             else {
                 if(errorId.equals(Error.EMAIL_ERROR)){
