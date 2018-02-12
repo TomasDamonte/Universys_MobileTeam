@@ -1,7 +1,6 @@
 package universis.universys;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -641,16 +640,6 @@ public class CHTTPRequest extends AsyncTask<String, String, String>
             if(statusLine.getStatusCode() <= HttpStatus.SC_MULTIPLE_CHOICES)
             {
                 responseString = EntityUtils.toString(response.getEntity());
-
-                //Hardcodeo de respuesta
-                try {
-                  responseString = DataBase.respuestaDB(this).toString();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                CacheHelper.setStringProperty(m_taskId + m_body.toString(),responseString);
-
             }
             // If something happened, throw an exception with the error.
             else
@@ -663,25 +652,41 @@ public class CHTTPRequest extends AsyncTask<String, String, String>
         catch (ClientProtocolException e)
         {
             e.printStackTrace();
-            responseString = CacheHelper.getStringProperty(m_taskId + m_body.toString());
-            //TODO Handle problems..
+            responseString = CacheHelper.leer(m_taskId + m_body.toString());
         }
         catch (IOException e)
         {
-            responseString = CacheHelper.getStringProperty(m_taskId + m_body.toString());
+            responseString = CacheHelper.leer(m_taskId + m_body.toString());
             e.printStackTrace();
-            //TODO Handle problems..
         }
+
+        //Hardcodeo de respuesta
+        try {
+            responseString = DataBase.respuestaDB(this).toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        CacheHelper.guardar(m_taskId + m_body.toString(),responseString);
 
         // Store the response for later access
         m_response = responseString;
         return responseString;
     }
 
+    /**
+     * Crea un JSONObject a partir de la respuesta del servidor.
+     * @return Respuesta del servidor convertida en JSONObject.
+     * @throws JSONException Por si ocurre algún error.
+     */
     public JSONObject getJsonResponse() throws JSONException {
         return new JSONObject(m_response);
     }
 
+    /**
+     * Crea un JSONArray a partir de la respuesta del servidor.
+     * @return Respuesta del servidor convertida en JSONArray.
+     * @throws JSONException Por si ocurre algún error.
+     */
     public JSONArray getJsonArrayResponse() throws JSONException {
         return new JSONArray(m_response);
     }

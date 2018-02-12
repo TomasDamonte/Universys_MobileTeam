@@ -4,11 +4,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import android.support.test.runner.AndroidJUnit4;
-
 import java.util.LinkedHashMap;
-
 import static org.junit.Assert.*;
 
 @RunWith(AndroidJUnit4.class)

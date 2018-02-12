@@ -1,28 +1,23 @@
 package universis.universys;
 
-import android.annotation.TargetApi;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
-import android.print.PrintAttributes;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -37,8 +32,12 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
+/**
+ * Esta clase es un Activity que se ejecuta cuando el usuario que se logeó es un profesor.
+ * Se encarga de todas las tareas que puede realizar el profesor con la aplicación.
+ */
 public class ProfesorMain extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, IRequestListener, View.OnClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener, IRequestListener{
 
     private EditText editTextNombre;
     private EditText editTextApellido;
@@ -60,25 +59,36 @@ public class ProfesorMain extends AppCompatActivity
     private ScrollView sVAsistencias;
     private TableLayout tablaAsistencias;
     private FrameLayout frameLayoutRespuesta;
+    private LinearLayout layoutDatosPersonales;
+    private LinearLayout layoutVerNotas;
+    private LinearLayout layoutSolicitudes;
+    private LinearLayout layoutAlumnoNota;
+    private Button botonEnviarRequest;
+    private RelativeLayout.LayoutParams posicionBoton;
 
-
+    /**
+     * Resetea los layouts, checkea que estén completos todos los campos
+     *y envia la request dependiendo del item del menu que se haya seleccionado.
+     *@param v View recibida al presionar el boton.
+     */
     public void enviarRequest(View v) {
         tablaNotas.removeAllViews();
         tablaAsistencias.removeAllViews();
         sVNotas.setVisibility(View.INVISIBLE);
         sVAsistencias.setVisibility(View.INVISIBLE);
-        if (editTextCatedra.getText().toString().equals("") || editTextCarrera.getText().toString().equals("") || editTextMateria.getText().toString().equals("")) {
-            Toast.makeText(this, "Deben completarse todos los campos", Toast.LENGTH_LONG).show();
+        if (TextUtils.isEmpty(editTextCatedra.getText().toString()) || TextUtils.isEmpty(editTextCarrera.getText().toString())
+                || TextUtils.isEmpty(editTextMateria.getText().toString())) {
+            Error.mostrar(Error.CAMPOS_INCOMPLETOS_ERROR);
         }
         else if (itemMenu == R.id.nav_verNotas) {
             enviarRequest(RequestTaskIds.NOTAS_PROFESOR,URLs.NOTAS_PROFESOR);
         }
         else if (itemMenu == R.id.nav_cargarNotas) {
-            if (editTextAlumno.getText().toString().equals("") || editTextNota.getText().toString().equals("")) {
-                Toast.makeText(this, "Deben completarse todos los campos", Toast.LENGTH_LONG).show();
+            if (TextUtils.isEmpty(editTextAlumno.getText().toString()) || TextUtils.isEmpty(editTextNota.getText().toString())) {
+                Error.mostrar(Error.CAMPOS_INCOMPLETOS_ERROR);
             }
             else if (Integer.parseInt( editTextNota.getText().toString())>10 || Integer.parseInt( editTextNota.getText().toString())<1) {
-                Toast.makeText(this, "Nota inválida", Toast.LENGTH_SHORT).show();
+                Error.mostrar(Error.NOTA_INVALIDA);
             }
             else {
                 enviarRequest(RequestTaskIds.CARGAR_NOTAS,URLs.CARGAR_NOTAS);
@@ -89,6 +99,11 @@ public class ProfesorMain extends AppCompatActivity
         }
     }
 
+    /**
+     * Hace el request.
+     * @param id Identificador de la request.
+     * @param url Direccion web a dónde enviar la request.
+     */
     public void enviarRequest(int id, String url) {
         if (itemMenu == R.id.nav_cargarNotas){
             CHTTPRequest.postRequest(id, url, new JSONBuilder().requestGenerico(editTextCatedra.getText().toString()
@@ -101,6 +116,9 @@ public class ProfesorMain extends AppCompatActivity
         }
     }
 
+    /**
+     * Envía la request VER_SOLICITUDES al servidor.
+     */
     public void requestVerSolicitudes() {
         TableLayout tablaSolicitudes = (TableLayout) findViewById(R.id.tablaSolicitudes);
         tablaSolicitudes.removeAllViews();
@@ -110,11 +128,19 @@ public class ProfesorMain extends AppCompatActivity
                 ,new JSONBuilder().requestBasico()).execute().addListener(this);
     }
 
+    /**
+     * Envía la request ACEPTAR_SOLICITUDES al servidor.
+     * @param v View recibida al clickear el botón enviarSolicitudes.
+     */
     public void requestEnviarSolicitudes(View v) {
         CHTTPRequest.postRequest(RequestTaskIds.ACEPTAR_SOLICITUDES,URLs.ACEPTAR_SOLICITUDES
                 ,new JSONBuilder().enviarSolicitudesInscripcion(estadoSolicitud)).execute().addListener(this);
     }
 
+    /**
+     * Habilita la edición de los campos y el botón buttonEnviarDatosProfesor.
+     * @param v View recibida al presionar el botón buttonModifDatosProfesor.
+     */
     public void modificarDatosProfesor(View v) {
         editTextNombre.setFocusableInTouchMode(true);
         editTextApellido.setFocusableInTouchMode(true);
@@ -125,6 +151,9 @@ public class ProfesorMain extends AppCompatActivity
         findViewById(R.id.buttonEnviarDatosProfesor).setEnabled(true);
     }
 
+    /**
+     * Resetea los editText.
+     */
     private void blanquearCampos() {
         editTextCarrera.setText("");
         editTextCatedra.setText("");
@@ -133,6 +162,11 @@ public class ProfesorMain extends AppCompatActivity
         editTextAlumno.setText("");
     }
 
+    /**
+     * Deshabilita la edición de los campos, lee los valores cargados en los campos
+     * y envia la request.
+     * @param v View recibida al presionar el botón buttonEnviarDatosProfesor.
+     */
     public void enviarDatosProfesor(View v) {
         editTextNombre.setFocusable(false);
         editTextApellido.setFocusable(false);
@@ -146,6 +180,11 @@ public class ProfesorMain extends AppCompatActivity
         CHTTPRequest.postRequest(RequestTaskIds.MODIFICAR_DATOS_PERSONALES,URLs.MODIFICAR_DATOS_PERSONALES
                 ,new JSONBuilder().modificarDatosPersonales(datos)).execute().addListener(this);
     }
+
+    /**
+     * Inicializa el Activity y los atributos de la clase.
+     * @param savedInstanceState Parámetro recibido al ejecutarse el Activity
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -179,11 +218,22 @@ public class ProfesorMain extends AppCompatActivity
         tablaAsistencias = (TableLayout) findViewById(R.id.tablaAsistencias);
         sVNotas = (ScrollView) findViewById(R.id.scrollViewTablaNotas);
         sVAsistencias = (ScrollView) findViewById(R.id.scrollViewTablaAsistencias);
+        layoutDatosPersonales = (LinearLayout) findViewById(R.id.layoutDatosPersonales);
         frameLayoutRespuesta = (FrameLayout) findViewById(R.id.frameLayoutRespuesta);
+        layoutVerNotas = (LinearLayout) findViewById(R.id.layoutVerNotas);
+        layoutSolicitudes = (LinearLayout) findViewById(R.id.layoutSolicitudes);
+        layoutAlumnoNota = (LinearLayout) findViewById(R.id.layoutAlumnoNota);
+        botonEnviarRequest = (Button) findViewById(R.id.buttonEnviarRequest);
+        posicionBoton = (RelativeLayout.LayoutParams)botonEnviarRequest.getLayoutParams();
 
         onNavigationItemSelected(navigationView.getMenu().getItem(0));
     }
 
+    /**
+     * Al presionar el botón 'Atras' en el celular:
+     * Si el menu está desplegado, lo contrae.
+     * Si no, ejecuta el Activity padre.
+     */
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -194,32 +244,38 @@ public class ProfesorMain extends AppCompatActivity
         }
     }
 
+    /**
+     * Agrega opciones al menu del Action Bar(desactivado).
+     * Este método no se utiliza. Sin embargo debe estar presente ya que es parte de la interfaz.
+     * @param menu Menu recibido al ejecutarse el Activity.
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         return true;
     }
 
+    /**
+     * Maneja las acciones a realizarse al clickear un item del menu
+     * del Action Bar (desactivado).
+     * Este método no se utiliza. Sin embargo debe estar presente ya que es parte de la interfaz.
+     * @param item Item clickeado.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
+    /**
+     * Maneja las acciones a realizarse al clickear un item del Navigation Bar.
+     * @param item Item clickeado.
+     */
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         blanquearCampos();
         itemMenu = item.getItemId();
-        LinearLayout layoutDatosPersonales = (LinearLayout) findViewById(R.id.layoutDatosPersonales);
-        LinearLayout layoutVerNotas = (LinearLayout) findViewById(R.id.layoutVerNotas);
-        LinearLayout layoutSolicitudes = (LinearLayout) findViewById(R.id.layoutSolicitudes);
-        LinearLayout layoutAlumno = (LinearLayout) findViewById(R.id.linearLayoutAlumno);
-        LinearLayout layoutNota = (LinearLayout) findViewById(R.id.linearLayoutNota);
-        LinearLayout layoutAlumnoNota = (LinearLayout) findViewById(R.id.layoutAlumnoNota);
-        LinearLayout layoutOKRespuesta = (LinearLayout) findViewById(R.id.layoutOKRespuesta);
+        posicionBoton.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        posicionBoton.removeRule(RelativeLayout.BELOW);
+        botonEnviarRequest.setLayoutParams(posicionBoton);
         frameLayoutRespuesta.setVisibility(View.INVISIBLE);
 
         switch (itemMenu) {
@@ -238,17 +294,18 @@ public class ProfesorMain extends AppCompatActivity
                 break;
             case R.id.nav_cargarNotas:
                 textViewOpcion.setText("Cargar Nota");
+                posicionBoton.addRule(RelativeLayout.BELOW,R.id.layoutAlumnoNota);
+                posicionBoton.removeRule(RelativeLayout.ALIGN_PARENT_TOP);
+                botonEnviarRequest.setLayoutParams(posicionBoton);
                 layoutDatosPersonales.setVisibility(View.INVISIBLE);
                 layoutSolicitudes.setVisibility(View.INVISIBLE);
-                layoutAlumno.setVisibility(View.VISIBLE);
-                layoutNota.setVisibility(View.VISIBLE);
+                layoutAlumnoNota.setVisibility(View.VISIBLE);
                 layoutVerNotas.setVisibility(View.VISIBLE);
                 break;
             default:
                 if (itemMenu == R.id.nav_verNotas) textViewOpcion.setText("Ver Notas");
                 else textViewOpcion.setText("Ver Asistencias");
-                layoutAlumno.setVisibility(View.INVISIBLE);
-                layoutNota.setVisibility(View.INVISIBLE);
+                layoutAlumnoNota.setVisibility(View.INVISIBLE);
                 layoutDatosPersonales.setVisibility(View.INVISIBLE);
                 layoutSolicitudes.setVisibility(View.INVISIBLE);
                 layoutVerNotas.setVisibility(View.VISIBLE);
@@ -258,11 +315,20 @@ public class ProfesorMain extends AppCompatActivity
         return true;
     }
 
+    /**
+     * Contrae el Navigation Menu.
+     */
     private void closeDrawer() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
     }
 
+    /**
+     * Este método se ejecuta al recibir una respuesta del servidor.
+     * Realiza la acción correspondiente a la request a la cual el servidor respondió.
+     * @param request Request a la cual el servidor respondió.
+     * @param response Respuesta del servidor.
+     */
     @Override
     public boolean onResponse(CHTTPRequest request, String response) {
         frameLayoutRespuesta.setVisibility(View.VISIBLE);
@@ -322,6 +388,11 @@ public class ProfesorMain extends AppCompatActivity
         return false;
     }
 
+    /**
+     * Se ejecuta cuando el servidor respondió a la request Datos_Personales.
+     * Muestra en los EditText el valor correspondiente a cada campo.
+     * @param request Resquest de la cual se obtiene la respuesta del servidor.
+     */
     private void taskDatosPersonales(CHTTPRequest request) {
         try {
             editTextNombre.setText(request.getJsonResponse().getString("nombre"));
@@ -335,6 +406,11 @@ public class ProfesorMain extends AppCompatActivity
         }
     }
 
+    /**
+     * Crea una tabla que muestra el nombre de alumno y el porcentaje de asistencia a la materia.
+     * @param datos Respuesta del servidor.
+     * @throws JSONException Por si ocurre algún error al leer el JSON.
+     */
     private void crearTablaAsistencias (JSONArray datos) throws JSONException {
         sVAsistencias.setVisibility(View.VISIBLE);
         TableRow fila = new TableRow(this);
@@ -373,6 +449,11 @@ public class ProfesorMain extends AppCompatActivity
         }
     }
 
+    /**
+     * Crea una tabla que muestra el nombre del alumno y la nota que tiene en la materia.
+     * @param datos Respuesta del servidor.
+     * @throws JSONException Por si ocurre algún error al leer el JSON.
+     */
     private void taskNotasProfesor(JSONArray datos) throws JSONException {
         sVNotas.setVisibility(View.VISIBLE);
         TableRow fila = new TableRow(this);
@@ -411,6 +492,11 @@ public class ProfesorMain extends AppCompatActivity
         }
     }
 
+    /**
+     * Crea una tabla que muestra las solicitudes de inscripcion pendientes que tiene el profesor.
+     * @param datos Respuesta del servidor.
+     * @throws JSONException Por si ocurre algún error al leer el JSON.
+     */
     private void crearTablaSolicitudes(JSONArray datos) throws JSONException {
         HorizontalScrollView scrollViewSolicitudes = (HorizontalScrollView) findViewById(R.id.sVTablaSolicitudes);
         scrollViewSolicitudes.setVisibility(View.VISIBLE);
@@ -464,7 +550,21 @@ public class ProfesorMain extends AppCompatActivity
             accion.setTextOn("ACEPTAR");
             accion.setTextOff("RECHAZAR");
             accion.setId(i);
-            accion.setOnClickListener(this);
+            accion.setOnClickListener(new View.OnClickListener() {
+                /**
+                 * Actualiza el estado de la solicitud.
+                 * @estadoSolicitud Guarda el estado de la solicitud.
+                 * @param view Vista que disparó el listener.
+                 */
+                @Override
+                public void onClick(View view) {
+                    ToggleButton boton = (ToggleButton) view;
+                    if(boton.isChecked())
+                        estadoSolicitud.put(idSolicitud.get(boton.getId()),"aceptada");
+                    else
+                        estadoSolicitud.put(idSolicitud.get(boton.getId()),"rechazada");
+                }
+            });
             tVcatedra.setTextColor(Color.BLACK);
             tVcarrera.setTextColor(Color.BLACK);
             tVmateria.setTextColor(Color.BLACK);
@@ -478,6 +578,7 @@ public class ProfesorMain extends AppCompatActivity
             tVmateria = setPadding(tVmateria);
             tValumno = setPadding(tValumno);
             JSONObject dato = datos.getJSONObject(i);
+            //Guarda a qué botón está asignada cada solicitud.
             idSolicitud.put(i,dato.getString("idSolicitud"));
             tVcatedra.setText(dato.getString("catedra"));
             tVcarrera.setText(dato.getString("carrera"));
@@ -493,19 +594,13 @@ public class ProfesorMain extends AppCompatActivity
         }
     }
 
+    /**
+     * Setea el Padding del textView recibido.
+     * @param tV TextView al cual se le seteará el Padding.
+     * @return TextView con el Padding seteado.
+     */
     private TextView setPadding(TextView tV){
         tV.setPadding(10,10,10,10);
         return tV;
-    }
-
-    @Override
-    public void onClick(View v) {
-        ToggleButton boton = (ToggleButton) v;
-        if(boton.isChecked()) {
-            estadoSolicitud.put(idSolicitud.get(boton.getId()),"aceptada");
-        }
-        if(!boton.isChecked()) {
-            estadoSolicitud.put(idSolicitud.get(boton.getId()),"rechazada");
-        }
     }
 }

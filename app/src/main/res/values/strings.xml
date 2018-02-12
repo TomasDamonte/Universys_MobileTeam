@@ -10,9 +10,7 @@
     <string name="error_invalid_password">Contraseña muy corta</string>
     <string name="error_incorrect_password">Contraseña incorrecta</string>
     <string name="error_field_required">Es obligatorio llenar este campo</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
+
     <string name="title_activity_login">Universys</string>
     <string name="title_activity_public_main">PublicMain</string>
     <string name="title_activity_vista_inicial">VistaInicial</string>

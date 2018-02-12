@@ -1,20 +1,18 @@
 package universis.universys;
 
-import android.annotation.TargetApi;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -37,6 +35,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 
+/**
+ * Esta clase es un Activity que se ejecuta cuando el usuario que se logeó es un alumno.
+ * Se encarga de todas las tareas que puede realizar el alumno con la aplicación.
+ */
 public class AlumnoMain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, IRequestListener,OnDateSelectedListener{
 
@@ -59,7 +61,16 @@ public class AlumnoMain extends AppCompatActivity
     private MaterialCalendarView calendarioAlumno;
     private LinearLayout linearLayoutHorarios;
     private HashMap<Integer,String> idCursada;
+    private LinearLayout layoutDatosPersonales;
+    private LinearLayout layoutCalendario;
+    private LinearLayout layoutFichadaAlumno;
+    private LinearLayout layoutInscripciones;
 
+    /**
+     * Resetea los layouts, checkea que estén completos todos los campos
+     *y envia la request dependiendo del item del menu que se haya seleccionado.
+     *@param v View recibida al presionar el boton.
+     */
     public void enviarRequest(View v) {
 
         TableLayout tabla = (TableLayout) findViewById(R.id.tablaFichadas);
@@ -69,9 +80,9 @@ public class AlumnoMain extends AppCompatActivity
         textViewNota.setVisibility(View.INVISIBLE);
         linearLayoutHorarios.setVisibility(View.INVISIBLE);
 
-        if (editTextCatedra.getText().toString().equals("") || editTextCarrera.getText().toString().equals("")
-                || editTextMateria.getText().toString().equals("")) {
-            Toast.makeText(this, "Deben completarse todos los campos", Toast.LENGTH_LONG).show();
+        if (TextUtils.isEmpty(editTextCatedra.getText().toString()) || TextUtils.isEmpty(editTextCarrera.getText().toString())
+                || TextUtils.isEmpty(editTextMateria.getText().toString())) {
+            Error.mostrar(Error.CAMPOS_INCOMPLETOS_ERROR);
         }
         else {
             if(itemMenu == R.id.nav_asistencias) {
@@ -89,11 +100,20 @@ public class AlumnoMain extends AppCompatActivity
         }
     }
 
+    /**
+     * Hace el request.
+     * @param id Identificador de la request.
+     * @param url Direccion web a dónde enviar la request.
+     */
     public void enviarRequest(int id, String url) {
         CHTTPRequest.postRequest(id, url, new JSONBuilder().requestGenerico(editTextCatedra.getText().toString()
                         ,editTextCarrera.getText().toString(), editTextMateria.getText().toString())).execute().addListener(this);
     }
 
+    /**
+     * Habilita la edición de los campos y el botón buttonEnviarDatosAlumno.
+     * @param v View recibida al presionar el botón.
+     */
     public void modificarDatosAlumno(View v) {
         editTextNombre.setFocusableInTouchMode(true);
         editTextApellido.setFocusableInTouchMode(true);
@@ -102,13 +122,17 @@ public class AlumnoMain extends AppCompatActivity
         editTextFNac.setFocusableInTouchMode(true);
         editTextTelefono.setFocusableInTouchMode(true);
         findViewById(R.id.buttonEnviarDatosAlumno).setEnabled(true);
-
     }
 
+    /**
+     * Deshabilita la edición de los campos, lee los valores cargados en los campos
+     * y envia la request.
+     * @param v View recibida al presionar el botón.
+     */
     public void enviarDatosAlumno(View v) {
         editTextNombre.setFocusable(false);
         editTextApellido.setFocusable(false);
-        editTextDomicilio.setFocusable(false);;
+        editTextDomicilio.setFocusable(false);
         editTextEmail.setFocusable(false);
         editTextFNac.setFocusable(false);
         editTextTelefono.setFocusable(false);
@@ -119,21 +143,31 @@ public class AlumnoMain extends AppCompatActivity
                 ,new JSONBuilder().modificarDatosPersonales(datos)).execute().addListener(this);
     }
 
+    /**
+     * Envía una request al servidor para ver las inscripciones
+     * a materias que el alumno tiene disponible.
+     */
     public void inscripcionesDisponibles() {
         CHTTPRequest.postRequest(RequestTaskIds.MATERIAS_DISPONIBLES,URLs.MATERIAS_DISPONIBLES,
                 new JSONBuilder().requestBasico()).execute().addListener(this);
-        LinearLayout layoutInscripciones = (LinearLayout) findViewById(R.id.layoutInscripciones);
         LinearLayout inscripciones = (LinearLayout) findViewById(R.id.layoutInscripDisp);
         inscripciones.removeAllViews();
         layoutInscripciones.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Resetea los editText.
+     */
     private void blanquearCampos() {
         editTextCarrera.setText("");
         editTextCatedra.setText("");
         editTextMateria.setText("");
     }
 
+    /**
+     * Inicializa el Activity y los atributos de la clase.
+     * @param savedInstanceState Parámetro recibido al ejecutarse el Activity
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -168,10 +202,19 @@ public class AlumnoMain extends AppCompatActivity
         textViewOpcion = (TextView) findViewById(R.id.textViewOpcion);
         textViewEvento = (TextView) findViewById(R.id.textViewEvento);
         calendarioAlumno.setOnDateChangedListener(this);
+        layoutDatosPersonales = (LinearLayout) findViewById(R.id.layoutDatosPersonales);
+        layoutCalendario = (LinearLayout) findViewById(R.id.layoutCalendario);
+        layoutFichadaAlumno = (LinearLayout) findViewById(R.id.layoutFichadaAlumno);
+        layoutInscripciones = (LinearLayout) findViewById(R.id.layoutInscripciones);
 
         onNavigationItemSelected(navigationView.getMenu().getItem(0));
     }
 
+    /**
+     * Al presionar el botón 'Atras' en el celular:
+     * Si el menu está desplegado, lo contrae.
+     * Si no, ejecuta el Activity padre.
+     */
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -182,31 +225,36 @@ public class AlumnoMain extends AppCompatActivity
         }
     }
 
+    /**
+     * Agrega opciones al menu del Action Bar(desactivado).
+     * Este método no se utiliza. Sin embargo debe estar presente ya que es parte de la interfaz.
+     * @param menu Menu recibido al ejecutarse el Activity.
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         return true;
     }
 
+    /**
+     * Maneja las acciones a realizarse al clickear un item del menu
+     * del Action Bar (desactivado).
+     * Este método no se utiliza. Sin embargo debe estar presente ya que es parte de la interfaz.
+     * @param item Item clickeado.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Maneja las acciones a realizarse al clickear un item del Navigation Bar.
+     * @param item Item clickeado.
+     */
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         itemMenu = item.getItemId();
         blanquearCampos();
-        LinearLayout layoutDatosPersonales = (LinearLayout) findViewById(R.id.layoutDatosPersonales);
-        LinearLayout layoutCalendario = (LinearLayout) findViewById(R.id.layoutCalendario);
-        LinearLayout layoutFichadaAlumno = (LinearLayout) findViewById(R.id.layoutFichadaAlumno);
-        LinearLayout layoutInscripciones = (LinearLayout) findViewById(R.id.layoutInscripciones);
         frameLayoutRespuesta.setVisibility(View.INVISIBLE);
-
         switch (itemMenu){
             case R.id.nav_calendario:
                 CHTTPRequest.postRequest(RequestTaskIds.CALENDARIO_ALUMNO,URLs.CALENDARIO_ALUMNO,
@@ -248,11 +296,20 @@ public class AlumnoMain extends AppCompatActivity
         return true;
     }
 
+    /**
+     * Contrae el Navigation Menu.
+     */
     private void closeDrawer() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
     }
 
+    /**
+     * Este método se ejecuta al recibir una respuesta del servidor.
+     * Realiza la acción correspondiente a la request a la cual el servidor respondió.
+     * @param request Request a la cual el servidor respondió.
+     * @param response Respuesta del servidor.
+     */
     @Override
     public boolean onResponse(CHTTPRequest request, String response) {
         frameLayoutRespuesta.setVisibility(View.VISIBLE);
@@ -266,15 +323,12 @@ public class AlumnoMain extends AppCompatActivity
             Error.mostrar(errorId);
         else {
             switch (request.getTaskId()){
-
                 case RequestTaskIds.CALENDARIO_ALUMNO:
                     taskCalendario(request);
                     break;
-
                 case RequestTaskIds.DATOS_PERSONALES:
                     taskDatosPersonales(request);
                     break;
-
                 case RequestTaskIds.FICHADA_ALUMNO:
                     try {
                         taskFichadaAlumno(request);
@@ -282,7 +336,6 @@ public class AlumnoMain extends AppCompatActivity
                         e.printStackTrace();
                     }
                     break;
-
                 case RequestTaskIds.NOTA_ALUMNO:
                     textViewNota.setVisibility(View.VISIBLE);
                     try {
@@ -290,9 +343,7 @@ public class AlumnoMain extends AppCompatActivity
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
                     break;
-
                 case RequestTaskIds.HORARIO_ALUMNO:
                     linearLayoutHorarios.setVisibility(View.VISIBLE);
                     try {
@@ -301,11 +352,9 @@ public class AlumnoMain extends AppCompatActivity
                         e.printStackTrace();
                     }
                     break;
-
                 case RequestTaskIds.MODIFICAR_DATOS_PERSONALES:
                     Toast.makeText(this, "Datos guardados", Toast.LENGTH_LONG).show();
                     break;
-
                 case RequestTaskIds.MATERIAS_DISPONIBLES:
                     try {
                         taskMateriasDisponibles(request.getJsonResponse());
@@ -313,12 +362,10 @@ public class AlumnoMain extends AppCompatActivity
                         e.printStackTrace();
                     }
                     break;
-
                 case RequestTaskIds.INSCRIPCION_MATERIA:
                     Toast.makeText(this, "Inscripción realizada exitosamente!", Toast.LENGTH_SHORT).show();
                     inscripcionesDisponibles();
                     break;
-
                 case RequestTaskIds.BAJA_MATERIA:
                     Toast.makeText(this, "Te has dado te baja exitosamente!", Toast.LENGTH_SHORT).show();
                     blanquearCampos();
@@ -328,7 +375,11 @@ public class AlumnoMain extends AppCompatActivity
         return false;
     }
 
-
+    /**
+     * Se ejecuta cuando el servidor respondió a la request Datos_Personales.
+     * Muestra en los EditText el valor correspondiente a cada campo.
+     * @param request Resquest de la cual se obtiene la respuesta del servidor.
+     */
     private void taskDatosPersonales(CHTTPRequest request) {
         try {
             editTextNombre.setText(request.getJsonResponse().getString("nombre"));
@@ -342,6 +393,12 @@ public class AlumnoMain extends AppCompatActivity
         }
     }
 
+    /**
+     * Muestra un calendario con fechas destacadas y eventos.
+     * @dias Se guardan qué días tienen eventos.
+     * @calendarEvents Se guardan los eventos asignados a cada día.
+     * @param request Resquest de la cual se obtiene la respuesta del servidor.
+     */
     private void taskCalendario(CHTTPRequest request) {
         JSONArray eventos = new JSONArray();
         try {
@@ -365,6 +422,13 @@ public class AlumnoMain extends AppCompatActivity
         calendarioAlumno.addDecorator(new CalendarDecorator(dias,Color.RED));
     }
 
+    /**
+     * Muestra las materias con sus horarios y cátedras a las cuales al alumno puede inscribirse.
+     * Se genera un botón 'Inscribirse' por cada materia.
+     * @param datos Respuesta del servidor.
+     * @idCursada Se guarda a qué cursada corresponde cada botón.
+     * @throws JSONException Por si ocurre algún error al leer el JSON.
+     */
     private void taskMateriasDisponibles(JSONObject datos) throws JSONException {
         JSONArray inscripcionesDisponibles = datos.getJSONArray("inscripcionesDisponibles");
         LinearLayout inscripciones = (LinearLayout) findViewById(R.id.layoutInscripDisp);
@@ -384,15 +448,21 @@ public class AlumnoMain extends AppCompatActivity
                     texto = texto + "Horarios:\n" + mostrarHorarios(clase) + "\n";
                     editText.setText(texto);
                     Button inscribir = new Button(this);
-                    inscribir.setId(i);
+                    inscribir.setId(i+j+k);
                     editText.setFocusable(false);
                     inscribir.setText("Inscribirse");
-                    idCursada.put(i,clase.getString("idCursada"));
+                    //Guarda a qué botón está asignada cada cursada.
+                    idCursada.put(i+j+k,clase.getString("idCursada"));
                     inscribir.setOnClickListener(new View.OnClickListener() {
+                        /**
+                         * Ejecuta la request de inscripcion a materia.
+                         * @param view Vista que disparó el listener.
+                         */
                         @Override
-                        public void onClick(View v) {
+                        public void onClick(View view) {
                             CHTTPRequest.postRequest(RequestTaskIds.INSCRIPCION_MATERIA,URLs.INSCRIPCION_MATERIA,
-                                    new JSONBuilder().inscripcionAMateria(idCursada.get(v.getId()))).execute().addListener(AlumnoMain.this);
+                                    new JSONBuilder().inscripcionAMateria(idCursada.get(view.getId())))
+                                    .execute().addListener(AlumnoMain.this);
                         }
                     });
                     inscripciones.addView(editText);
@@ -403,6 +473,12 @@ public class AlumnoMain extends AppCompatActivity
 
     }
 
+    /**
+     * Decodifica un array de horarios en hexadecimal.
+     * @param datos Respuesta del servidor.
+     * @return String resultante del array de horarios decodificado.
+     * @throws JSONException Por si ocurre algún error al leer el JSON.
+     */
     private String mostrarHorarios(JSONObject datos) throws JSONException {
         JSONArray JSONArrayHorarios = datos.getJSONArray("horario");
         String texto = "Teoría:\n";
@@ -433,10 +509,22 @@ public class AlumnoMain extends AppCompatActivity
         return texto;
     }
 
+    /**
+     * Setea el Padding del textView recibido.
+     * @param tV TextView al cual se le seteará el Padding.
+     * @return TextView con el Padding seteado.
+     */
     private TextView setPadding(TextView tV){
         tV.setPadding(10,10,10,10);
         return tV;
     }
+
+    /**
+     * Crea y muestra una tabla con los campos "FECHA"[dd/mm/aaaa] y "PRESENTE" [SI/NO]
+     * Dependiendo del valor del campo "PRESENTE" la fila tiene Background rojo [NO] o verde [SI].
+     * @param request Request que contiene la respuesta del servidor.
+     * @throws JSONException Por si ocurre algún error al leer el JSON.
+     */
     private void taskFichadaAlumno(CHTTPRequest request) throws JSONException {
         JSONArray datos = request.getJsonResponse().getJSONArray("fichadas");
         ScrollView sVTablaFichadas = (ScrollView) findViewById(R.id.sVTablaFichadas);
@@ -485,6 +573,12 @@ public class AlumnoMain extends AppCompatActivity
         }
     }
 
+    /**
+     * Llamdo al clickearse un día del calendario.
+     * Muestra los eventos asignados al día clickeado.
+     * @param widget El calendario.
+     * @param date Día clickeado.
+     */
     @Override
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
         textViewEvento.setText(calendarEvents.get(date.getDate()));
