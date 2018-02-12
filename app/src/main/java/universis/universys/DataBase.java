@@ -53,6 +53,31 @@ public class DataBase {
                     .put("rol", "admin").put("nombre", "pepe").put("apellido", "riquelme")
                     .put("fNac", "06/03/1989").put("domicilio", "Austria 3561")
                     .put("telefono", "4215-9547").put("idSesion", "6321"));
+
+
+            db = new JSONArray().put(new JSONObject().put("mail", "alumno1@alumno1").put("password", "alumno1")
+                    .put("rol", "alumno").put("nombre", " ")
+                    .put("apellido", " ").put("fNac", " ")
+                    .put("domicilio", " ").put("telefono", " ")
+                    .put("idSesion", "7542"));
+            evento = new JSONObject().put("evento","final proyecto 2").put("fecha","2017/12/15");
+            eventos.put(evento);
+            evento = new JSONObject().put("evento","final BD 1").put("fecha","2017/12/05");
+            eventos.put(evento);
+            evento = new JSONObject().put("evento","final BD 2").put("fecha","2017/12/26");
+            eventos.put(evento);
+            evento = new JSONObject().put("evento","final WEB 1").put("fecha","2017/12/06");
+            eventos.put(evento);
+            evento = new JSONObject().put("evento","final WEB 2").put("fecha","2017/12/27");
+            eventos.put(evento);
+            evento = new JSONObject().put("evento","final seguridad informatica 1").put("fecha","2017/12/07");
+            eventos.put(evento);
+            evento = new JSONObject().put("evento","final seguridad informatica 2").put("fecha","2017/12/21");
+            eventos.put(evento);
+            evento = new JSONObject().put("evento","entrega 60hs/300hs").put("fecha","2017/12/21");
+            eventos.put(evento);
+            db.getJSONObject(0).put("eventos",eventos);
+
             CacheHelper.guardar("db",db.toString());
         }
 
