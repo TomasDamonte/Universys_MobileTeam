@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="universis.universys.VistaInicial"
+    tools:showIn="@layout/app_bar_vista_inicial">
+
+    <FrameLayout
+        android:layout_width="368dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/layoutCalendario"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="invisible">
+
+            <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+                android:id="@+id/calendarioPublico"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:mcv_selectionColor="#00F"
+                app:mcv_showOtherDates="all" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tVCursada"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="5dp"
+                    android:text="Cursada"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="#39FF14" />
+
+                <TextView
+                    android:id="@+id/tVFinales"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Finales"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="#FF0000" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutHistoria"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textViewHistoria"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Universidad de Belgrano"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="@android:color/holo_red_dark" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <EditText
+                    android:id="@+id/editTextHistoria"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:focusable="false"
+                    android:inputType="textMultiLine"
+                    android:padding="8dp"
+                    android:text='La Universidad de Belgrano fue creada por el Doctor Avelino Porto el 11 de septiembre de 1964 en conformidad con la ley Nº 14.557 sancionada en el año 1958, que reglamentó el funcionamiento de las universidades privadas en la República Argentina. \n Esa ley establecía: \n\n Que las universidades privadas debían constituirse como entidades sin fines de lucro\n Que antes de alcanzar la autorización definitiva para funcionar, debía transcurrir un ciclo de estudios completo para las carreras cursadas en el establecimiento además de acreditarse una calidad académica satisfactoria\n\n Actualmente las universidades privadas se rigen por la Ley 24.521, dictada el 20 de julio de 1995, que mantiene las obligaciones mencionadas y además expresamente establece: \n\n La autonomía académica e institucional\n Instancias de autoevaluación y evaluación externa, estas últimas a realizarse por la Comisión Nacional de Evaluación y Acreditación Universitaria (CoNEAU) o por agencias privadas de evaluación y acreditación reconocidas por el Ministerio de Cultura y Educación\n Su primera sede se encontraba en Sucre y Cramer, en lo que en ese momento se conocía como el "Pueblo de Belgrano". Inició sus actividades con 90 estudiantes, 28 profesores y un empleado.  Las consultas efectuadas por el Ministerio de Cultura y Educación a las Academias Nacionales de las respectivas disciplinas que se dictaban en la Universidad y a los expertos más destacados en cada una de ellas determinaron que el día 26 de Enero de 1970 el Presidente de la Nación concediera a la Universidad de Belgrano la autorización definitiva para funcionar.  Su estructura inicial fue organizada en cuatro facultades: Derecho y Ciencias Sociales, Humanidades, Ciencias Económicas y Arquitectura.  Actualmente, la Universidad de Belgrano cuenta con las Facultades de Arquitectura y Urbanismo, Derecho y Ciencias Sociales, Ciencias Económicas, Humanidades, Ingeniería, Tecnología Informática, Ciencias Agrarias, Lenguas y Estudios Extranjeros, Ciencias de la Salud, Ciencias Exactas y Naturales, y Estudios a Distancia; y cuatro unidades académicas de posgrado: Facultad de Estudios para Graduados, Escuela de Posgrado en Negocios, Escuela de Posgrado en Derecho y Departamento de Estudios de Posgrado y Educación Continua.'
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+            </ScrollView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutContacto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="invisible">
+
+            <TextView
+                android:id="@+id/telefono"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Teléfono: 011-4788-5400"
+                android:textColor="@android:color/black"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Email: info@ub.edu.ar"
+                android:textColor="@android:color/black"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/direccion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Dirección: Lacroze 1947"
+                android:textColor="@android:color/black"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/horario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Horario de atención: Lunes a Viernes 8 a 20hs."
+                android:textColor="@android:color/black"
+                android:textSize="24sp" />
+        </LinearLayout>
+    </FrameLayout>
+</android.support.constraint.ConstraintLayout>

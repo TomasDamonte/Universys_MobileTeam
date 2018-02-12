@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+<<<<<<< HEAD
+      <module fileurl="file://$PROJECT_DIR$/Universys_MobileTeam.iml" filepath="$PROJECT_DIR$/Universys_MobileTeam.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/Universys1.iml" filepath="$PROJECT_DIR$/Universys1.iml" />
+>>>>>>> f259d96c19a4cbbf460084d64f6f1cd7f62e380b
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+    </modules>
+  </component>
+</project>
