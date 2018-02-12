@@ -113,9 +113,6 @@ public class LoginActivity extends AppCompatActivity{
      * @param email El email a validar.
      * @return TRUE si es válido, FALSE si es inválido.
      */
-
-
-    //cambiar la validez de caracteres para ingreso de usuario
     private boolean isEmailValid(String email) {
         return email.contains("@");
     }
@@ -167,7 +164,7 @@ public class LoginActivity extends AppCompatActivity{
      */
     public class UserLoginTask implements IRequestListener {
         UserLoginTask(String email, String password) {
-           CHTTPRequest.postRequest(RequestTaskIds.LOGIN,URLs.LOGIN,new JSONBuilder().logIn(email,password)).execute().addListener(this);
+            CHTTPRequest.postRequest(RequestTaskIds.LOGIN,URLs.LOGIN,new JSONBuilder().logIn(email,password)).execute().addListener(this);
         }
 
         /**
@@ -195,18 +192,6 @@ public class LoginActivity extends AppCompatActivity{
                     Intent i = new Intent(getApplicationContext(), ProfesorMain.class );
                     startActivity(i);
                 }
-<<<<<<< HEAD
-                else if (rol.equals("alumno")){
-                    Intent i = new Intent(getApplicationContext(), AlumnoMain.class );
-                    startActivity(i);
-                }
-                // Nuevo
-                else{
-                    Intent i = new Intent(getApplicationContext(), AdminMain.class );
-                    startActivity(i);
-                }
-
-=======
                 else if(rol.equals("alumno")) {
                     Intent i = new Intent(getApplicationContext(), AlumnoMain.class );
                     startActivity(i);
@@ -215,7 +200,6 @@ public class LoginActivity extends AppCompatActivity{
                     Intent i = new Intent(getApplicationContext(), AdminMain.class );
                     startActivity(i);
                 }
->>>>>>> f259d96c19a4cbbf460084d64f6f1cd7f62e380b
             }
             else {
                 if(errorId.equals(Error.EMAIL_ERROR)){
@@ -232,4 +216,3 @@ public class LoginActivity extends AppCompatActivity{
         }
     }
 }
-

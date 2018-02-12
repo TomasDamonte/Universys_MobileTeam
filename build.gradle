@@ -1,34 +1,26 @@
+
 buildscript {
     repositories {
-        mavenCentral()
+        maven { url 'https://maven.google.com' }
+        jcenter()
+        google()
     }
-
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.4.2'
+        classpath 'com.android.tools.build:gradle:3.0.1'
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
     }
 }
 
-apply plugin: 'android-library'
-
-dependencies {
-    compile 'com.android.support:support-v4:13.0.0'
+allprojects {
+    repositories {
+        jcenter()
+        maven { url 'https://maven.google.com' }
+        google()
+    }
 }
 
-android {
-    buildToolsVersion "17.0"
-    compileSdkVersion 17
-
-    sourceSets {
-        main {
-            manifest.srcFile 'AndroidManifest.xml'
-            java.srcDirs = ['src']
-            resources.srcDirs = ['src']
-            aidl.srcDirs = ['src']
-            renderscript.srcDirs = ['src']
-            res.srcDirs = ['res']
-            assets.srcDirs = ['assets']
-        }
-
-        instrumentTest.setRoot('tests')
-    }
+task clean(type: Delete) {
+    delete rootProject.buildDir
 }

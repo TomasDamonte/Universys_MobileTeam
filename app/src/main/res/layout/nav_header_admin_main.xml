@@ -1,9 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<<<<<<< HEAD
-
-<!--- Nuevo header de Admin ++++++++++++++++++++++++++++++++++ RODRI -->
-=======
->>>>>>> f259d96c19a4cbbf460084d64f6f1cd7f62e380b
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -21,21 +16,13 @@
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-<<<<<<< HEAD
-        app:srcCompat="@mipmap/ub" />
-=======
         app:srcCompat="@mipmap/logo" />
->>>>>>> f259d96c19a4cbbf460084d64f6f1cd7f62e380b
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-<<<<<<< HEAD
-        android:text="Universys_Admin"
-=======
         android:text="Universys - Administrador"
->>>>>>> f259d96c19a4cbbf460084d64f6f1cd7f62e380b
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView

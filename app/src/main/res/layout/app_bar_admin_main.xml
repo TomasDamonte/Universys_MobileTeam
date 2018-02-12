@@ -1,18 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<<<<<<< HEAD
-    <!--- Nuevo app bar Admin  ++++++++++++++++++++++++++++++++++ RODRI -->
-=======
->>>>>>> f259d96c19a4cbbf460084d64f6f1cd7f62e380b
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-<<<<<<< HEAD
-    tools:context="universis.universys.AlumnoMain">
-=======
     tools:context="universis.universys.AdminMain">
->>>>>>> f259d96c19a4cbbf460084d64f6f1cd7f62e380b
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -28,11 +20,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-<<<<<<< HEAD
-    <include layout="@layout/content_alumno_main" />
-=======
     <include layout="@layout/content_admin_main" />
->>>>>>> f259d96c19a4cbbf460084d64f6f1cd7f62e380b
 
 
 

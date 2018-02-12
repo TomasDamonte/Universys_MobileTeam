@@ -8,7 +8,17 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/ActionBarSherlock" />
+            <option value="$PROJECT_DIR$/SlidingMenu-master" />
+            <option value="$PROJECT_DIR$/SlidingMenu-master/library" />
+            <option value="$PROJECT_DIR$/Tinder" />
+            <option value="$PROJECT_DIR$/ViewPagerIndicator" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/facebook-android-sdk-3.0.1" />
+            <option value="$PROJECT_DIR$/facebook-android-sdk-3.0.1/facebook" />
+            <option value="$PROJECT_DIR$/google-play-services_lib" />
+            <option value="$PROJECT_DIR$/volley" />
+            <option value="$PROJECT_DIR$/windowed-seek-bar" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

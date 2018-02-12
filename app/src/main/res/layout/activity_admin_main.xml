@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<<<<<<< HEAD
-<!--- Nuevo xml de Admin ++++++++++++++++++++++++++++++++++ FEDE -->
-=======
 <!--- Nuevo xml de Admin +++++++++++++++++++++++++++++++++++++ FEDE -->
->>>>>>> f259d96c19a4cbbf460084d64f6f1cd7f62e380b
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -15,11 +11,7 @@
     tools:openDrawer="start">
 
     <include
-<<<<<<< HEAD
-        layout="@layout/app_bar_alumno_main"
-=======
         layout="@layout/app_bar_admin_main"
->>>>>>> f259d96c19a4cbbf460084d64f6f1cd7f62e380b
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
@@ -29,14 +21,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-<<<<<<< HEAD
-        app:headerLayout="@layout/nav_header_alumno_main"
-        app:menu="@menu/activity_alumno_main_drawer" />
-
-</android.support.v4.widget.DrawerLayout>
-=======
         app:headerLayout="@layout/nav_header_admin_main"
         app:menu="@menu/activity_admin_main_drawer" />
 
 </android.support.v4.widget.DrawerLayout>
->>>>>>> f259d96c19a4cbbf460084d64f6f1cd7f62e380b
