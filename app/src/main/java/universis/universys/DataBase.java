@@ -55,10 +55,36 @@ public class DataBase {
                     .put("telefono", "4215-9547").put("idSesion", "6321"));
 
 
+            //Profesores
             db.put(new JSONObject().put("mail", "profesor1@profesor1").put("password", "profesor1")
                     .put("rol", "profesor").put("nombre", "rere").put("apellido", "riquelme")
                     .put("fNac", "06/03/1989").put("domicilio", "Austria 3561")
                     .put("telefono", "4215-9547").put("idSesion", "6329"));
+            db.put(new JSONObject().put("mail", "profesor2@profesor2").put("password", "profesor2")
+                    .put("rol", "profesor").put("nombre", " ").put("apellido", " ")
+                    .put("fNac", " ").put("domicilio", " ")
+                    .put("telefono", " ").put("idSesion", "6350"));
+            db.put(new JSONObject().put("mail", "profesor3@profesor3").put("password", "profesor3")
+                    .put("rol", "profesor").put("nombre", " ").put("apellido", " ")
+                    .put("fNac", " ").put("domicilio", " ")
+                    .put("telefono", " ").put("idSesion", "4329"));
+            db.put(new JSONObject().put("mail", "profesor4@profesor4").put("password", "profesor4")
+                    .put("rol", "profesor").put("nombre", " ").put("apellido", " ")
+                    .put("fNac", " ").put("domicilio", " ")
+                    .put("telefono", " ").put("idSesion", "6829"));
+            db.put(new JSONObject().put("mail", "profesor5@profesor5").put("password", "profesor5")
+                    .put("rol", "profesor").put("nombre", " ").put("apellido", " ")
+                    .put("fNac", " ").put("domicilio", " ")
+                    .put("telefono", " ").put("idSesion", "6029"));
+
+
+
+
+
+
+
+
+
             db.put(new JSONObject().put("mail", "alumno1@alumno1").put("password", "alumno1")
                     .put("rol", "alumno").put("nombre", " ")
                     .put("apellido", " ").put("fNac", " ")
@@ -81,6 +107,96 @@ public class DataBase {
             evento = new JSONObject().put("evento","entrega 60hs/300hs").put("fecha","2017/12/21");
             eventos.put(evento);
             db.getJSONObject(0).put("eventos",eventos);
+            db.put(new JSONObject().put("mail", "alumno2@alumno2").put("password", "alumno2")
+                    .put("rol", "alumno").put("nombre", " ")
+                    .put("apellido", " ").put("fNac", " ")
+                    .put("domicilio", " ").put("telefono", " ")
+                    .put("idSesion", "7543"));
+            evento = new JSONObject().put("evento","final proyecto 2").put("fecha","2017/12/15");
+            eventos.put(evento);
+            evento = new JSONObject().put("evento","final BD 1").put("fecha","2017/12/05");
+            eventos.put(evento);
+            evento = new JSONObject().put("evento","final BD 2").put("fecha","2017/12/26");
+            eventos.put(evento);
+            evento = new JSONObject().put("evento","final WEB 1").put("fecha","2017/12/06");
+            eventos.put(evento);
+            evento = new JSONObject().put("evento","final WEB 2").put("fecha","2017/12/27");
+            eventos.put(evento);
+            evento = new JSONObject().put("evento","final seguridad informatica 1").put("fecha","2017/12/07");
+            eventos.put(evento);
+            evento = new JSONObject().put("evento","final seguridad informatica 2").put("fecha","2017/12/21");
+            eventos.put(evento);
+            evento = new JSONObject().put("evento","entrega 60hs/300hs").put("fecha","2017/12/21");
+            eventos.put(evento);
+            db.getJSONObject(0).put("eventos",eventos);
+            db.put(new JSONObject().put("mail", "alumno3@alumno3").put("password", "alumno3")
+                    .put("rol", "alumno").put("nombre", " ")
+                    .put("apellido", " ").put("fNac", " ")
+                    .put("domicilio", " ").put("telefono", " ")
+                    .put("idSesion", "7544"));
+            evento = new JSONObject().put("evento","final proyecto 2").put("fecha","2017/12/15");
+            eventos.put(evento);
+            evento = new JSONObject().put("evento","final BD 1").put("fecha","2017/12/05");
+            eventos.put(evento);
+            evento = new JSONObject().put("evento","final BD 2").put("fecha","2017/12/26");
+            eventos.put(evento);
+            evento = new JSONObject().put("evento","final WEB 1").put("fecha","2017/12/06");
+            eventos.put(evento);
+            evento = new JSONObject().put("evento","final WEB 2").put("fecha","2017/12/27");
+            eventos.put(evento);
+            evento = new JSONObject().put("evento","final seguridad informatica 1").put("fecha","2017/12/07");
+            eventos.put(evento);
+            evento = new JSONObject().put("evento","final seguridad informatica 2").put("fecha","2017/12/21");
+            eventos.put(evento);
+            evento = new JSONObject().put("evento","entrega 60hs/300hs").put("fecha","2017/12/21");
+            eventos.put(evento);
+            db.getJSONObject(0).put("eventos",eventos);
+            db.put(new JSONObject().put("mail", "alumno4@alumno4").put("password", "alumno4")
+                    .put("rol", "alumno").put("nombre", " ")
+                    .put("apellido", " ").put("fNac", " ")
+                    .put("domicilio", " ").put("telefono", " ")
+                    .put("idSesion", "7545"));
+            evento = new JSONObject().put("evento","final proyecto 2").put("fecha","2017/12/15");
+            eventos.put(evento);
+            evento = new JSONObject().put("evento","final BD 1").put("fecha","2017/12/05");
+            eventos.put(evento);
+            evento = new JSONObject().put("evento","final BD 2").put("fecha","2017/12/26");
+            eventos.put(evento);
+            evento = new JSONObject().put("evento","final WEB 1").put("fecha","2017/12/06");
+            eventos.put(evento);
+            evento = new JSONObject().put("evento","final WEB 2").put("fecha","2017/12/27");
+            eventos.put(evento);
+            evento = new JSONObject().put("evento","final seguridad informatica 1").put("fecha","2017/12/07");
+            eventos.put(evento);
+            evento = new JSONObject().put("evento","final seguridad informatica 2").put("fecha","2017/12/21");
+            eventos.put(evento);
+            evento = new JSONObject().put("evento","entrega 60hs/300hs").put("fecha","2017/12/21");
+            eventos.put(evento);
+            db.getJSONObject(0).put("eventos",eventos);
+            db.put(new JSONObject().put("mail", "alumno5@alumno5").put("password", "alumno5")
+                    .put("rol", "alumno").put("nombre", " ")
+                    .put("apellido", " ").put("fNac", " ")
+                    .put("domicilio", " ").put("telefono", " ")
+                    .put("idSesion", "7546"));
+            evento = new JSONObject().put("evento","final proyecto 2").put("fecha","2017/12/15");
+            eventos.put(evento);
+            evento = new JSONObject().put("evento","final BD 1").put("fecha","2017/12/05");
+            eventos.put(evento);
+            evento = new JSONObject().put("evento","final BD 2").put("fecha","2017/12/26");
+            eventos.put(evento);
+            evento = new JSONObject().put("evento","final WEB 1").put("fecha","2017/12/06");
+            eventos.put(evento);
+            evento = new JSONObject().put("evento","final WEB 2").put("fecha","2017/12/27");
+            eventos.put(evento);
+            evento = new JSONObject().put("evento","final seguridad informatica 1").put("fecha","2017/12/07");
+            eventos.put(evento);
+            evento = new JSONObject().put("evento","final seguridad informatica 2").put("fecha","2017/12/21");
+            eventos.put(evento);
+            evento = new JSONObject().put("evento","entrega 60hs/300hs").put("fecha","2017/12/21");
+            eventos.put(evento);
+            db.getJSONObject(0).put("eventos",eventos);
+
+
 
             CacheHelper.guardar("db",db.toString());
         }
