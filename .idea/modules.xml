@@ -3,17 +3,28 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ActionBarSherlock/ActionBarSherlock.iml" filepath="$PROJECT_DIR$/ActionBarSherlock/ActionBarSherlock.iml" />
+      <module fileurl="file://C:\Users\feche\Desktop\final1\Universys_MobileTeam\ActionBarSherlock\ActionBarSherlock.iml" filepath="C:\Users\feche\Desktop\final1\Universys_MobileTeam\ActionBarSherlock\ActionBarSherlock.iml" />
       <module fileurl="file://$PROJECT_DIR$/SlidingMenu-master/SlidingMenu-master.iml" filepath="$PROJECT_DIR$/SlidingMenu-master/SlidingMenu-master.iml" />
+      <module fileurl="file://C:\Users\feche\Desktop\final1\Universys_MobileTeam\SlidingMenu-master\SlidingMenu-master.iml" filepath="C:\Users\feche\Desktop\final1\Universys_MobileTeam\SlidingMenu-master\SlidingMenu-master.iml" />
       <module fileurl="file://$PROJECT_DIR$/Tinder/Tinder.iml" filepath="$PROJECT_DIR$/Tinder/Tinder.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Universys1.iml" filepath="$PROJECT_DIR$/Universys1.iml" />
+      <module fileurl="file://C:\Users\feche\Desktop\final1\Universys_MobileTeam\Tinder\Tinder.iml" filepath="C:\Users\feche\Desktop\final1\Universys_MobileTeam\Tinder\Tinder.iml" />
+      <module fileurl="file://C:\Users\feche\Desktop\final1\Universys_MobileTeam\Universys1.iml" filepath="C:\Users\feche\Desktop\final1\Universys_MobileTeam\Universys1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Universys_MobileTeam.iml" filepath="$PROJECT_DIR$/Universys_MobileTeam.iml" />
       <module fileurl="file://$PROJECT_DIR$/ViewPagerIndicator/ViewPagerIndicator.iml" filepath="$PROJECT_DIR$/ViewPagerIndicator/ViewPagerIndicator.iml" />
+      <module fileurl="file://C:\Users\feche\Desktop\final1\Universys_MobileTeam\ViewPagerIndicator\ViewPagerIndicator.iml" filepath="C:\Users\feche\Desktop\final1\Universys_MobileTeam\ViewPagerIndicator\ViewPagerIndicator.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/facebook-android-sdk-3.0.1/facebook/facebook.iml" filepath="$PROJECT_DIR$/facebook-android-sdk-3.0.1/facebook/facebook.iml" />
+      <module fileurl="file://C:\Users\feche\Desktop\final1\Universys_MobileTeam\facebook-android-sdk-3.0.1\facebook\facebook.iml" filepath="C:\Users\feche\Desktop\final1\Universys_MobileTeam\facebook-android-sdk-3.0.1\facebook\facebook.iml" />
       <module fileurl="file://$PROJECT_DIR$/facebook-android-sdk-3.0.1/facebook-android-sdk-3.0.1.iml" filepath="$PROJECT_DIR$/facebook-android-sdk-3.0.1/facebook-android-sdk-3.0.1.iml" />
+      <module fileurl="file://C:\Users\feche\Desktop\final1\Universys_MobileTeam\facebook-android-sdk-3.0.1\facebook-android-sdk-3.0.1.iml" filepath="C:\Users\feche\Desktop\final1\Universys_MobileTeam\facebook-android-sdk-3.0.1\facebook-android-sdk-3.0.1.iml" />
       <module fileurl="file://$PROJECT_DIR$/google-play-services_lib/google-play-services_lib.iml" filepath="$PROJECT_DIR$/google-play-services_lib/google-play-services_lib.iml" />
+      <module fileurl="file://C:\Users\feche\Desktop\final1\Universys_MobileTeam\google-play-services_lib\google-play-services_lib.iml" filepath="C:\Users\feche\Desktop\final1\Universys_MobileTeam\google-play-services_lib\google-play-services_lib.iml" />
       <module fileurl="file://$PROJECT_DIR$/SlidingMenu-master/library/library.iml" filepath="$PROJECT_DIR$/SlidingMenu-master/library/library.iml" />
+      <module fileurl="file://C:\Users\feche\Desktop\final1\Universys_MobileTeam\SlidingMenu-master\library\library.iml" filepath="C:\Users\feche\Desktop\final1\Universys_MobileTeam\SlidingMenu-master\library\library.iml" />
       <module fileurl="file://$PROJECT_DIR$/volley/volley.iml" filepath="$PROJECT_DIR$/volley/volley.iml" />
+      <module fileurl="file://C:\Users\feche\Desktop\final1\Universys_MobileTeam\volley\volley.iml" filepath="C:\Users\feche\Desktop\final1\Universys_MobileTeam\volley\volley.iml" />
       <module fileurl="file://$PROJECT_DIR$/windowed-seek-bar/windowed-seek-bar.iml" filepath="$PROJECT_DIR$/windowed-seek-bar/windowed-seek-bar.iml" />
+      <module fileurl="file://C:\Users\feche\Desktop\final1\Universys_MobileTeam\windowed-seek-bar\windowed-seek-bar.iml" filepath="C:\Users\feche\Desktop\final1\Universys_MobileTeam\windowed-seek-bar\windowed-seek-bar.iml" />
     </modules>
   </component>
 </project>

@@ -33,7 +33,7 @@ public class AdminMain extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         CacheHelper.CONTEXT = this;
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_admin);
         //Prepara el formulario de login.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         mPasswordView = (EditText) findViewById(R.id.password);
@@ -187,7 +187,7 @@ public class AdminMain extends AppCompatActivity{
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            if (errorId.equals(Error.SUCCESS)) {
+           if (errorId.equals(Error.SUCCESS)) {
                 if(rol.equals("profesor")){
                     Intent i = new Intent(getApplicationContext(), ProfesorCreate.class );
                     startActivity(i);
