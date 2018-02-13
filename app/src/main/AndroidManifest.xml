@@ -36,6 +36,14 @@
             android:name=".AdminMain"
             android:label="Universys"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".AlumnoCreate"
+            android:label="Universys"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".ProfesorCreate"
+            android:label="Universys"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
