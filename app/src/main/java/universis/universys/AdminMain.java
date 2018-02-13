@@ -182,7 +182,7 @@ public class AdminMain extends AppCompatActivity{
             showProgress(false);
             try {
                 errorId = request.getJsonResponse().getString(Error.ERROR_ID);
-                AdminMain.ID_SESION = request.getJsonResponse().getString("idSesion");
+                LoginActivity.ID_SESION = request.getJsonResponse().getString("idSesion");
                 rol = request.getJsonResponse().getString("rol");
             } catch (JSONException e) {
                 e.printStackTrace();
