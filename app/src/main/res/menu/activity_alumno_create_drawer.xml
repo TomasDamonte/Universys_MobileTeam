@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_datosPersonales"
+            android:icon="@android:drawable/stat_notify_chat"
+            android:title="Informacion Cuenta Alumno" />
+        <item
+            android:id="@+id/nav_calendario"
+            android:title="" />
+        <item
+            android:id="@+id/nav_asistencias"
+            android:title="" />
+        <item
+            android:id="@+id/nav_inscripcion"
+            android:title="" />
+        <item
+            android:id="@+id/nav_baja"
+            android:title="" />
+        <item
+            android:id="@+id/nav_notas"
+            android:title="" />
+        <item
+            android:id="@+id/nav_horarios"
+            android:title="" />
+    </group>
+
+</menu>
