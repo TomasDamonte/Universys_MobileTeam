@@ -55,6 +55,10 @@ public class DataBase {
                     .put("telefono", "4215-9547").put("idSesion", "6321"));
 
 
+            db.put(new JSONObject().put("mail", "profesor1@profesor1").put("password", "profesor1")
+                    .put("rol", "profesor").put("nombre", "rere").put("apellido", "riquelme")
+                    .put("fNac", "06/03/1989").put("domicilio", "Austria 3561")
+                    .put("telefono", "4215-9547").put("idSesion", "6329"));
             db = new JSONArray().put(new JSONObject().put("mail", "alumno1@alumno1").put("password", "alumno1")
                     .put("rol", "alumno").put("nombre", " ")
                     .put("apellido", " ").put("fNac", " ")

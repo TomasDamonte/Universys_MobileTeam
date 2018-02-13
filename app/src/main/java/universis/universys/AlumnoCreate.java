@@ -40,7 +40,7 @@ import java.util.HashSet;
  * Se encarga de todas las tareas que puede realizar el alumno con la aplicación.
  */
 public class AlumnoCreate extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, IRequestListener {
+        implements NavigationView.OnNavigationItemSelectedListener, IRequestListener,OnDateSelectedListener{
 
     private EditText editTextNombre;
     private EditText editTextApellido;
@@ -56,11 +56,11 @@ public class AlumnoCreate extends AppCompatActivity
     private EditText editTextHorario;
     private int itemMenu;
     private TextView textViewNota;
-    private HashMap<Date, String> calendarEvents;
+    private HashMap<Date,String> calendarEvents;
     private FrameLayout frameLayoutRespuesta;
     private MaterialCalendarView calendarioAlumno;
     private LinearLayout linearLayoutHorarios;
-    private HashMap<Integer, String> idCursada;
+    private HashMap<Integer,String> idCursada;
     private LinearLayout layoutDatosPersonales;
     private LinearLayout layoutCalendario;
     private LinearLayout layoutFichadaAlumno;
@@ -68,9 +68,8 @@ public class AlumnoCreate extends AppCompatActivity
 
     /**
      * Resetea los layouts, checkea que estén completos todos los campos
-     * y envia la request dependiendo del item del menu que se haya seleccionado.
-     *
-     * @param v View recibida al presionar el boton.
+     *y envia la request dependiendo del item del menu que se haya seleccionado.
+     *@param v View recibida al presionar el boton.
      */
     public void enviarRequest(View v) {
 
@@ -84,14 +83,18 @@ public class AlumnoCreate extends AppCompatActivity
         if (TextUtils.isEmpty(editTextCatedra.getText().toString()) || TextUtils.isEmpty(editTextCarrera.getText().toString())
                 || TextUtils.isEmpty(editTextMateria.getText().toString())) {
             Error.mostrar(Error.CAMPOS_INCOMPLETOS_ERROR);
-        } else {
-            if (itemMenu == R.id.nav_asistencias) {
+        }
+        else {
+            if(itemMenu == R.id.nav_asistencias) {
                 enviarRequest(RequestTaskIds.FICHADA_ALUMNO, URLs.FICHADA_ALUMNO);
-            } else if (itemMenu == R.id.nav_notas) {
+            }
+            else if(itemMenu == R.id.nav_notas) {
                 enviarRequest(RequestTaskIds.NOTA_ALUMNO, URLs.NOTA_ALUMNO);
-            } else if (itemMenu == R.id.nav_horarios) {
+            }
+            else if (itemMenu == R.id.nav_horarios) {
                 enviarRequest(RequestTaskIds.HORARIO_ALUMNO, URLs.HORARIO_ALUMNO);
-            } else if (itemMenu == R.id.nav_baja) {
+            }
+            else if (itemMenu == R.id.nav_baja) {
                 enviarRequest(RequestTaskIds.BAJA_MATERIA, URLs.BAJA_MATERIA);
             }
         }
@@ -99,18 +102,16 @@ public class AlumnoCreate extends AppCompatActivity
 
     /**
      * Hace el request.
-     *
-     * @param id  Identificador de la request.
+     * @param id Identificador de la request.
      * @param url Direccion web a dónde enviar la request.
      */
     public void enviarRequest(int id, String url) {
         CHTTPRequest.postRequest(id, url, new JSONBuilder().requestGenerico(editTextCatedra.getText().toString()
-                , editTextCarrera.getText().toString(), editTextMateria.getText().toString())).execute().addListener(this);
+                ,editTextCarrera.getText().toString(), editTextMateria.getText().toString())).execute().addListener(this);
     }
 
     /**
      * Habilita la edición de los campos y el botón buttonEnviarDatosAlumno.
-     *
      * @param v View recibida al presionar el botón.
      */
     public void modificarDatosAlumno(View v) {
@@ -126,7 +127,6 @@ public class AlumnoCreate extends AppCompatActivity
     /**
      * Deshabilita la edición de los campos, lee los valores cargados en los campos
      * y envia la request.
-     *
      * @param v View recibida al presionar el botón.
      */
     public void enviarDatosAlumno(View v) {
@@ -137,10 +137,10 @@ public class AlumnoCreate extends AppCompatActivity
         editTextFNac.setFocusable(false);
         editTextTelefono.setFocusable(false);
         findViewById(R.id.buttonEnviarDatosAlumno).setEnabled(false);
-        String[] datos = {editTextNombre.getText().toString(), editTextApellido.getText().toString(), editTextDomicilio.getText().toString(),
-                editTextEmail.getText().toString(), editTextFNac.getText().toString(), editTextTelefono.getText().toString()};
-        CHTTPRequest.postRequest(RequestTaskIds.MODIFICAR_DATOS_PERSONALES, URLs.MODIFICAR_DATOS_PERSONALES
-                , new JSONBuilder().modificarDatosPersonales(datos)).execute().addListener(this);
+        String[] datos = {editTextNombre.getText().toString(),editTextApellido.getText().toString(),editTextDomicilio.getText().toString(),
+                editTextEmail.getText().toString(),editTextFNac.getText().toString(),editTextTelefono.getText().toString()};
+        CHTTPRequest.postRequest(RequestTaskIds.MODIFICAR_DATOS_PERSONALES,URLs.MODIFICAR_DATOS_PERSONALES
+                ,new JSONBuilder().modificarDatosPersonales(datos)).execute().addListener(this);
     }
 
     /**
@@ -148,17 +148,24 @@ public class AlumnoCreate extends AppCompatActivity
      * a materias que el alumno tiene disponible.
      */
     public void inscripcionesDisponibles() {
-        CHTTPRequest.postRequest(RequestTaskIds.MATERIAS_DISPONIBLES, URLs.MATERIAS_DISPONIBLES,
+        CHTTPRequest.postRequest(RequestTaskIds.MATERIAS_DISPONIBLES,URLs.MATERIAS_DISPONIBLES,
                 new JSONBuilder().requestBasico()).execute().addListener(this);
         LinearLayout inscripciones = (LinearLayout) findViewById(R.id.layoutInscripDisp);
         inscripciones.removeAllViews();
         layoutInscripciones.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Resetea los editText.
+     */
+    private void blanquearCampos() {
+        editTextCarrera.setText("");
+        editTextCatedra.setText("");
+        editTextMateria.setText("");
+    }
 
     /**
      * Inicializa el Activity y los atributos de la clase.
-     *
      * @param savedInstanceState Parámetro recibido al ejecutarse el Activity
      */
     @Override
@@ -184,6 +191,7 @@ public class AlumnoCreate extends AppCompatActivity
         editTextEmail = (EditText) findViewById(R.id.editTextEmail);
         editTextFNac = (EditText) findViewById(R.id.editTextFNac);
         editTextTelefono = (EditText) findViewById(R.id.editTextTelefono);
+        calendarioAlumno = (MaterialCalendarView) findViewById(R.id.calendarioAlumno);
         editTextCatedra = (EditText) findViewById(R.id.editTextCatedra);
         editTextCarrera = (EditText) findViewById(R.id.editTextCarrera);
         editTextMateria = (EditText) findViewById(R.id.editTextMateria);
@@ -193,7 +201,7 @@ public class AlumnoCreate extends AppCompatActivity
         linearLayoutHorarios = (LinearLayout) findViewById(R.id.linearLayoutHorarios);
         textViewOpcion = (TextView) findViewById(R.id.textViewOpcion);
         textViewEvento = (TextView) findViewById(R.id.textViewEvento);
-
+        calendarioAlumno.setOnDateChangedListener(this);
         layoutDatosPersonales = (LinearLayout) findViewById(R.id.layoutDatosPersonales);
         layoutCalendario = (LinearLayout) findViewById(R.id.layoutCalendario);
         layoutFichadaAlumno = (LinearLayout) findViewById(R.id.layoutFichadaAlumno);
@@ -220,7 +228,6 @@ public class AlumnoCreate extends AppCompatActivity
     /**
      * Agrega opciones al menu del Action Bar(desactivado).
      * Este método no se utiliza. Sin embargo debe estar presente ya que es parte de la interfaz.
-     *
      * @param menu Menu recibido al ejecutarse el Activity.
      */
     @Override
@@ -232,7 +239,6 @@ public class AlumnoCreate extends AppCompatActivity
      * Maneja las acciones a realizarse al clickear un item del menu
      * del Action Bar (desactivado).
      * Este método no se utiliza. Sin embargo debe estar presente ya que es parte de la interfaz.
-     *
      * @param item Item clickeado.
      */
     @Override
@@ -242,7 +248,6 @@ public class AlumnoCreate extends AppCompatActivity
 
     /**
      * Maneja las acciones a realizarse al clickear un item del Navigation Bar.
-     *
      * @param item Item clickeado.
      */
     @Override
@@ -250,12 +255,22 @@ public class AlumnoCreate extends AppCompatActivity
         itemMenu = item.getItemId();
         blanquearCampos();
         frameLayoutRespuesta.setVisibility(View.INVISIBLE);
-        switch (itemMenu) {
-            case R.id.nav_datosPersonales:
-                CHTTPRequest.postRequest(RequestTaskIds.DATOS_PERSONALES, URLs.DATOS_PERSONALES,
+        switch (itemMenu){
+            case R.id.nav_calendario:
+                CHTTPRequest.postRequest(RequestTaskIds.CALENDARIO_ALUMNO,URLs.CALENDARIO_ALUMNO,
                         new JSONBuilder().requestBasico()).execute().addListener(this);
                 layoutInscripciones.setVisibility(View.INVISIBLE);
-
+                layoutDatosPersonales.setVisibility(View.INVISIBLE);
+                layoutFichadaAlumno.setVisibility(View.INVISIBLE);
+                calendarioAlumno.setDateSelected(calendarioAlumno.getSelectedDate(),false);
+                calendarioAlumno.setSelectedDate(new CalendarDay().getDate());
+                layoutCalendario.setVisibility(View.VISIBLE);
+                break;
+            case R.id.nav_datosPersonales:
+                CHTTPRequest.postRequest(RequestTaskIds.DATOS_PERSONALES,URLs.DATOS_PERSONALES,
+                        new JSONBuilder().requestBasico()).execute().addListener(this);
+                layoutInscripciones.setVisibility(View.INVISIBLE);
+                layoutCalendario.setVisibility(View.INVISIBLE);
                 layoutFichadaAlumno.setVisibility(View.INVISIBLE);
                 layoutDatosPersonales.setVisibility(View.VISIBLE);
                 break;
@@ -267,9 +282,9 @@ public class AlumnoCreate extends AppCompatActivity
                 layoutInscripciones.setVisibility(View.VISIBLE);
                 break;
             default:
-                if (itemMenu == R.id.nav_asistencias) textViewOpcion.setText("Asistencias");
-                else if (itemMenu == R.id.nav_notas) textViewOpcion.setText("Notas");
-                else if (itemMenu == R.id.nav_horarios) textViewOpcion.setText("Horarios");
+                if(itemMenu == R.id.nav_asistencias) textViewOpcion.setText("Asistencias");
+                else if(itemMenu == R.id.nav_notas) textViewOpcion.setText("Notas");
+                else if(itemMenu == R.id.nav_horarios) textViewOpcion.setText("Horarios");
                 else textViewOpcion.setText("Darse de baja");
                 layoutInscripciones.setVisibility(View.INVISIBLE);
                 layoutCalendario.setVisibility(View.INVISIBLE);
@@ -292,8 +307,7 @@ public class AlumnoCreate extends AppCompatActivity
     /**
      * Este método se ejecuta al recibir una respuesta del servidor.
      * Realiza la acción correspondiente a la request a la cual el servidor respondió.
-     *
-     * @param request  Request a la cual el servidor respondió.
+     * @param request Request a la cual el servidor respondió.
      * @param response Respuesta del servidor.
      */
     @Override
@@ -305,10 +319,10 @@ public class AlumnoCreate extends AppCompatActivity
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        if (!errorId.equals(Error.SUCCESS))
+        if(!errorId.equals(Error.SUCCESS))
             Error.mostrar(errorId);
         else {
-            switch (request.getTaskId()) {
+            switch (request.getTaskId()){
                 case RequestTaskIds.CALENDARIO_ALUMNO:
                     taskCalendario(request);
                     break;
@@ -364,7 +378,6 @@ public class AlumnoCreate extends AppCompatActivity
     /**
      * Se ejecuta cuando el servidor respondió a la request Datos_Personales.
      * Muestra en los EditText el valor correspondiente a cada campo.
-     *
      * @param request Resquest de la cual se obtiene la respuesta del servidor.
      */
     private void taskDatosPersonales(CHTTPRequest request) {
@@ -382,10 +395,9 @@ public class AlumnoCreate extends AppCompatActivity
 
     /**
      * Muestra un calendario con fechas destacadas y eventos.
-     *
-     * @param request Resquest de la cual se obtiene la respuesta del servidor.
      * @dias Se guardan qué días tienen eventos.
      * @calendarEvents Se guardan los eventos asignados a cada día.
+     * @param request Resquest de la cual se obtiene la respuesta del servidor.
      */
     private void taskCalendario(CHTTPRequest request) {
         JSONArray eventos = new JSONArray();
@@ -397,53 +409,50 @@ public class AlumnoCreate extends AppCompatActivity
         HashSet<CalendarDay> dias = new HashSet<>();
         calendarEvents = new HashMap<>();
         try {
-            for (int i = 0; i < eventos.length(); i++) {
+            for (int i=0;i<eventos.length();i++) {
                 dias.add(new CalendarDay(new Date(eventos.getJSONObject(i).getString("fecha"))));
                 String evento;
-                if (calendarEvents.get(new Date(eventos.getJSONObject(i).getString("fecha"))) == null)
-                    evento = eventos.getJSONObject(i).getString("evento");
-                else
-                    evento = calendarEvents.get(new Date(eventos.getJSONObject(i).getString("fecha"))) + ", " + eventos.getJSONObject(i).getString("evento");
-                calendarEvents.put(new Date(eventos.getJSONObject(i).getString("fecha")), evento);
+                if(calendarEvents.get(new Date(eventos.getJSONObject(i).getString("fecha"))) == null) evento = eventos.getJSONObject(i).getString("evento");
+                else evento = calendarEvents.get(new Date(eventos.getJSONObject(i).getString("fecha"))) + ", " + eventos.getJSONObject(i).getString("evento");
+                calendarEvents.put(new Date(eventos.getJSONObject(i).getString("fecha")),evento);
             }
-        } catch (JSONException e) {
+        }catch (JSONException e) {
             e.printStackTrace();
         }
-        calendarioAlumno.addDecorator(new CalendarDecorator(dias, Color.RED));
+        calendarioAlumno.addDecorator(new CalendarDecorator(dias,Color.RED));
     }
 
     /**
      * Muestra las materias con sus horarios y cátedras a las cuales al alumno puede inscribirse.
      * Se genera un botón 'Inscribirse' por cada materia.
-     *
      * @param datos Respuesta del servidor.
-     * @throws JSONException Por si ocurre algún error al leer el JSON.
      * @idCursada Se guarda a qué cursada corresponde cada botón.
+     * @throws JSONException Por si ocurre algún error al leer el JSON.
      */
     private void taskMateriasDisponibles(JSONObject datos) throws JSONException {
         JSONArray inscripcionesDisponibles = datos.getJSONArray("inscripcionesDisponibles");
         LinearLayout inscripciones = (LinearLayout) findViewById(R.id.layoutInscripDisp);
         idCursada = new HashMap<>();
-        for (int i = 0; i < inscripcionesDisponibles.length(); i++) {
+        for(int i=0;i<inscripcionesDisponibles.length();i++) {
             String texto = "";
             EditText editText = new EditText(this);
             JSONObject materias = inscripcionesDisponibles.getJSONObject(i);
-            texto = texto + "Materia: " + materias.getString("nombre") + "\n";
+            texto = texto +"Materia: " + materias.getString("nombre") + "\n";
             JSONArray catedras = materias.getJSONArray("catedras");
-            for (int j = 0; j < catedras.length(); j++) {
+            for(int j=0;j<catedras.length();j++) {
                 JSONObject cursadas = catedras.getJSONObject(j);
-                texto = texto + "Catedra: " + cursadas.getString("catedra") + "\n";
+                texto = texto + "Catedra: " + cursadas.getString("catedra")+ "\n";
                 JSONArray horarios = cursadas.getJSONArray("cursadas");
-                for (int k = 0; k < horarios.length(); k++) {
+                for(int k=0;k<horarios.length();k++) {
                     JSONObject clase = horarios.getJSONObject(k);
                     texto = texto + "Horarios:\n" + mostrarHorarios(clase) + "\n";
                     editText.setText(texto);
                     Button inscribir = new Button(this);
-                    inscribir.setId(i + j + k);
+                    inscribir.setId(i+j+k);
                     editText.setFocusable(false);
                     inscribir.setText("Inscribirse");
                     //Guarda a qué botón está asignada cada cursada.
-                    idCursada.put(i + j + k, clase.getString("idCursada"));
+                    idCursada.put(i+j+k,clase.getString("idCursada"));
                     inscribir.setOnClickListener(new View.OnClickListener() {
                         /**
                          * Ejecuta la request de inscripcion a materia.
@@ -451,7 +460,7 @@ public class AlumnoCreate extends AppCompatActivity
                          */
                         @Override
                         public void onClick(View view) {
-                            CHTTPRequest.postRequest(RequestTaskIds.INSCRIPCION_MATERIA, URLs.INSCRIPCION_MATERIA,
+                            CHTTPRequest.postRequest(RequestTaskIds.INSCRIPCION_MATERIA,URLs.INSCRIPCION_MATERIA,
                                     new JSONBuilder().inscripcionAMateria(idCursada.get(view.getId())))
                                     .execute().addListener(AlumnoCreate.this);
                         }
@@ -466,7 +475,6 @@ public class AlumnoCreate extends AppCompatActivity
 
     /**
      * Decodifica un array de horarios en hexadecimal.
-     *
      * @param datos Respuesta del servidor.
      * @return String resultante del array de horarios decodificado.
      * @throws JSONException Por si ocurre algún error al leer el JSON.
@@ -474,28 +482,28 @@ public class AlumnoCreate extends AppCompatActivity
     private String mostrarHorarios(JSONObject datos) throws JSONException {
         JSONArray JSONArrayHorarios = datos.getJSONArray("horario");
         String texto = "Teoría:\n";
-        for (int i = 0; i < JSONArrayHorarios.length(); i++) {
+        for(int i=0;i<JSONArrayHorarios.length();i++) {
             String teoria = JSONArrayHorarios.getString(i).split(";")[0];
-            if ((teoria.charAt(0) + "").equals("0")) texto = texto + "Lunes de ";
-            else if ((teoria.charAt(0) + "").equals("1")) texto = texto + "Martes de ";
-            else if ((teoria.charAt(0) + "").equals("2")) texto = texto + "Miercoles de ";
-            else if ((teoria.charAt(0) + "").equals("3")) texto = texto + "Jueves de ";
-            else if ((teoria.charAt(0) + "").equals("4")) texto = texto + "Viernes de ";
-            else if ((teoria.charAt(0) + "").equals("5")) texto = texto + "Sábado de ";
-            texto = texto + (Integer.parseInt(teoria.charAt(1) + "", 16) + 7) + " a ";
-            texto = texto + (Integer.parseInt(teoria.charAt(2) + "", 16) + 7) + "hs.\n";
+            if((teoria.charAt(0)+"").equals("0")) texto = texto + "Lunes de ";
+            else if((teoria.charAt(0)+"").equals("1")) texto = texto + "Martes de ";
+            else if((teoria.charAt(0)+"").equals("2")) texto = texto + "Miercoles de ";
+            else if((teoria.charAt(0)+"").equals("3")) texto = texto + "Jueves de ";
+            else if((teoria.charAt(0)+"").equals("4")) texto = texto + "Viernes de ";
+            else if((teoria.charAt(0)+"").equals("5")) texto = texto + "Sábado de ";
+            texto = texto + (Integer.parseInt(teoria.charAt(1)+"", 16) + 7) + " a ";
+            texto = texto + (Integer.parseInt(teoria.charAt(2)+"", 16) + 7) + "hs.\n";
         }
         texto = texto + "\nPráctica:\n";
-        for (int i = 0; i < JSONArrayHorarios.length(); i++) {
+        for(int i=0;i<JSONArrayHorarios.length();i++) {
             String teoria = JSONArrayHorarios.getString(i).split(";")[1];
-            if ((teoria.charAt(0) + "").equals("0")) texto = texto + "Lunes de ";
-            else if ((teoria.charAt(0) + "").equals("1")) texto = texto + "Martes de ";
-            else if ((teoria.charAt(0) + "").equals("2")) texto = texto + "Miércoles de ";
-            else if ((teoria.charAt(0) + "").equals("3")) texto = texto + "Jueves de ";
-            else if ((teoria.charAt(0) + "").equals("4")) texto = texto + "Viernes de ";
-            else if ((teoria.charAt(0) + "").equals("5")) texto = texto + "Sábado de ";
-            texto = texto + (Integer.parseInt(teoria.charAt(1) + "", 16) + 7) + " a ";
-            texto = texto + (Integer.parseInt(teoria.charAt(2) + "", 16) + 7) + "hs.\n";
+            if((teoria.charAt(0)+"").equals("0")) texto = texto + "Lunes de ";
+            else if((teoria.charAt(0)+"").equals("1")) texto = texto + "Martes de ";
+            else if((teoria.charAt(0)+"").equals("2")) texto = texto + "Miércoles de ";
+            else if((teoria.charAt(0)+"").equals("3")) texto = texto + "Jueves de ";
+            else if((teoria.charAt(0)+"").equals("4")) texto = texto + "Viernes de ";
+            else if((teoria.charAt(0)+"").equals("5")) texto = texto + "Sábado de ";
+            texto = texto + (Integer.parseInt(teoria.charAt(1)+"", 16) + 7) + " a ";
+            texto = texto + (Integer.parseInt(teoria.charAt(2)+"", 16) + 7) + "hs.\n";
         }
         editTextHorario.setText(texto);
         return texto;
@@ -503,19 +511,17 @@ public class AlumnoCreate extends AppCompatActivity
 
     /**
      * Setea el Padding del textView recibido.
-     *
      * @param tV TextView al cual se le seteará el Padding.
      * @return TextView con el Padding seteado.
      */
-    private TextView setPadding(TextView tV) {
-        tV.setPadding(10, 10, 10, 10);
+    private TextView setPadding(TextView tV){
+        tV.setPadding(10,10,10,10);
         return tV;
     }
 
     /**
      * Crea y muestra una tabla con los campos "FECHA"[dd/mm/aaaa] y "PRESENTE" [SI/NO]
      * Dependiendo del valor del campo "PRESENTE" la fila tiene Background rojo [NO] o verde [SI].
-     *
      * @param request Request que contiene la respuesta del servidor.
      * @throws JSONException Por si ocurre algún error al leer el JSON.
      */
@@ -523,7 +529,7 @@ public class AlumnoCreate extends AppCompatActivity
         JSONArray datos = request.getJsonResponse().getJSONArray("fichadas");
         ScrollView sVTablaFichadas = (ScrollView) findViewById(R.id.sVTablaFichadas);
         sVTablaFichadas.setVisibility(View.VISIBLE);
-        TableLayout tabla = (TableLayout) findViewById(R.id.tablaFichadas);
+        TableLayout tabla = (TableLayout)findViewById(R.id.tablaFichadas);
         TableRow fila = new TableRow(this);
         TextView fecha = new TextView(this);
         TextView presente = new TextView(this);
@@ -537,10 +543,10 @@ public class AlumnoCreate extends AppCompatActivity
         fila.addView(presente);
         fila.setBackgroundColor(Color.DKGRAY);
         tabla.addView(fila);
-        tabla.setPadding(5, 5, 5, 5);
+        tabla.setPadding(5,5,5,5);
         tabla.setBackgroundColor(Color.BLACK);
 
-        for (int i = 0; i < datos.length(); i++) {
+        for(int i=0; i<datos.length();i++){
             fila = new TableRow(this);
             fecha = new TextView(this);
             presente = new TextView(this);
@@ -551,10 +557,10 @@ public class AlumnoCreate extends AppCompatActivity
             JSONObject dato = datos.getJSONObject(i);
             fecha.setText(dato.getString("fecha"));
             presente.setText(dato.getString("presente"));
-            fila.setPadding(5, 5, 5, 5);
+            fila.setPadding(5,5,5,5);
             presente.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
             fila.setBackgroundColor(Color.WHITE);
-            if (dato.getString("presente").equals("SI")) {
+            if(dato.getString("presente").equals("SI")){
                 fecha.setBackgroundColor(Color.GREEN);
                 presente.setBackgroundColor(Color.GREEN);
             } else {
@@ -565,5 +571,16 @@ public class AlumnoCreate extends AppCompatActivity
             fila.addView(presente);
             tabla.addView(fila);
         }
+    }
+
+    /**
+     * Llamdo al clickearse un día del calendario.
+     * Muestra los eventos asignados al día clickeado.
+     * @param widget El calendario.
+     * @param date Día clickeado.
+     */
+    @Override
+    public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+        textViewEvento.setText(calendarEvents.get(date.getDate()));
     }
 }
