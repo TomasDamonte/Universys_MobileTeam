@@ -59,7 +59,7 @@ public class DataBase {
                     .put("rol", "profesor").put("nombre", "rere").put("apellido", "riquelme")
                     .put("fNac", "06/03/1989").put("domicilio", "Austria 3561")
                     .put("telefono", "4215-9547").put("idSesion", "6329"));
-            db = new JSONArray().put(new JSONObject().put("mail", "alumno1@alumno1").put("password", "alumno1")
+            db.put(new JSONObject().put("mail", "alumno1@alumno1").put("password", "alumno1")
                     .put("rol", "alumno").put("nombre", " ")
                     .put("apellido", " ").put("fNac", " ")
                     .put("domicilio", " ").put("telefono", " ")
