@@ -13,7 +13,8 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.51">
 
         <LinearLayout
             android:id="@+id/layoutCalendario"
@@ -42,7 +43,7 @@
                     android:padding="5dp"
                     android:text="Cursada"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textColor="#39FF14" />
+                    android:textColor="@android:color/holo_red_dark" />
 
                 <TextView
                     android:id="@+id/tVFinales"
