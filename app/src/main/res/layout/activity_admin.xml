@@ -12,6 +12,7 @@
     tools:context="universis.universys.AdminMain">
 
     <!-- Login progress -->
+
     <ProgressBar
         android:id="@+id/login_progress"
         style="?android:attr/progressBarStyleLarge"
@@ -23,7 +24,7 @@
     <ScrollView
         android:id="@+id/login_form"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="353dp">
 
         <LinearLayout
             android:id="@+id/email_login_form"
@@ -81,5 +82,15 @@
                 app:srcCompat="@mipmap/ub" />
 
         </LinearLayout>
+
     </ScrollView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="83dp"
+        android:textAlignment="center"
+        android:textColor="@color/Black"
+        android:text="BIENVENIDO ADMINISTRADOR" />
+
+
 </LinearLayout>
