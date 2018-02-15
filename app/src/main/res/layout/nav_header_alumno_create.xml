@@ -15,14 +15,15 @@
     <ImageView
         android:id="@+id/imageView6"
         android:layout_width="111dp"
-        android:layout_height="68dp"
+        android:layout_height="59dp"
         app:srcCompat="@mipmap/ub" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="Universys-Administrador- Habilitar/Modificar/Vaciar perfiles de Alumnos"
+        android:textColor="@color/White"
+        android:text="Habilitar/Modificar/Vaciar perfiles de Alumnos"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
