@@ -12,12 +12,12 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:theme="@style/ThemeOverlay.AppCompat.Dark"
     android:visibility="visible"
-    android:background="@color/RoyalBlue">
+    android:background="@color/colorPrimary">
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="47dp"
-        android:layout_height="37dp"
+        android:layout_width="77dp"
+        android:layout_height="74dp"
         android:background="@color/colorPrimary"
         app:srcCompat="@mipmap/ub" />
 
@@ -27,7 +27,8 @@
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:text="Universys"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="@android:color/black" />
+        android:textColor="@android:color/white"
+        android:textSize="30dp" />
 
     <TextView
         android:id="@+id/textView"
